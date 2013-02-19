@@ -10,16 +10,13 @@
 #include <iostream>
 #include "cinder/gl/TextureFont.h"
 #include "cinder/gl/gl.h"
+#include "Hud.h"
 
 static const bool NO_KINECT = false;
 
-extern ci::gl::TextureFontRef gFont;
+/// Needs to be called in the main app's setup() function
+void setupFont();
+ci::gl::TextureFontRef& statusFont();
+Hud& hud();
 
-inline void drawCenteredString(std::string const& s)
-{
-	ci::gl::pushModelView();
-	ci::gl::scale(1,-1,1);
-	ci::Vec2f offset = gFont->measureString(s);
-	gFont->drawString(s, -offset/2);
-	ci::gl::popModelView();
-}
+void drawCenteredString(std::string const& s);

@@ -45,10 +45,10 @@ public:
 	
 	// const elements
 	JointIndex mIndex;
-	XnSkeletonJoint id() { return JOINT_IDS.at(mIndex); }
-	std::string name() { return JOINT_NAMES.at(mIndex); }
-	bool isLeft() { return IS_LEFT.at(mIndex); }
-	bool isRight() { return IS_RIGHT.at(mIndex); }
+	XnSkeletonJoint id() const { return JOINT_IDS.at(mIndex); }
+	std::string name() const { return JOINT_NAMES.at(mIndex); }
+	bool isLeft() const { return IS_LEFT.at(mIndex); }
+	bool isRight() const { return IS_RIGHT.at(mIndex); }
 	
 private:
 

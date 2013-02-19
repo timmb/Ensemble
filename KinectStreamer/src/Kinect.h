@@ -59,7 +59,6 @@ private:
 	
 //	void print(xn::EnumerationErrors& errors);
 	
-	std::vector<std::string> mMessages;
 	V::OpenNIDeviceManager* mOpenNI;
 	V::OpenNIDevice::Ref mDevice;
 	

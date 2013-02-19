@@ -55,12 +55,11 @@ void Kinect::setup()
 
 void Kinect::update(float dt)
 {
-	mMessages.clear();
 	double t = app::App::get()->getElapsedSeconds();
 	mOpenNI->update();
 	double dur = app::App::get()->getElapsedSeconds() - t;
 //	cout << dur << endl;
-	mMessages.push_back(toString(dur));
+	hud().display("OpenNI update: "+toString(dur)+"ms");
 	
 	if (!NO_KINECT)
 	{
@@ -163,14 +162,11 @@ void Kinect::draw()
 		gl::draw(mColor);
 		gl::draw(Surface(mDepth));
 		OpenNIUserList users = mOpenNI->getUserList();
-		BOOST_FOREACH(OpenNIUserRef &user, users)
+		for (OpenNIUserRef &user: users)
 		{
 			user->renderJoints(mDepthSize.x, mDepthSize.y, 0);
 		}
 		
-		gl::enableAlphaBlending();
-		mFont->drawString(boost::algorithm::join(mMessages, "\n"), Vec2f(20, 20));
-		gl::disableAlphaBlending();
 	}
 	gl::popMatrices();
 	

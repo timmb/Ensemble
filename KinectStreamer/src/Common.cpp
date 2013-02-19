@@ -9,6 +9,38 @@
 #include "Common.h"
 
 using namespace ci;
+using namespace ci::gl;
 
-// intiialised by app::setup
-ci::gl::TextureFontRef gFont;
+namespace {
+	TextureFontRef fFont;
+	Hud* fHud = NULL;
+	bool fFontAndHudAreInitialized = false;
+}
+
+void setupFont()
+{
+	fFont = gl::TextureFont::create(Font("Helvetica", 16));
+	fHud = new Hud(fFont);
+	fFontAndHudAreInitialized = true;
+}
+
+TextureFontRef& statusFont()
+{
+	assert(fFontAndHudAreInitialized);
+	return fFont;
+}
+
+Hud& hud()
+{
+	assert(fFontAndHudAreInitialized);
+	return *fHud;
+}
+
+void drawCenteredString(std::string const& s)
+{
+	ci::gl::pushModelView();
+	ci::gl::scale(1,-1,1);
+	ci::Vec2f offset = statusFont()->measureString(s);
+	statusFont()->drawString(s, -offset/2);
+	ci::gl::popModelView();
+}
