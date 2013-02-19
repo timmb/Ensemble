@@ -28,7 +28,10 @@
 		22DE5F1016D402CC00F49CB1 /* VOpenNINetwork.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5ED216D402CB00F49CB1 /* VOpenNINetwork.cpp */; };
 		22DE5F1116D402CC00F49CB1 /* VOpenNIRecorder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5ED416D402CB00F49CB1 /* VOpenNIRecorder.cpp */; };
 		22DE5F1216D402CC00F49CB1 /* VOpenNIUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5ED716D402CB00F49CB1 /* VOpenNIUser.cpp */; };
-		22DE5F2516D406EE00F49CB1 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 22DE5F2416D406EE00F49CB1 /* readme.md */; };
+		22DE5F2A16D40AA800F49CB1 /* Kinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5F2616D40AA800F49CB1 /* Kinect.cpp */; };
+		22DE5F2B16D40AA800F49CB1 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5F2816D40AA800F49CB1 /* User.cpp */; };
+		22DE5F2D16D40AC300F49CB1 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 22DE5F2C16D40AC300F49CB1 /* readme.md */; };
+		22DE5F3016D40CB000F49CB1 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5F2E16D40CB000F49CB1 /* Common.cpp */; };
 		39B3AFE945474A70834557CA /* KinectStreamerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0CCCF662D24417491A7EFC9 /* KinectStreamerApp.cpp */; };
 		3D785E4171774A97ADC6A2D6 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AC13FB148C343469E63413E /* OscPrintReceivedElements.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
@@ -160,7 +163,13 @@
 		22DE5ED616D402CB00F49CB1 /* VOpenNISurface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VOpenNISurface.h; sourceTree = "<group>"; };
 		22DE5ED716D402CB00F49CB1 /* VOpenNIUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VOpenNIUser.cpp; sourceTree = "<group>"; };
 		22DE5ED816D402CB00F49CB1 /* VOpenNIUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VOpenNIUser.h; sourceTree = "<group>"; };
-		22DE5F2416D406EE00F49CB1 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.md; path = ../readme.md; sourceTree = "<group>"; };
+		22DE5F2616D40AA800F49CB1 /* Kinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Kinect.cpp; path = ../src/Kinect.cpp; sourceTree = "<group>"; };
+		22DE5F2716D40AA800F49CB1 /* Kinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Kinect.h; path = ../src/Kinect.h; sourceTree = "<group>"; };
+		22DE5F2816D40AA800F49CB1 /* User.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = User.cpp; path = ../src/User.cpp; sourceTree = "<group>"; };
+		22DE5F2916D40AA800F49CB1 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = User.h; path = ../src/User.h; sourceTree = "<group>"; };
+		22DE5F2C16D40AC300F49CB1 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.md; path = ../../readme.md; sourceTree = "<group>"; };
+		22DE5F2E16D40CB000F49CB1 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = ../src/Common.cpp; sourceTree = "<group>"; };
+		22DE5F2F16D40CB000F49CB1 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../src/Common.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2A6BE27FAADF4520817C0E98 /* UdpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UdpSocket.h; path = ../../../Cinder/blocks/OSC/src/ip/UdpSocket.h; sourceTree = "<group>"; };
@@ -229,6 +238,12 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				22DE5F2E16D40CB000F49CB1 /* Common.cpp */,
+				22DE5F2F16D40CB000F49CB1 /* Common.h */,
+				22DE5F2616D40AA800F49CB1 /* Kinect.cpp */,
+				22DE5F2716D40AA800F49CB1 /* Kinect.h */,
+				22DE5F2816D40AA800F49CB1 /* User.cpp */,
+				22DE5F2916D40AA800F49CB1 /* User.h */,
 				C0CCCF662D24417491A7EFC9 /* KinectStreamerApp.cpp */,
 			);
 			name = Source;
@@ -465,7 +480,7 @@
 		29B97314FDCFA39411CA2CEA /* KinectStreamer */ = {
 			isa = PBXGroup;
 			children = (
-				22DE5F2416D406EE00F49CB1 /* readme.md */,
+				22DE5F2C16D40AC300F49CB1 /* readme.md */,
 				01B97315FEAEA392516A2CEA /* Blocks */,
 				29B97315FDCFA39411CA2CEA /* Headers */,
 				080E96DDFE201D6D7F000001 /* Source */,
@@ -625,7 +640,7 @@
 				22DE5ED916D402CB00F49CB1 /* .gitignore in Resources */,
 				22DE5EDE16D402CC00F49CB1 /* readme.txt in Resources */,
 				22DE5EE016D402CC00F49CB1 /* README.md in Resources */,
-				22DE5F2516D406EE00F49CB1 /* readme.md in Resources */,
+				22DE5F2D16D40AC300F49CB1 /* readme.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -655,6 +670,9 @@
 				22DE5F1016D402CC00F49CB1 /* VOpenNINetwork.cpp in Sources */,
 				22DE5F1116D402CC00F49CB1 /* VOpenNIRecorder.cpp in Sources */,
 				22DE5F1216D402CC00F49CB1 /* VOpenNIUser.cpp in Sources */,
+				22DE5F2A16D40AA800F49CB1 /* Kinect.cpp in Sources */,
+				22DE5F2B16D40AA800F49CB1 /* User.cpp in Sources */,
+				22DE5F3016D40CB000F49CB1 /* Common.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,11 +693,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
-					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/msw\"",
-				);
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
 				PRODUCT_NAME = KinectStreamer;
 				SYMROOT = ./build;
@@ -702,11 +715,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
-					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/msw\"",
-				);
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
 				PRODUCT_NAME = KinectStreamer;
 				STRIP_INSTALLED_PRODUCT = YES;
@@ -729,9 +737,13 @@
 					"\"$(CINDER_PATH)/boost\"",
 					"\"$(CINDER_PATH)/blocks/BlockOpenNI/include/Include/**",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
+					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/msw\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../Cinder/blocks/OSC/src";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../Cinder/blocks/OSC/src ../../../tmbCommon";
 			};
 			name = Debug;
 		};
@@ -749,9 +761,13 @@
 					"\"$(CINDER_PATH)/boost\"",
 					"\"$(CINDER_PATH)/blocks/BlockOpenNI/include/Include/**",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
+					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/msw\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../Cinder/blocks/OSC/src";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../../Cinder/blocks/OSC/src ../../../tmbCommon";
 			};
 			name = Release;
 		};
