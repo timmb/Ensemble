@@ -73,70 +73,82 @@ void Kinect::update(float dt)
 			uint16_t *pixels = mDevice->getDepthMap();
 			memcpy(mDepth.getData(), pixels, mDepth.getRowBytes()*mDepth.getHeight());
 		}
-		OpenNIUserList users = mOpenNI->getUserList();
-		// first eliminate dead users
-		for (auto it=mUsers.begin(); it!=mUsers.end(); ++it)
+		if (!mDevice->_isUserOn)
 		{
-			auto jit = users.begin();
-			while (jit!=users.end())
-			{
-				if (it->id == (**jit).getId())
-					break;
-				++jit;
-			}
-			if (jit==users.end())
-			{
-				// user not found in openni list
-				it = mUsers.erase(it);
-			}
+			mUsers.clear();
 		}
-		// make new users
-		std::list<int> newIdsToAdd;
-		BOOST_FOREACH(OpenNIUserRef& user, users)
+		else if (mDevice->isUserDataNew())
 		{
-			auto it = mUsers.begin();
-			while (it!=mUsers.end())
+			OpenNIUserList users = mOpenNI->getUserList();
+			// first eliminate dead users
+			for (auto it=mUsers.begin(); it!=mUsers.end();)
 			{
-				if (it->id == user->getId())
-					break;
-				++it;
-			}
-			if (it==mUsers.end())
-			{
-				newIdsToAdd.push_back(user->getId());
-			}
-		}
-		BOOST_FOREACH(int id, newIdsToAdd)
-		{
-			mUsers.push_back(User());
-			mUsers.back().id = id;
-		}
-		assert(mUsers.size() == users.size());
-		// now update all the users
-		
-		BOOST_FOREACH(OpenNIUserRef &user, users)
-		{
-			int id = user->getId();
-			BOOST_FOREACH(User& myUser, mUsers)
-			{
-				if (myUser.id == id)
+				auto jit = users.begin();
+				while (jit!=users.end())
 				{
-					{
-						float* pos =user->getBone(SKEL_TORSO)->position;
-						myUser.pos.set(pos[0], pos[1], pos[2]);
-						myUser.confidence = user->getBone(SKEL_TORSO)->positionConfidence;
-					}
-					// Copy all active joints
-					for (int i = 0; i<myUser.joints.size(); ++i)
-					{
-						OpenNIBone const& bone = *user->getBone(JOINT_IDS[i]);
-						myUser.joints[i].update(dt, getPosition(bone), bone.positionConfidence, myUser.pos);
-					}
-					break;
+					if (it->id == (**jit).getId())
+						break;
+					++jit;
+				}
+				if (jit==users.end())
+				{
+					// user not found in openni list
+					it = mUsers.erase(it);
+				}
+				else
+				{
+					++it;
 				}
 			}
-		}
+			// make new users
+			std::list<int> newIdsToAdd;
+			BOOST_FOREACH(OpenNIUserRef& user, users)
+			{
+				auto it = mUsers.begin();
+				while (it!=mUsers.end())
+				{
+					if (it->id == user->getId())
+						break;
+					++it;
+				}
+				if (it==mUsers.end())
+				{
+					newIdsToAdd.push_back(user->getId());
+				}
+			}
+			BOOST_FOREACH(int id, newIdsToAdd)
+			{
+				mUsers.push_back(User());
+				mUsers.back().id = id;
+			}
+			assert(mUsers.size() == users.size());
+			// now update all the users
+			
+			BOOST_FOREACH(OpenNIUserRef &user, users)
+			{
+				int id = user->getId();
+				BOOST_FOREACH(User& myUser, mUsers)
+				{
+					if (myUser.id == id)
+					{
+						{
+							float* pos =user->getBone(SKEL_TORSO)->position;
+							myUser.pos.set(pos[0], pos[1], pos[2]);
+							myUser.confidence = user->getBone(SKEL_TORSO)->positionConfidence;
+						}
+						// Copy all active joints
+						for (int i = 0; i<myUser.joints.size(); ++i)
+						{
+							OpenNIBone const& bone = *user->getBone(JOINT_IDS[i]);
+							myUser.joints[i].update(dt, getPosition(bone), bone.positionConfidence, myUser.pos);
+						}
+						break;
+					}
+				}
+			}
+		} // end of user update
 	}
+	hud().display("Number of tracked users: " + toString(mUsers.size()));
 }
 
 

@@ -32,6 +32,7 @@ void Hud::display(string const& message)
 void Hud::draw()
 {
 	gl::enableAlphaBlending();
+	gl::color(1,1,1,.8);
 	mFont->drawString(boost::algorithm::join(mMessages, "\n"), Vec2f(20, 20));
 	gl::disableAlphaBlending();
 	mMessages.clear();
