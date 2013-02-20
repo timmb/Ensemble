@@ -12,6 +12,7 @@
 #include "cinder/ImageIo.h"
 #include <boost/algorithm/string/join.hpp>
 #include <boost/foreach.hpp>
+//#include "cinder/Thread.h"
 #include <limits>
 
 using namespace tmb;
@@ -22,8 +23,8 @@ using namespace V;
 
 #define CHECK(xn_result) if (xn_result!=XN_STATUS_OK) ERR(xnGetStatusString(xn_result));
 
-typedef boost::shared_lock<boost::shared_mutex> ReadLock;
-typedef boost::unique_lock<boost::shared_mutex> WriteLock;
+//typedef boost::shared_lock<boost::shared_mutex> ReadLock;
+//typedef boost::unique_lock<boost::shared_mutex> WriteLock;
 
 
 Kinect::~Kinect()
@@ -39,13 +40,7 @@ void Kinect::setup()
 	mColorSize = Vec2i(640, 480);
 	OpenNIDeviceManager::USE_THREAD = false;
 	mOpenNI = OpenNIDeviceManager::InstancePtr();
-	if (!NO_KINECT)
-	{
-		mOpenNI->createDevices(1, NODE_TYPE_IMAGE | NODE_TYPE_DEPTH | NODE_TYPE_SCENE | NODE_TYPE_USER);
-		mDevice = mOpenNI->getDevice(0);
-		assert(mDevice);
-		mDevice->setDepthShiftMul(3);
-	}
+	openKinect();
 	mColor = Surface8u(mColorSize.x, mColorSize.y, false);
 	mDepth = Channel16u(mDepthSize.x, mDepthSize.y);
 	
@@ -53,15 +48,34 @@ void Kinect::setup()
 }
 
 
-void Kinect::update(float dt)
+void Kinect::openKinect()
 {
+	if (!NO_KINECT)
+	{
+		mOpenNI->createDevices(1, NODE_TYPE_IMAGE | NODE_TYPE_DEPTH | NODE_TYPE_SCENE | NODE_TYPE_USER);
+		mDevice = mOpenNI->getDevice(0);
+		if (mDevice)
+			mDevice->setDepthShiftMul(3);
+	}
+}
+
+
+void Kinect::update(float dt, float elapsedTime)
+{
+	mIsUserDataNew = false;
+	
 	double t = app::App::get()->getElapsedSeconds();
 	mOpenNI->update();
 	double dur = app::App::get()->getElapsedSeconds() - t;
 //	cout << dur << endl;
 	hud().display("OpenNI update: "+toString(dur)+"ms");
 	
-	if (!NO_KINECT)
+	if (mDevice == NULL)
+	{
+		hud().display("Unable to open Kinect", "Kinect");
+		openKinect();
+	}
+	else
 	{
 		if ( mDevice->_isImageOn && mDevice->getImageGenerator()->IsValid() && mDevice->isImageDataNew() )
 		{
@@ -75,10 +89,12 @@ void Kinect::update(float dt)
 		}
 		if (!mDevice->_isUserOn)
 		{
+			mIsUserDataNew = !mUsers.empty();
 			mUsers.clear();
 		}
 		else if (mDevice->isUserDataNew())
 		{
+			mIsUserDataNew = true;
 			OpenNIUserList users = mOpenNI->getUserList();
 			// first eliminate dead users
 			for (auto it=mUsers.begin(); it!=mUsers.end();)
@@ -118,7 +134,7 @@ void Kinect::update(float dt)
 			}
 			BOOST_FOREACH(int id, newIdsToAdd)
 			{
-				mUsers.push_back(User());
+				mUsers.push_back(User(elapsedTime));
 				mUsers.back().id = id;
 			}
 			assert(mUsers.size() == users.size());
@@ -142,6 +158,7 @@ void Kinect::update(float dt)
 							OpenNIBone const& bone = *user->getBone(JOINT_IDS[i]);
 							myUser.joints[i].update(dt, getPosition(bone), bone.positionConfidence, myUser.pos);
 						}
+						myUser.age = elapsedTime - myUser.creationTime;
 						break;
 					}
 				}
@@ -187,14 +204,14 @@ void Kinect::draw()
 
 bool Kinect::hasUser() const
 {
-	ReadLock lock(mUsersMutex);
+//	ReadLock lock(mUsersMutex);
 	return !mUsers.empty();
 }
 
 
 bool Kinect::getUser(User* dest) const
 {
-	ReadLock lock(mUsersMutex);
+//	ReadLock lock(mUsersMutex);
 	float nearest = numeric_limits<float>::max();
 	for (auto it=mUsers.begin(); it!=mUsers.end(); ++it)
 	{
@@ -206,6 +223,13 @@ bool Kinect::getUser(User* dest) const
 		}
 	}
 	return nearest != numeric_limits<float>::max();
+}
+
+
+std::vector<User> Kinect::users() const
+{
+//	ReadLock lock(mUsersMutex);
+	return mUsers;
 }
 
 
@@ -244,3 +268,7 @@ ci::Vec3f Kinect::getPosition(V::OpenNIBone const& joint)
 	return Vec3f(joint.position[0], joint.position[1], joint.position[2]);
 }
 
+bool Kinect::isUserDataNew() const
+{
+	return mIsUserDataNew;
+}

@@ -20,3 +20,5 @@ ci::gl::TextureFontRef& statusFont();
 Hud& hud();
 
 void drawCenteredString(std::string const& s);
+
+

@@ -16,7 +16,7 @@ class Hud
 public:
 	Hud(ci::gl::TextureFontRef font);
 	
-	void display(std::string const& message);
+	void display(std::string const& message, std::string const& origin="");
 	virtual void draw();
 	
 private:

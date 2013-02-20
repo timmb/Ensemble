@@ -44,3 +44,5 @@ void drawCenteredString(std::string const& s)
 	statusFont()->drawString(s, -offset/2);
 	ci::gl::popModelView();
 }
+
+

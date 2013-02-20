@@ -20,7 +20,7 @@ It is set up for the following folder structure
 
 .../Ensemble
    . / KinectStreamer
-   . . / readme.md (this file)
+   . / readme.md (this file)
 
 .../tmbCommon (from https://github.com/timmb/tmbCommon)
 

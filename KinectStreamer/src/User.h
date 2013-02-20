@@ -63,10 +63,15 @@ struct User
 	/// World coordinates.
 	std::vector<Joint> joints;
 	
+	/// Elapsed time in seconds that this user was created
+	 float creationTime;
+	/// Current age of user. Manually updated by Kinect
+	float age;
+	
+//	User(User const& other) = default;
+	User(float elapsedTime);
+	void draw();
 	/// Get joint by ID (nb not index). This throws exception
 	/// if id is not in JOINT_IDS
-	Joint getJoint(XnSkeletonJoint id);
-	
-	User();
-	void draw();
+	Joint getJoint(XnSkeletonJoint id) const;
 };

@@ -19,9 +19,9 @@ Hud::Hud(TextureFontRef font)
 : mFont(font)
 {}
 
-void Hud::display(string const& message)
+void Hud::display(string const& message, string const& origin)
 {
-	mMessages.push_back(message);
+	mMessages.push_back(origin + ": " + message);
 	while (mMessages.size() > kMaxNumberOfMessages)
 	{
 		mMessages.pop_front();

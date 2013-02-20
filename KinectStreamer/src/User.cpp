@@ -21,7 +21,7 @@ const int NUM_JOINTS = 15;
 
 namespace {
 	XnSkeletonJoint ____activeJoints[NUM_JOINTS] = { XN_SKEL_HEAD, XN_SKEL_NECK, XN_SKEL_TORSO, XN_SKEL_LEFT_SHOULDER, XN_SKEL_LEFT_ELBOW, XN_SKEL_LEFT_HAND, XN_SKEL_RIGHT_SHOULDER, XN_SKEL_RIGHT_ELBOW, XN_SKEL_RIGHT_HAND, XN_SKEL_LEFT_HIP, XN_SKEL_LEFT_KNEE, XN_SKEL_LEFT_FOOT, XN_SKEL_RIGHT_HIP, XN_SKEL_RIGHT_KNEE, XN_SKEL_RIGHT_FOOT };
-	std::string ____activeJointNames[NUM_JOINTS] = { "Head","Neck","Torso","Left shoulder","Left elbow","Left hand","Right shoulder","Right elbow","Right hand","Left hip","Left knee","Left foot","Right hip","Right knee","Right foot" };
+	std::string ____activeJointNames[NUM_JOINTS] = { "head", "neck", "torso", "left_shoulder", "left_elbow", "left_hand", "right_shoulder", "right_elbow", "right_hand", "left_hip", "left_knee", "left_foot", "right_hip", "right_knee", "right_foot" };
 	bool ____isRight[NUM_JOINTS] = { 0,0,0,0,0,0,1,1,1,0,0,0,1,1,1 };
 	bool ____isLeft[NUM_JOINTS] = { 0,0,0,1,1,1,0,0,0,1,1,1,0,0,0 };
 }
@@ -68,7 +68,8 @@ void Joint::draw()
 }
 
 
-User::User()
+User::User(float elapsedTime)
+: creationTime(elapsedTime)
 {
 	for (int i=0; i<NUM_JOINTS; ++i)
 	{
@@ -86,7 +87,7 @@ void User::draw()
 	}
 }
 
-Joint User::getJoint(XnSkeletonJoint id)
+Joint User::getJoint(XnSkeletonJoint id) const
 {
 	for (auto it=joints.begin();it!=joints.end();++it)
 	{

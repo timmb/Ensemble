@@ -15,6 +15,7 @@
 		055B6E39BB094EC992D75BAB /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0340296291B548F48FE8E9A8 /* UdpSocket.cpp */; };
 		09FE44265B3347F58FBC9D6D /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D88DE9BDE630497E811DE305 /* OscTypes.cpp */; };
 		2237CF9D16D4354C00D6097E /* Hud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2237CF9B16D4354C00D6097E /* Hud.cpp */; };
+		2237CFA016D4E97500D6097E /* OscBroadcaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2237CF9E16D4E97500D6097E /* OscBroadcaster.cpp */; };
 		22DE5ED916D402CB00F49CB1 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 22DE5E0F16D402CA00F49CB1 /* .gitignore */; };
 		22DE5EDA16D402CB00F49CB1 /* libnimCodecs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DE5E6416D402CA00F49CB1 /* libnimCodecs.dylib */; };
 		22DE5EDB16D402CC00F49CB1 /* libnimMockNodes.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DE5E6516D402CA00F49CB1 /* libnimMockNodes.dylib */; };
@@ -66,6 +67,8 @@
 		17E0802E9FE94FCAAC2D6AF8 /* OscException.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = OscException.h; path = ../../../Cinder/blocks/OSC/src/osc/OscException.h; sourceTree = "<group>"; };
 		2237CF9B16D4354C00D6097E /* Hud.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hud.cpp; path = ../src/Hud.cpp; sourceTree = "<group>"; };
 		2237CF9C16D4354C00D6097E /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hud.h; path = ../src/Hud.h; sourceTree = "<group>"; };
+		2237CF9E16D4E97500D6097E /* OscBroadcaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscBroadcaster.cpp; path = ../src/OscBroadcaster.cpp; sourceTree = "<group>"; };
+		2237CF9F16D4E97500D6097E /* OscBroadcaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscBroadcaster.h; path = ../src/OscBroadcaster.h; sourceTree = "<group>"; };
 		22DE5E0F16D402CA00F49CB1 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		22DE5E1316D402CA00F49CB1 /* XnPlatformAndroid-Arm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XnPlatformAndroid-Arm.h"; sourceTree = "<group>"; };
 		22DE5E1516D402CA00F49CB1 /* XnOSARC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XnOSARC.h; sourceTree = "<group>"; };
@@ -248,6 +251,8 @@
 				22DE5F2F16D40CB000F49CB1 /* Common.h */,
 				22DE5F2616D40AA800F49CB1 /* Kinect.cpp */,
 				22DE5F2716D40AA800F49CB1 /* Kinect.h */,
+				2237CF9E16D4E97500D6097E /* OscBroadcaster.cpp */,
+				2237CF9F16D4E97500D6097E /* OscBroadcaster.h */,
 				22DE5F2816D40AA800F49CB1 /* User.cpp */,
 				22DE5F2916D40AA800F49CB1 /* User.h */,
 			);
@@ -679,6 +684,7 @@
 				22DE5F2B16D40AA800F49CB1 /* User.cpp in Sources */,
 				22DE5F3016D40CB000F49CB1 /* Common.cpp in Sources */,
 				2237CF9D16D4354C00D6097E /* Hud.cpp in Sources */,
+				2237CFA016D4E97500D6097E /* OscBroadcaster.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -746,6 +752,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
 					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/msw\"",
+					"\"$(CINDER_PATH)/boost/lib\"/**",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;
@@ -770,6 +777,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
 					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/msw\"",
+					"\"$(CINDER_PATH)/boost/lib\"/**",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				SDKROOT = macosx;

@@ -2,6 +2,7 @@
 #include "cinder/gl/gl.h"
 
 #include "Kinect.h"
+#include "OscBroadcaster.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -17,6 +18,7 @@ class KinectStreamerApp : public AppNative {
 	
 private:
 	Kinect mKinect;
+	OscBroadcaster mOscBroadcaster;
 	double mElapsedTime;
 };
 
@@ -28,6 +30,8 @@ void KinectStreamerApp::setup()
 {
 	setupFont();
 	mKinect.setup();
+	mOscBroadcaster.setup(&mKinect);
+	mOscBroadcaster.setDestination("127.0.0.1", 37000);
 }
 
 void KinectStreamerApp::mouseDown( MouseEvent event )
@@ -40,7 +44,8 @@ void KinectStreamerApp::update()
 	double dt = elapsedTime - mElapsedTime;
 	mElapsedTime = elapsedTime;
 	
-	mKinect.update(dt);
+	mKinect.update(dt, mElapsedTime);
+	mOscBroadcaster.update(dt, mElapsedTime);
 }
 
 void KinectStreamerApp::draw()

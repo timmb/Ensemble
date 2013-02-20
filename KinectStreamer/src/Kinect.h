@@ -35,18 +35,24 @@ public:
 	virtual ~Kinect();
 	
 	void setup();
-	void update(float dt);
+	void update(float dt, float elapsedTime);
 	void draw();
 	
+	/// Was user data updated in the last update() call?
+	bool isUserDataNew() const;
 	bool hasUser() const;
 	/// Gets the dominant user (probably the closest)
 	/// \return false if there are no users. In this case
 	/// \p dest is left unaltered.
 	bool getUser(User* dest) const;
+	std::vector<User> users() const;
 	
 	static ci::Vec3f getPosition(V::OpenNIBone const& joint);
 	
 private:
+	/// If successful then mDevice!=NULL
+	void openKinect();
+	
 	ci::gl::TextureFontRef mFont;
 	
 	ci::Surface8u mColor;
@@ -64,6 +70,8 @@ private:
 	
 	mutable boost::shared_mutex mUsersMutex;
 	std::vector<User> mUsers;
+	
+	bool mIsUserDataNew;
 };
 
 
