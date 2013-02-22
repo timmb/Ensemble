@@ -29,11 +29,30 @@ void Hud::display(string const& message, string const& origin)
 }
 
 
+void Hud::displayUntilFurtherNotice(const std::string &message, const std::string &origin)
+{
+	if (message=="" && mPermanentMessages.count(origin)>0)
+	{
+		mPermanentMessages.erase(origin);
+	}
+	else
+	{
+		mPermanentMessages[origin] = message;
+	}
+}
+
+
 void Hud::draw()
 {
 	gl::enableAlphaBlending();
 	gl::color(1,1,1,.8);
-	mFont->drawString(boost::algorithm::join(mMessages, "\n"), Vec2f(20, 20));
+	string message = boost::algorithm::join(mMessages, "\n");
+	message += '\n';
+	for (auto& originMessage: mPermanentMessages)
+	{
+		message += originMessage.first+": "+originMessage.second+"\n";
+	}
+	mFont->drawString(message, Vec2f(20, 20));
 	gl::disableAlphaBlending();
 	mMessages.clear();
 }

@@ -32,9 +32,10 @@
 class Kinect
 {
 public:
+	Kinect();
 	virtual ~Kinect();
 	
-	void setup();
+	void setup(int deviceId);
 	void update(float dt, float elapsedTime);
 	void draw();
 	
@@ -68,10 +69,13 @@ private:
 	V::OpenNIDeviceManager* mOpenNI;
 	V::OpenNIDevice::Ref mDevice;
 	
+//	V::OpenNIDevice::Ref tmpDevices[2];
+	
 	mutable boost::shared_mutex mUsersMutex;
 	std::vector<User> mUsers;
 	
 	bool mIsUserDataNew;
+	int mDeviceId;
 };
 
 

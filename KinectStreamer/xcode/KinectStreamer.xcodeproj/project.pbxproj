@@ -16,12 +16,11 @@
 		09FE44265B3347F58FBC9D6D /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D88DE9BDE630497E811DE305 /* OscTypes.cpp */; };
 		2237CF9D16D4354C00D6097E /* Hud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2237CF9B16D4354C00D6097E /* Hud.cpp */; };
 		2237CFA016D4E97500D6097E /* OscBroadcaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2237CF9E16D4E97500D6097E /* OscBroadcaster.cpp */; };
+		2247398916D7B4E20019CDFA /* libnimCodecs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2247398516D7B4E20019CDFA /* libnimCodecs.dylib */; };
+		2247398A16D7B4E20019CDFA /* libnimMockNodes.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2247398616D7B4E20019CDFA /* libnimMockNodes.dylib */; };
+		2247398B16D7B4E20019CDFA /* libnimRecorder.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2247398716D7B4E20019CDFA /* libnimRecorder.dylib */; };
+		2247398C16D7B4E20019CDFA /* libOpenNI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2247398816D7B4E20019CDFA /* libOpenNI.dylib */; };
 		22DE5ED916D402CB00F49CB1 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 22DE5E0F16D402CA00F49CB1 /* .gitignore */; };
-		22DE5EDA16D402CB00F49CB1 /* libnimCodecs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DE5E6416D402CA00F49CB1 /* libnimCodecs.dylib */; };
-		22DE5EDB16D402CC00F49CB1 /* libnimMockNodes.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DE5E6516D402CA00F49CB1 /* libnimMockNodes.dylib */; };
-		22DE5EDC16D402CC00F49CB1 /* libnimRecorder.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DE5E6616D402CA00F49CB1 /* libnimRecorder.dylib */; };
-		22DE5EDD16D402CC00F49CB1 /* libOpenNI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 22DE5E6716D402CA00F49CB1 /* libOpenNI.dylib */; };
-		22DE5EDE16D402CC00F49CB1 /* readme.txt in Resources */ = {isa = PBXBuildFile; fileRef = 22DE5E6816D402CA00F49CB1 /* readme.txt */; };
 		22DE5EE016D402CC00F49CB1 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 22DE5E6B16D402CA00F49CB1 /* README.md */; };
 		22DE5F0C16D402CC00F49CB1 /* VFakeKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5EC716D402CB00F49CB1 /* VFakeKinect.cpp */; };
 		22DE5F0D16D402CC00F49CB1 /* VKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5EC916D402CB00F49CB1 /* VKinect.cpp */; };
@@ -34,6 +33,7 @@
 		22DE5F2B16D40AA800F49CB1 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5F2816D40AA800F49CB1 /* User.cpp */; };
 		22DE5F2D16D40AC300F49CB1 /* readme.md in Resources */ = {isa = PBXBuildFile; fileRef = 22DE5F2C16D40AC300F49CB1 /* readme.md */; };
 		22DE5F3016D40CB000F49CB1 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22DE5F2E16D40CB000F49CB1 /* Common.cpp */; };
+		22F418B516D52122009D2865 /* JsonLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22F418B316D52122009D2865 /* JsonLoader.cpp */; };
 		39B3AFE945474A70834557CA /* KinectStreamerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0CCCF662D24417491A7EFC9 /* KinectStreamerApp.cpp */; };
 		3D785E4171774A97ADC6A2D6 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2AC13FB148C343469E63413E /* OscPrintReceivedElements.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
@@ -69,6 +69,10 @@
 		2237CF9C16D4354C00D6097E /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hud.h; path = ../src/Hud.h; sourceTree = "<group>"; };
 		2237CF9E16D4E97500D6097E /* OscBroadcaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscBroadcaster.cpp; path = ../src/OscBroadcaster.cpp; sourceTree = "<group>"; };
 		2237CF9F16D4E97500D6097E /* OscBroadcaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscBroadcaster.h; path = ../src/OscBroadcaster.h; sourceTree = "<group>"; };
+		2247398516D7B4E20019CDFA /* libnimCodecs.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimCodecs.dylib; path = macosx/libnimCodecs.dylib; sourceTree = "<group>"; };
+		2247398616D7B4E20019CDFA /* libnimMockNodes.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimMockNodes.dylib; path = macosx/libnimMockNodes.dylib; sourceTree = "<group>"; };
+		2247398716D7B4E20019CDFA /* libnimRecorder.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimRecorder.dylib; path = macosx/libnimRecorder.dylib; sourceTree = "<group>"; };
+		2247398816D7B4E20019CDFA /* libOpenNI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOpenNI.dylib; path = macosx/libOpenNI.dylib; sourceTree = "<group>"; };
 		22DE5E0F16D402CA00F49CB1 /* .gitignore */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		22DE5E1316D402CA00F49CB1 /* XnPlatformAndroid-Arm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XnPlatformAndroid-Arm.h"; sourceTree = "<group>"; };
 		22DE5E1516D402CA00F49CB1 /* XnOSARC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XnOSARC.h; sourceTree = "<group>"; };
@@ -144,11 +148,6 @@
 		22DE5E5F16D402CA00F49CB1 /* XnUSBDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XnUSBDevice.h; sourceTree = "<group>"; };
 		22DE5E6016D402CA00F49CB1 /* XnUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XnUtils.h; sourceTree = "<group>"; };
 		22DE5E6116D402CA00F49CB1 /* XnVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XnVersion.h; sourceTree = "<group>"; };
-		22DE5E6416D402CA00F49CB1 /* libnimCodecs.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libnimCodecs.dylib; sourceTree = "<group>"; };
-		22DE5E6516D402CA00F49CB1 /* libnimMockNodes.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libnimMockNodes.dylib; sourceTree = "<group>"; };
-		22DE5E6616D402CA00F49CB1 /* libnimRecorder.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libnimRecorder.dylib; sourceTree = "<group>"; };
-		22DE5E6716D402CA00F49CB1 /* libOpenNI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libOpenNI.dylib; sourceTree = "<group>"; };
-		22DE5E6816D402CA00F49CB1 /* readme.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = readme.txt; sourceTree = "<group>"; };
 		22DE5E6B16D402CA00F49CB1 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		22DE5EC616D402CB00F49CB1 /* SkeletonPoseDetector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SkeletonPoseDetector.h; sourceTree = "<group>"; };
 		22DE5EC716D402CB00F49CB1 /* VFakeKinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VFakeKinect.cpp; sourceTree = "<group>"; };
@@ -176,6 +175,8 @@
 		22DE5F2C16D40AC300F49CB1 /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = readme.md; path = ../../readme.md; sourceTree = "<group>"; };
 		22DE5F2E16D40CB000F49CB1 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = ../src/Common.cpp; sourceTree = "<group>"; };
 		22DE5F2F16D40CB000F49CB1 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../src/Common.h; sourceTree = "<group>"; };
+		22F418B316D52122009D2865 /* JsonLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JsonLoader.cpp; path = ../src/JsonLoader.cpp; sourceTree = "<group>"; };
+		22F418B416D52122009D2865 /* JsonLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLoader.h; path = ../src/JsonLoader.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		2A6BE27FAADF4520817C0E98 /* UdpSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UdpSocket.h; path = ../../../Cinder/blocks/OSC/src/ip/UdpSocket.h; sourceTree = "<group>"; };
@@ -222,10 +223,10 @@
 				00B784B40FF439BC000DE1D7 /* AudioToolbox.framework in Frameworks */,
 				00B784B50FF439BC000DE1D7 /* AudioUnit.framework in Frameworks */,
 				00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */,
-				22DE5EDA16D402CB00F49CB1 /* libnimCodecs.dylib in Frameworks */,
-				22DE5EDB16D402CC00F49CB1 /* libnimMockNodes.dylib in Frameworks */,
-				22DE5EDC16D402CC00F49CB1 /* libnimRecorder.dylib in Frameworks */,
-				22DE5EDD16D402CC00F49CB1 /* libOpenNI.dylib in Frameworks */,
+				2247398916D7B4E20019CDFA /* libnimCodecs.dylib in Frameworks */,
+				2247398A16D7B4E20019CDFA /* libnimMockNodes.dylib in Frameworks */,
+				2247398B16D7B4E20019CDFA /* libnimRecorder.dylib in Frameworks */,
+				2247398C16D7B4E20019CDFA /* libOpenNI.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +254,8 @@
 				22DE5F2716D40AA800F49CB1 /* Kinect.h */,
 				2237CF9E16D4E97500D6097E /* OscBroadcaster.cpp */,
 				2237CF9F16D4E97500D6097E /* OscBroadcaster.h */,
+				22F418B316D52122009D2865 /* JsonLoader.cpp */,
+				22F418B416D52122009D2865 /* JsonLoader.h */,
 				22DE5F2816D40AA800F49CB1 /* User.cpp */,
 				22DE5F2916D40AA800F49CB1 /* User.h */,
 			);
@@ -444,21 +447,12 @@
 		22DE5E6216D402CA00F49CB1 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				22DE5E6316D402CA00F49CB1 /* macosx */,
+				2247398516D7B4E20019CDFA /* libnimCodecs.dylib */,
+				2247398616D7B4E20019CDFA /* libnimMockNodes.dylib */,
+				2247398716D7B4E20019CDFA /* libnimRecorder.dylib */,
+				2247398816D7B4E20019CDFA /* libOpenNI.dylib */,
 			);
 			path = lib;
-			sourceTree = "<group>";
-		};
-		22DE5E6316D402CA00F49CB1 /* macosx */ = {
-			isa = PBXGroup;
-			children = (
-				22DE5E6416D402CA00F49CB1 /* libnimCodecs.dylib */,
-				22DE5E6516D402CA00F49CB1 /* libnimMockNodes.dylib */,
-				22DE5E6616D402CA00F49CB1 /* libnimRecorder.dylib */,
-				22DE5E6716D402CA00F49CB1 /* libOpenNI.dylib */,
-				22DE5E6816D402CA00F49CB1 /* readme.txt */,
-			);
-			path = macosx;
 			sourceTree = "<group>";
 		};
 		22DE5EC516D402CB00F49CB1 /* src */ = {
@@ -648,7 +642,6 @@
 			files = (
 				967A3C2262464749B86DDF08 /* CinderApp.icns in Resources */,
 				22DE5ED916D402CB00F49CB1 /* .gitignore in Resources */,
-				22DE5EDE16D402CC00F49CB1 /* readme.txt in Resources */,
 				22DE5EE016D402CC00F49CB1 /* README.md in Resources */,
 				22DE5F2D16D40AC300F49CB1 /* readme.md in Resources */,
 			);
@@ -685,6 +678,7 @@
 				22DE5F3016D40CB000F49CB1 /* Common.cpp in Sources */,
 				2237CF9D16D4354C00D6097E /* Hud.cpp in Sources */,
 				2237CFA016D4E97500D6097E /* OscBroadcaster.cpp in Sources */,
+				22F418B516D52122009D2865 /* JsonLoader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -705,6 +699,10 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
+				);
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
 				PRODUCT_NAME = KinectStreamer;
 				SYMROOT = ./build;
@@ -727,6 +725,10 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../../Cinder/blocks/BlockOpenNI/lib/macosx\"",
+				);
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
 				PRODUCT_NAME = KinectStreamer;
 				STRIP_INSTALLED_PRODUCT = YES;

@@ -16,7 +16,8 @@ It is set up for the following folder structure
 
 .../Cinder (from https://github.com/cinder/cinder/tree/appRewrite at the time of writing)
    . / blocks
-   . . / BlockOpenNI (from https://github.com/timmb/BlockOpenNI)
+   . . / BlockOpenNI (from https://github.com/timmb/BlockOpenNI, multidevices branch)
+   . / boost (version 1.52, needs to be downloaded separately from http://www.boost.org/users/history/version_1_52_0.html )
 
 .../Ensemble
    . / KinectStreamer

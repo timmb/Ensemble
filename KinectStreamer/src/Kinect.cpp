@@ -26,6 +26,10 @@ using namespace V;
 //typedef boost::shared_lock<boost::shared_mutex> ReadLock;
 //typedef boost::unique_lock<boost::shared_mutex> WriteLock;
 
+Kinect::Kinect()
+: mDeviceId(0)
+{}
+
 
 Kinect::~Kinect()
 {
@@ -33,8 +37,9 @@ Kinect::~Kinect()
 
 
 
-void Kinect::setup()
+void Kinect::setup(int deviceId)
 {
+	mDeviceId = deviceId;
 	mFont = gl::TextureFont::create(Font("Helvetica", 16));
 	mDepthSize = Vec2i(640, 480);
 	mColorSize = Vec2i(640, 480);
@@ -52,8 +57,11 @@ void Kinect::openKinect()
 {
 	if (!NO_KINECT)
 	{
-		mOpenNI->createDevices(1, NODE_TYPE_IMAGE | NODE_TYPE_DEPTH | NODE_TYPE_SCENE | NODE_TYPE_USER);
+		mOpenNI->createDevices(1, NODE_TYPE_DEPTH | NODE_TYPE_USER | NODE_TYPE_IMAGE);
 		mDevice = mOpenNI->getDevice(0);
+//		tmpDevices[0] = mOpenNI->getDevice(0);
+//		tmpDevices[1] = mOpenNI->getDevice(1);
+//		mDevice = tmpDevices[0];
 		if (mDevice)
 			mDevice->setDepthShiftMul(3);
 	}
@@ -62,6 +70,13 @@ void Kinect::openKinect()
 
 void Kinect::update(float dt, float elapsedTime)
 {
+//	// tmp
+//	if (int(elapsedTime) % 10 < 5)
+//		mDevice = tmpDevices[0];
+//	else
+//		mDevice = tmpDevices[1];
+	
+	
 	mIsUserDataNew = false;
 	
 	double t = app::App::get()->getElapsedSeconds();
@@ -77,6 +92,7 @@ void Kinect::update(float dt, float elapsedTime)
 	}
 	else
 	{
+		hud().display("Opened Kinect device "+toString(mDeviceId), "Kinect");
 		if ( mDevice->_isImageOn && mDevice->getImageGenerator()->IsValid() && mDevice->isImageDataNew() )
 		{
 			uint8_t *pixels = mDevice->getColorMap();

@@ -17,9 +17,11 @@ public:
 	Hud(ci::gl::TextureFontRef font);
 	
 	void display(std::string const& message, std::string const& origin="");
+	void displayUntilFurtherNotice(std::string const& message, std::string const& origin);
 	virtual void draw();
 	
 private:
 	ci::gl::TextureFontRef mFont;
 	std::deque<std::string> mMessages;
+	std::map<std::string,std::string> mPermanentMessages;
 };
