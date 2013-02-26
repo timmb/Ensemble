@@ -64,11 +64,15 @@ struct User
 	std::vector<Joint> joints;
 	
 	/// Elapsed time in seconds that this user was created
-	 float creationTime;
+	float creationTime;
 	/// Current age of user. Manually updated by Kinect
 	float age;
+	/// This is set to true if this is a NULL user (see below)
+	bool isNull;
 	
-//	User(User const& other) = default;
+	/// Construct a NULL user (does not have proper data or represent an actual user)
+	User();
+	/// Construct a real user
 	User(float elapsedTime);
 	void draw();
 	/// Get joint by ID (nb not index). This throws exception

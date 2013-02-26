@@ -7,15 +7,15 @@
 //
 
 #include "Kinect.h"
-#include "tmbUtils.h"
 #include "cinder/app/AppBasic.h"
 #include "cinder/ImageIo.h"
 #include <boost/algorithm/string/join.hpp>
 #include <boost/foreach.hpp>
 //#include "cinder/Thread.h"
 #include <limits>
+#include "cinder/Utilities.h"
 
-using namespace tmb;
+//using namespace tmb;
 using namespace ci;
 using namespace ci::app;
 using namespace std;

@@ -9,7 +9,7 @@
 #include "User.h"
 #include "cinder/gl/gl.h"
 #include <boost/algorithm/string.hpp>
-#include "tmbUtils.h"
+#include "tmb/Utilities.h"
 
 using namespace ci;
 using namespace std;
@@ -67,9 +67,20 @@ void Joint::draw()
 	gl::drawSphere(mPos, 20);
 }
 
+User::User()
+: age(-42)
+, id(-42)
+, confidence(-42)
+, isNull(true)
+{}
+
 
 User::User(float elapsedTime)
 : creationTime(elapsedTime)
+, age(0)
+, id(-42)
+, confidence(0)
+, isNull(false)
 {
 	for (int i=0; i<NUM_JOINTS; ++i)
 	{
