@@ -11,6 +11,9 @@
 #include "cinder/Utilities.h"
 #include "Kinect.h"
 #include <boost/assign.hpp>
+#include <algorithm>
+#include <iterator>
+#include <set>
 using namespace ci;
 using namespace std;
 using namespace ci::osc;
@@ -82,6 +85,18 @@ void OscBroadcaster::setDestination(std::string destinationIp, int destinationPo
 
 void OscBroadcaster::update(double dt, double elapsedTime)
 {
+	vector<User> users = mKinect->users();
+	std::set<int> currentUserIds;
+	for (auto& user: users)
+	{
+		currentUserIds.insert(user.id);
+	}
+	std::set<int> newUserIds;
+	set_difference(currentUserIds.begin(), currentUserIds.end(), mPreviousUserIds.begin(), mPreviousUserIds.end(), std::inserter(newUserIds, newUserIds.end()));
+	std::set<int> missingUserIds;
+	set_difference(mPreviousUserIds.begin(), mPreviousUserIds.end(), currentUserIds.begin(), currentUserIds.end(), std::inserter(missingUserIds, missingUserIds.end()));
+	mPreviousUserIds = currentUserIds;
+	
 	if (mDestinationIp.empty())
 	{
 		hud().display("No destination IP has been set.", "OscBroadcaster");
@@ -89,17 +104,37 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 	else
 	{
 		hud().display("Kinect "+mKinectName+" sending to "+mDestinationIp+':'+toString(mDestinationPort), "OscBroadcaster");
-		vector<User> users = mKinect->users();
 		// protocol:
 		// Each update has a set of messages, one for the user and one for each of the joints
 		// Messages are as follows:
 		// /kinect/number_of_users <string kinect id> <int number of currently tracked users>
+		// /kinect/new_user <string kinect id> <int new user id> # will always be called before any user data arrives
+		// /kinect/lost_user <string kinect id> <int lost user id> # means there will never be any more data for that ID without a preceding new_user message.
 		// /kinect/user: <string kinect id> <int user id> <float user confidence (between 0 and 1)> <float user distance (metres)> <float duration user has been tracked (seconds)>
 		// /kinect/joint: <string kinect id> <int user id> <string joint name> <float confidence> <float x> <float y> <float z> <float x velocity> <float y velocity> <float z velocity>
-		Message message;
-		message.setAddress("/kinect/number_of_users");
-		message.addStringArg("mKinectName");
-		message.addIntArg(users.size());
+		{
+			Message message;
+			message.setAddress("/kinect/number_of_users");
+			message.addStringArg(mKinectName);
+			message.addIntArg(users.size());
+			mSender.sendMessage(message);
+		}
+		for (int id : newUserIds)
+		{
+			Message message;
+			message.setAddress("/kinect/new_user");
+			message.addStringArg(mKinectName);
+			message.addIntArg(id);
+			mSender.sendMessage(message);
+		}
+		for (int id : missingUserIds)
+		{
+			Message message;
+			message.setAddress("/kinect/lost_user");
+			message.addStringArg(mKinectName);
+			message.addIntArg(id);
+			mSender.sendMessage(message);
+		}
 		for (User const& user: users)
 		{
 			mSender.sendMessage(UserMessage(mKinectName, user));

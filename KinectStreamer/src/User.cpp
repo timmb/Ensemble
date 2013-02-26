@@ -9,7 +9,8 @@
 #include "User.h"
 #include "cinder/gl/gl.h"
 #include <boost/algorithm/string.hpp>
-#include "tmb/Utilities.h"
+//#include "tmb/Utilities.h"
+#include "cinder/Utilities.h"
 
 using namespace ci;
 using namespace std;
@@ -105,6 +106,6 @@ Joint User::getJoint(XnSkeletonJoint id) const
 		if (it->id() == id)
 			return *it;
 	}
-	ERR("Invalid joint index"+tmb::toString(id));
+	std::cerr << "ERROR: Invalid joint index"+toString(id) << std::endl;
 	return joints[0];
 }

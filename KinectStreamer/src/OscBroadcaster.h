@@ -9,6 +9,7 @@
 #pragma once
 #include "cinder/Cinder.h"
 #include "OscSender.h"
+#include <set>
 
 class Kinect;
 
@@ -26,4 +27,5 @@ private:
 	std::string mKinectName;
 	std::string mDestinationIp;
 	int mDestinationPort;
+	std::set<int> mPreviousUserIds;
 };

@@ -42,10 +42,9 @@ public:
 	/// Was user data updated in the last update() call?
 	bool isUserDataNew() const;
 	bool hasUser() const;
-	/// Gets the dominant user (probably the closest)
-	/// \return false if there are no users. In this case
-	/// \p dest is left unaltered.
-	bool getUser(User* dest) const;
+	/// Gets the dominant user (which at the moment means the closest)
+	/// \return The User, or a NULL user if there are no users.
+	User getUser() const;
 	std::vector<User> users() const;
 	
 	static ci::Vec3f getPosition(V::OpenNIBone const& joint);

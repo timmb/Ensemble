@@ -83,7 +83,7 @@ void Kinect::update(float dt, float elapsedTime)
 	mOpenNI->update();
 	double dur = app::App::get()->getElapsedSeconds() - t;
 //	cout << dur << endl;
-	hud().display("OpenNI update: "+toString(dur)+"ms");
+	hud().display("OpenNI update: "+toString(dur)+"s");
 	
 	if (mDevice == NULL)
 	{
@@ -225,20 +225,21 @@ bool Kinect::hasUser() const
 }
 
 
-bool Kinect::getUser(User* dest) const
+User Kinect::getUser() const
 {
 //	ReadLock lock(mUsersMutex);
-	float nearest = numeric_limits<float>::max();
+	float nearestDistance = numeric_limits<float>::max();
+	User nearestUser;
 	for (auto it=mUsers.begin(); it!=mUsers.end(); ++it)
 	{
 		float dist = it->pos.lengthSquared();
-		if (dist < nearest)
+		if (dist < nearestDistance)
 		{
-			nearest = dist;
-			*dest = *it;
+			nearestDistance = dist;
+			nearestUser = *it;
 		}
 	}
-	return nearest != numeric_limits<float>::max();
+	return nearestUser;
 }
 
 
