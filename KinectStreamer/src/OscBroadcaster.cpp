@@ -107,11 +107,11 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 		// protocol:
 		// Each update has a set of messages, one for the user and one for each of the joints
 		// Messages are as follows:
-		// /kinect/number_of_users <string kinect id> <int number of currently tracked users>
-		// /kinect/new_user <string kinect id> <int new user id> # will always be called before any user data arrives
-		// /kinect/lost_user <string kinect id> <int lost user id> # means there will never be any more data for that ID without a preceding new_user message.
-		// /kinect/user: <string kinect id> <int user id> <float user confidence (between 0 and 1)> <float user distance (metres)> <float duration user has been tracked (seconds)>
-		// /kinect/joint: <string kinect id> <int user id> <string joint name> <float confidence> <float x> <float y> <float z> <float x velocity> <float y velocity> <float z velocity>
+		/// /kinect/number_of_users <string kinect id> <int number of currently tracked users>
+		/// /kinect/new_user <string kinect id> <int new user id> # will always be called before any user data arrives
+		/// /kinect/lost_user <string kinect id> <int lost user id> # means there will never be any more data for that ID without a preceding new_user message.
+		/// /kinect/user: <string kinect id> <int user id> <float user confidence (between 0 and 1)> <float user distance (metres)> <float duration user has been tracked (seconds)>
+		/// /kinect/joint: <string kinect id> <int user id> <string joint name> <float confidence> <float x> <float y> <float z> <float x velocity> <float y velocity> <float z velocity>
 		{
 			Message message;
 			message.setAddress("/kinect/number_of_users");

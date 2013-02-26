@@ -42,6 +42,25 @@ void Hud::displayUntilFurtherNotice(const std::string &message, const std::strin
 }
 
 
+void Hud::update(float dt, float elapsedTime)
+{
+	mCurrentTime = elapsedTime;
+	const float kTimestampedMessageDuration = 20;
+	const int kMaxTimestampedMessages = 100;
+	while (mMessagesToDisplayForAWhile.size() > kMaxTimestampedMessages
+		   || mMessagesToDisplayForAWhile.front().timestamp < mCurrentTime - kTimestampedMessageDuration)
+	{
+		mMessagesToDisplayForAWhile.pop_front();
+	}
+}
+
+
+void Hud::displayForAWhile(std::string const& message, std::string const& origin)
+{
+	mMessagesToDisplayForAWhile.push_back({ mCurrentTime, message, origin });
+}
+
+
 void Hud::draw()
 {
 	gl::enableAlphaBlending();
@@ -51,6 +70,10 @@ void Hud::draw()
 	for (auto& originMessage: mPermanentMessages)
 	{
 		message += originMessage.first+": "+originMessage.second+"\n";
+	}
+	for (auto& timestampedMessage: mMessagesToDisplayForAWhile)
+	{
+		message += "> "+timestampedMessage.origin+": "+timestampedMessage.message+"\n";
 	}
 	mFont->drawString(message, Vec2f(20, 20));
 	gl::disableAlphaBlending();

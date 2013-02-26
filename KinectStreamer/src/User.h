@@ -10,15 +10,16 @@
 
 #include <iostream>
 #include <vector>
-#include "XnTypes.h"
+//#include <XnTypes.h>
 //#include "VOpenNIBone.h"
 #include "cinder/Vector.h"
 
+/// Labelling of joints used by OpenNI
+typedef int XnSkeletonJointId;
 typedef int JointIndex;
 
-
 /// Active joints. Indexing of joints follows g_UsedBoneIndexArray[15], duplicated here
-extern const std::vector<XnSkeletonJoint> JOINT_IDS;
+extern const std::vector<XnSkeletonJointId> JOINT_IDS;
 /// Names of JOINTS elements
 extern const std::vector<std::string> JOINT_NAMES;
 
@@ -45,10 +46,14 @@ public:
 	
 	// const elements
 	JointIndex mIndex;
-	XnSkeletonJoint id() const { return JOINT_IDS.at(mIndex); }
+	XnSkeletonJointId id() const { return JOINT_IDS.at(mIndex); }
 	std::string name() const { return JOINT_NAMES.at(mIndex); }
 	bool isLeft() const { return IS_LEFT.at(mIndex); }
 	bool isRight() const { return IS_RIGHT.at(mIndex); }
+	
+	/// \return the index of a joint in our vectors from its string name.
+	/// Returns -1 and fails an assertion if the name is not recognised.
+	static int jointIndexFromName(std::string const& name);
 	
 private:
 
@@ -77,5 +82,5 @@ struct User
 	void draw();
 	/// Get joint by ID (nb not index). This throws exception
 	/// if id is not in JOINT_IDS
-	Joint getJoint(XnSkeletonJoint id) const;
+	Joint getJoint(XnSkeletonJointId id) const;
 };

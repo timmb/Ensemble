@@ -9,8 +9,10 @@
 #include "User.h"
 #include "cinder/gl/gl.h"
 #include <boost/algorithm/string.hpp>
+#include <boost/assign.hpp>
 //#include "tmb/Utilities.h"
 #include "cinder/Utilities.h"
+#include <XnTypes.h>
 
 using namespace ci;
 using namespace std;
@@ -21,24 +23,53 @@ using namespace std;
 const int NUM_JOINTS = 15;
 
 namespace {
-	XnSkeletonJoint ____activeJoints[NUM_JOINTS] = { XN_SKEL_HEAD, XN_SKEL_NECK, XN_SKEL_TORSO, XN_SKEL_LEFT_SHOULDER, XN_SKEL_LEFT_ELBOW, XN_SKEL_LEFT_HAND, XN_SKEL_RIGHT_SHOULDER, XN_SKEL_RIGHT_ELBOW, XN_SKEL_RIGHT_HAND, XN_SKEL_LEFT_HIP, XN_SKEL_LEFT_KNEE, XN_SKEL_LEFT_FOOT, XN_SKEL_RIGHT_HIP, XN_SKEL_RIGHT_KNEE, XN_SKEL_RIGHT_FOOT };
+	XnSkeletonJointId ____activeJoints[NUM_JOINTS] = { XN_SKEL_HEAD, XN_SKEL_NECK, XN_SKEL_TORSO, XN_SKEL_LEFT_SHOULDER, XN_SKEL_LEFT_ELBOW, XN_SKEL_LEFT_HAND, XN_SKEL_RIGHT_SHOULDER, XN_SKEL_RIGHT_ELBOW, XN_SKEL_RIGHT_HAND, XN_SKEL_LEFT_HIP, XN_SKEL_LEFT_KNEE, XN_SKEL_LEFT_FOOT, XN_SKEL_RIGHT_HIP, XN_SKEL_RIGHT_KNEE, XN_SKEL_RIGHT_FOOT };
 	std::string ____activeJointNames[NUM_JOINTS] = { "head", "neck", "torso", "left_shoulder", "left_elbow", "left_hand", "right_shoulder", "right_elbow", "right_hand", "left_hip", "left_knee", "left_foot", "right_hip", "right_knee", "right_foot" };
 	bool ____isRight[NUM_JOINTS] = { 0,0,0,0,0,0,1,1,1,0,0,0,1,1,1 };
 	bool ____isLeft[NUM_JOINTS] = { 0,0,0,1,1,1,0,0,0,1,1,1,0,0,0 };
+
+
 }
 	
-const vector<XnSkeletonJoint> JOINT_IDS(____activeJoints, ____activeJoints + NUM_JOINTS);
+const vector<XnSkeletonJointId> JOINT_IDS(____activeJoints, ____activeJoints + NUM_JOINTS);
 const vector<std::string> JOINT_NAMES(____activeJointNames, ____activeJointNames+NUM_JOINTS);
 const vector<bool> IS_LEFT(____isLeft, ____isLeft+NUM_JOINTS);
 const vector<bool> IS_RIGHT(____isRight, ____isRight+NUM_JOINTS);
-
-
+const map<string, int> STRING_TO_JOINT_INDEX = boost::assign::map_list_of
+	("head",0)
+	("neck",1)
+	("torso",2)
+	("left_shoulder",3)
+	("left_elbow",4)
+	("left_hand",5)
+	("right_shoulder",6)
+	("right_elbow",7)
+	("right_hand",8)
+	("left_hip",9)
+	("left_knee",10)
+	("left_foot",11)
+	("right_hip",12)
+	("right_knee",13)
+	("right_foot",14);
 
 Joint::Joint(int index)
 : mIndex(index)
 , mConfidence(0)
 {
 	
+}
+
+int Joint::jointIndexFromName(std::string const& name)
+{
+	try
+	{
+		return STRING_TO_JOINT_INDEX.at(name);
+	}
+	catch (std::out_of_range& e)
+	{
+		assert(false);
+		return -1;
+	}
 }
 
 
@@ -99,7 +130,7 @@ void User::draw()
 	}
 }
 
-Joint User::getJoint(XnSkeletonJoint id) const
+Joint User::getJoint(XnSkeletonJointId id) const
 {
 	for (auto it=joints.begin();it!=joints.end();++it)
 	{

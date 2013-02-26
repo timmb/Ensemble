@@ -9,6 +9,7 @@
 #include "cinder/gl/TextureFont.h"
 #include <string>
 #include <vector>
+#include <deque>
 
 
 class Hud
@@ -16,12 +17,23 @@ class Hud
 public:
 	Hud(ci::gl::TextureFontRef font);
 	
+	/// Displays just this frame
 	void display(std::string const& message, std::string const& origin="");
 	void displayUntilFurtherNotice(std::string const& message, std::string const& origin);
-	virtual void draw();
+	void displayForAWhile(std::string const& message, std::string const& origin);
+	void update(float dt, float elapsedTime);
+	void draw();
 	
 private:
+	float mCurrentTime;
+	struct TimestampedMessage
+	{
+		float timestamp;
+		std::string message;
+		std::string origin;
+	};
 	ci::gl::TextureFontRef mFont;
+	std::deque<TimestampedMessage> mMessagesToDisplayForAWhile;
 	std::deque<std::string> mMessages;
 	std::map<std::string,std::string> mPermanentMessages;
 };
