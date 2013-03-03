@@ -56,12 +56,14 @@ void KinectStreamerApp::loadJson()
 		Json::Value ip = root["ip"];
 		Json::Value port = root["port"];
 		Json::Value deviceId = root["deviceId"];
-		success = ip.isString() && port.isIntegral() && deviceId.isIntegral();
+		Json::Value deviceName = root["deviceName"];
+		success = ip.isString() && port.isIntegral() && deviceId.isIntegral() && deviceName.isString();
 		if (success)
 		{
 			mOscBroadcaster.setDestination(ip.asString(), port.asInt());
 			mDeviceId = deviceId.asInt();
 			hud().displayUntilFurtherNotice("Successfully loaded "+filename, "JSON");
+			mOscBroadcaster.setKinectName(deviceName.asString());
 		}
 	}
 	if (!success)
@@ -90,6 +92,7 @@ void KinectStreamerApp::update()
 	
 	mKinect.update(dt, mElapsedTime);
 	mOscBroadcaster.update(dt, mElapsedTime);
+	hud().update(dt, mElapsedTime);
 }
 
 void KinectStreamerApp::draw()

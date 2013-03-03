@@ -67,11 +67,10 @@ OscBroadcaster::OscBroadcaster()
 	
 }
 
-void OscBroadcaster::setup(Kinect* kinect, string const& kinectName)
+void OscBroadcaster::setup(Kinect* kinect)
 {
 	assert(kinect!=NULL);
 	mKinect = kinect;
-	mKinectName = kinectName;
 }
 
 void OscBroadcaster::setDestination(std::string destinationIp, int destinationPort)
@@ -79,6 +78,12 @@ void OscBroadcaster::setDestination(std::string destinationIp, int destinationPo
 	mDestinationIp = destinationIp;
 	mDestinationPort = destinationPort;
 	mSender.setup(mDestinationIp, mDestinationPort);
+}
+
+
+void OscBroadcaster::setKinectName(std::string const& kinectName)
+{
+	mKinectName = kinectName;
 }
 
 
@@ -140,7 +145,8 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 			mSender.sendMessage(UserMessage(mKinectName, user));
 			for (Joint const& joint: user.joints)
 			{
-				mSender.sendMessage(JointMessage(mKinectName, user.id, joint));
+				JointMessage message(mKinectName, user.id, joint);
+				mSender.sendMessage(message);
 			}
 		}
 	}

@@ -48,7 +48,8 @@ void Hud::update(float dt, float elapsedTime)
 	const float kTimestampedMessageDuration = 20;
 	const int kMaxTimestampedMessages = 100;
 	while (mMessagesToDisplayForAWhile.size() > kMaxTimestampedMessages
-		   || mMessagesToDisplayForAWhile.front().timestamp < mCurrentTime - kTimestampedMessageDuration)
+		   || (!mMessagesToDisplayForAWhile.empty()
+			   && mMessagesToDisplayForAWhile.front().timestamp < mCurrentTime - kTimestampedMessageDuration))
 	{
 		mMessagesToDisplayForAWhile.pop_front();
 	}

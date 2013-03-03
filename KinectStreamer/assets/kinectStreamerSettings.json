@@ -1,5 +1,6 @@
 {
  "ip" : "127.0.0.1",
  "port" : 37000,
- "deviceId" : 0
+ "deviceId" : 0,
+ "deviceName" : "Kinect0"
 } 

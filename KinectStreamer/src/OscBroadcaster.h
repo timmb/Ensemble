@@ -17,7 +17,8 @@ class OscBroadcaster
 {
 public:
 	OscBroadcaster();
-	void setup(Kinect* kinect, std::string const& kinectName = "");
+	void setup(Kinect* kinect);
+	void setKinectName(std::string const& kinectName);
 	void setDestination(std::string destinationIp, int destinationPort);
 	void update(double dt, double elapsedTime);
 	
