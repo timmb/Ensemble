@@ -48,7 +48,7 @@
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Start</string>
+         <string>Start Listening</string>
         </property>
        </widget>
       </item>

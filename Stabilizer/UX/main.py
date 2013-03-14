@@ -16,6 +16,8 @@ from datetime import timedelta
 
 idle_loop = Queue.Queue()
 
+osc_messages = Queue.Queue()
+
 PORT = 1123
 
 class ThreadDispatcher(QtCore.QThread):
@@ -81,18 +83,33 @@ class Main(QtGui.QMainWindow):
 		self.dispatcher.start()
 
 		self.osc_receiver = dispatch.Receiver()
-		self._server_port = reactor.listenUDP(PORT, async.DatagramServerProtocol(self.osc_receiver))
-		self.log("Listening at %d ..." % PORT)
 		self.osc_receiver.fallback = self.fallback
+		self.isListening = False
 		
 		self.ui.listView.setModel(self._model)
 
-		self.show()		
+		self.ui.pushButton.clicked.connect(self.start_listening)
+
+		self.show()
+
+	def start_listening(self) :
+		global PORT
+		if self.isListening == False :
+			self._server_port = reactor.listenUDP(PORT, async.DatagramServerProtocol(self.osc_receiver))
+			self.log("Listening at %d ..." % PORT)		
+			self.isListening = True	
+			self.ui.pushButton.setText("Stop Listening")
+		else :
+			self._server_port.stopListening()
+			self.log("Stop listening at %d ..." % PORT)			
+			self.isListening = False
+			self.ui.pushButton.setText("Start Listening")
 
 	def fallback(self, message, address):
+		osc_messages.put(message)
 		self.log("%s: %s" % (address, message) )
 
-	def log(self, s):
+	def log(self, s):		
 		time = datetime.now()
 		self._model.addItem("[%s] %s" % (time.strftime("%H:%M:%S.%f")[:-3], s))
 
