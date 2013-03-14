@@ -94,7 +94,7 @@ class Main(QtGui.QMainWindow):
 
 	def log(self, s):
 		time = datetime.now()
-		self._model.addItem("[%s] %s" % (time.strftime("%H:%M:%S.%f"), s))
+		self._model.addItem("[%s] %s" % (time.strftime("%H:%M:%S.%f")[:-3], s))
 
 app = QtGui.QApplication(sys.argv)
 
