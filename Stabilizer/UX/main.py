@@ -10,6 +10,10 @@ from txosc import osc
 from txosc import dispatch
 from txosc import async
 
+from time import gmtime, strftime
+from datetime import datetime
+from datetime import timedelta
+
 idle_loop = Queue.Queue()
 
 PORT = 1123
@@ -78,7 +82,7 @@ class Main(QtGui.QMainWindow):
 
 		self.osc_receiver = dispatch.Receiver()
 		self._server_port = reactor.listenUDP(PORT, async.DatagramServerProtocol(self.osc_receiver))
-		self._model.addItem("Listening at %d ..." % PORT)
+		self.log("Listening at %d ..." % PORT)
 		self.osc_receiver.fallback = self.fallback
 		
 		self.ui.listView.setModel(self._model)
@@ -86,7 +90,11 @@ class Main(QtGui.QMainWindow):
 		self.show()		
 
 	def fallback(self, message, address):
-		self._model.addItem("%s: %s" % (address, message) )
+		self.log("%s: %s" % (address, message) )
+
+	def log(self, s):
+		time = datetime.now()
+		self._model.addItem("[%s] %s" % (time.strftime("%H:%M:%S.%f"), s))
 
 app = QtGui.QApplication(sys.argv)
 
