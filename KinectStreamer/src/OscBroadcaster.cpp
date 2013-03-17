@@ -87,10 +87,19 @@ void OscBroadcaster::setKinectName(std::string const& kinectName)
 }
 
 
+struct IsUserConfident {
+	bool operator()(User const& user) { return user.confidence==1.f; }
+};
+
 
 void OscBroadcaster::update(double dt, double elapsedTime)
 {
-	vector<User> users = mKinect->users();
+	// only take users with a confidence of 1 to prevent ghost users from being sent
+	vector<User> users;
+	for (User const& user: mKinect->users())
+		if (user.confidence==1.f)
+			users.push_back(user);
+	
 	std::set<int> currentUserIds;
 	for (auto& user: users)
 	{
