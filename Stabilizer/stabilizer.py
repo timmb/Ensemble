@@ -13,6 +13,11 @@ from datetime import datetime
 from datetime import timedelta
 
 from gui import *
+from input_processor import *
+from state import *
+from plugin import *
+from output_processor import *
+from visualization import *
 
 import twisted
 
@@ -84,13 +89,16 @@ class Stabilizer(QApplication):
         self.osc_receiver = dispatch.Receiver()
         self.osc_receiver.fallback = self.osc_message_callback
         self.is_listening = False
+        self._server_port = None
         self.aboutToQuit.connect(self.shutdown)
 
 
     def shutdown(self):
         self.log("Shutting down")
-        stop_listening()
+        print("Stabilizer.shutdown()")
+        self.stop_listening()
         self.dispatcher.stop()
+        self.dispatcher.wait()
 
     def start_listening(self) :
         global PORT
@@ -105,7 +113,8 @@ class Stabilizer(QApplication):
     
     def stop_listening(self):
         global PORT
-        self._server_port.stopListening()
+        if self._server_port:
+            self._server_port.stopListening()
         self.is_listening = False
         self.log("Stopped listening at %d ..." % PORT)         
 
@@ -123,9 +132,11 @@ if __name__=='__main__':
     import qt4reactor
     qt4reactor.install()
     from twisted.internet import reactor
+    reactor.addSystemEventTrigger('before', 'shutdown', reactor.stop)
     # Create gui
     main_window = MainWindow(app)
     main_window.show()
     # start event loop
     app.exec_()
+    app.shutdown()
 
