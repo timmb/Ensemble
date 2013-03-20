@@ -16,6 +16,8 @@ class MainWindow(QtGui.QMainWindow):
         
         self.ui.listView.setModel(stabilizer.event_log)
         self.ui.pushButton.clicked.connect(self.start_or_stop_listening)
+        self.ui.actionQuit.triggered.connect(stabilizer.quit)
+
         self.show()
 
     def start_or_stop_listening(self):
