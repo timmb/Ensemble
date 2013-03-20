@@ -1,4 +1,4 @@
 Stabilizer
 ---
 
-Python + Qt
+Python + Qt 
