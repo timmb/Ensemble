@@ -232,7 +232,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Logs</string>
+           <string>Log</string>
           </property>
          </widget>
         </item>
