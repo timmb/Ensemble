@@ -83,7 +83,9 @@ void Kinect::update(float dt, float elapsedTime)
 	mOpenNI->update();
 	double dur = app::App::get()->getElapsedSeconds() - t;
 //	cout << dur << endl;
-	hud().display("OpenNI update: "+toString(dur)+"s");
+	std::stringstream dur_string;
+	dur_string << std::fixed << dur;
+	hud().display("OpenNI update: "+dur_string.str()+"s");
 	
 	if (mDevice == NULL)
 	{

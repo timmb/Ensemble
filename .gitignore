@@ -85,7 +85,7 @@ build/
 *.ilk
 *.meta
 *.obj
-*.pch
+# *.pch
 *.pdb
 *.pgc
 *.pgd

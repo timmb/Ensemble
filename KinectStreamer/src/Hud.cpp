@@ -58,7 +58,8 @@ void Hud::update(float dt, float elapsedTime)
 
 void Hud::displayForAWhile(std::string const& message, std::string const& origin)
 {
-	mMessagesToDisplayForAWhile.push_back({ mCurrentTime, message, origin });
+	TimestampedMessage t ={ mCurrentTime, message, origin };
+	mMessagesToDisplayForAWhile.push_back(t);
 }
 
 

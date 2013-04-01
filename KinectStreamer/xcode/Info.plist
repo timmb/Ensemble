@@ -9,7 +9,7 @@
 	<key>CFBundleIconFile</key>
 	<string>CinderApp.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.libcinder.KinectStreamer</string>
+	<string>org.libcinder.KinectStreamer2</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

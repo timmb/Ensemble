@@ -25,13 +25,15 @@ public:
 	UserMessage(string const& kinectId, User const& user)
 	{
 		address = "/kinect/user";
-		args = {
+		const int numArgs = 5;
+		Arg* myArgs[numArgs] = {
 			new ArgString(kinectId),
 			new ArgInt32(user.id),
 			new ArgFloat(user.confidence),
 			new ArgFloat(user.getJoint(XN_SKEL_TORSO).mPos.length()),
 			new ArgFloat(user.age)
 		};
+		args.assign(myArgs, myArgs+numArgs);
 	}
 };
 
@@ -42,7 +44,8 @@ public:
 	JointMessage(string const& kinectId, int32_t userId, Joint const& joint)
 	{
 		address = "/kinect/joint";
-		args = {
+		const int numArgs = 10;
+		Arg* myArgs[numArgs] = {
 			new ArgString(kinectId),
 			new ArgInt32(userId),
 			new ArgString(joint.name()),
@@ -54,6 +57,7 @@ public:
 			new ArgFloat(joint.mVel.y),
 			new ArgFloat(joint.mVel.z)
 		};
+		args.assign(myArgs, myArgs+numArgs);
 	}
 };
 
@@ -151,7 +155,8 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 		}
 		for (User const& user: users)
 		{
-			mSender.sendMessage(UserMessage(mKinectName, user));
+			UserMessage userMessage(mKinectName, user);
+			mSender.sendMessage(userMessage);
 			for (Joint const& joint: user.joints)
 			{
 				JointMessage message(mKinectName, user.id, joint);

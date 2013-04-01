@@ -47,8 +47,14 @@ void KinectStreamerApp::setup()
 void KinectStreamerApp::loadJson()
 {
 	std::string filename = getAssetPath("kinectStreamerSettings.json").string();
+	if (filename=="")
+	{
+		console() << "Error: Could not load kinectStreamerSettings.json from assets folder." << endl;
+		return;
+	}
 	Json::Value root;
-	ifstream(filename, ifstream::in) >> root;
+	ifstream in(filename.c_str(), ifstream::in);
+	in >> root;
 	bool success = true;
 	if (success)
 	{
