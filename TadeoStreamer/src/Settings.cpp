@@ -36,18 +36,6 @@ bool Settings::load(string const& filename)
 	if (success)
 	{
 		app::console() << "successful parse" << endl;;
-		Json::Value ip = mRoot["ip"];
-		Json::Value port = mRoot["port"];
-		Json::Value deviceId = mRoot["deviceId"];
-		Json::Value deviceName = mRoot["deviceName"];
-		success = ip.isString() && port.isIntegral() && deviceId.isIntegral() && deviceName.isString();
-		if (success)
-		{
-			this->ip = ip.asString();
-			this->port = port.asInt();
-			this->deviceId = deviceId.asInt();
-			this->deviceName = deviceName.asString();
-		}
 		hud().displayUntilFurtherNotice("Successfully loaded "+filename, "JSON");
 	}
 	if (!success)
@@ -76,15 +64,16 @@ void Settings::snapshot()
 
 void Settings::save(string const& filename)
 {
+	Json::Value root;
 	for (auto it=mParameters.begin(); it!=mParameters.end(); ++it)
 	{
-		(**it).writeJson(mRoot);
+		(**it).writeJson(root);
 	}
 	
 	ofstream out(filename.c_str(), ofstream::out);
 	try
 	{
-		out << mRoot;
+		out << root;
 	}
 	catch (...)
 	{
@@ -118,73 +107,84 @@ void Settings::update(float dt, float elapsed)
 
 Json::Value Settings::get(string const& path) const
 {
-	Json::Value v = mRoot;
-	typedef boost::tokenizer<boost::char_separator<char> >
-    tokenizer;
-	boost::char_separator<char> sep("/");
-	tokenizer tokens(path, sep);
-	string prevToken = "/";
-	for (tokenizer::iterator tok_iter = tokens.begin();
-		 tok_iter != tokens.end(); ++tok_iter)
-	{
-		v = v[*tok_iter];
-		if (v.isNull())
-		{
-			string err = "Unable to find key "+*tok_iter+" in "+prevToken+".";
-			hud().displayUntilFurtherNotice(err, "Json file "+path);
-			break;
-		}
-	}
-	return v;
+	// for now, find final /
+	int s = path.find_last_of('/');
+	if (s==string::npos)
+		s = 0;
+	string base = path.substr(0, s);
+	string name = path.substr(s);
+	if (base!="")
+		return mRoot[base][name];
+	else
+		return mRoot[name];
+//	
+//	Json::Value v = mRoot;
+//	typedef boost::tokenizer<boost::char_separator<char> >
+//    tokenizer;
+//	boost::char_separator<char> sep("/");
+//	tokenizer tokens(path, sep);
+//	string prevToken = "/";
+//	for (tokenizer::iterator tok_iter = tokens.begin();
+//		 tok_iter != tokens.end(); ++tok_iter)
+//	{
+//		v = v[*tok_iter];
+//		if (v.isNull())
+//		{
+//			string err = "Unable to find key "+*tok_iter+" in "+prevToken+".";
+//			hud().displayUntilFurtherNotice(err, "Json file "+path);
+//			break;
+//		}
+//	}
+//	return v;
 }
 
-float Settings::getFloat(string const& path, float defaultValue) const
-{
-	Json::Value v = get(path);
-	if (v.isNull())
-		return defaultValue;
-	if (!v.isConvertibleTo(Json::realValue))
-	{
-		hud().displayUntilFurtherNotice("Unable to convert to real number", "Setting "+path);
-		return defaultValue;
-	}
-	return v.asFloat();
-}
-
-
-string Settings::getString(string const& path, string const& defaultValue) const
-{
-	Json::Value v = get(path);
-	if (v.isNull())
-		return defaultValue;
-	if (!v.isConvertibleTo(Json::stringValue))
-	{
-		hud().displayUntilFurtherNotice("Unable to convert to string", "Setting "+path);
-		return defaultValue;
-	}
-	return v.asString();
-}
-
-
-Vec3f Settings::getVec3f(string const& path, Vec3f const& defaultValue) const
-{
-	Json::Value x = get(path+"/x");
-	Json::Value y = get(path+"/y");
-	Json::Value z = get(path+"/z");
-	Json::Value values[3] = {x,y,z};
-	string valueNames[3] = {"x","y","z"};
-	for (int i=0; i<3; ++i)
-	{
-		if (values[i].isNull())
-			return defaultValue;
-		if (!values[i].isConvertibleTo(Json::realValue))
-		{
-			hud().displayUntilFurtherNotice("Unable to convert to real", "Setting "+path+"/"+valueNames[i]);
-			return defaultValue;
-		}
-	}
-	return Vec3f(x.asFloat(), y.asFloat(), z.asFloat());
-}
+//float Settings::getFloat(string const& path, float defaultValue) const
+//{
+//	Json::Value v = get(path);
+//	if (v.isNull())
+//		return defaultValue;
+//	if (!v.isConvertibleTo(Json::realValue))
+//	{
+//		hud().displayUntilFurtherNotice("Unable to convert to real number", "Setting "+path);
+//		return defaultValue;
+//	}
+//	return v.asFloat();
+//}
+//
+//
+//string Settings::getString(string const& path, string const& defaultValue) const
+//{
+//	Json::Value v = get(path);
+//	if (v.isNull())
+//		return defaultValue;
+//	if (!v.isConvertibleTo(Json::stringValue))
+//	{
+//		hud().displayUntilFurtherNotice("Unable to convert to string", "Setting "+path);
+//		return defaultValue;
+//	}
+//	return v.asString();
+//}
+//
+//
+//Vec3f Settings::getVec3f(string const& path, Vec3f const& defaultValue) const
+//{
+//	Json::Value x = get(path+"/x");
+//	Json::Value y = get(path+"/y");
+//	Json::Value z = get(path+"/z");
+//	Json::Value values[3] = {x,y,z};
+//	string valueNames[3] = {"x","y","z"};
+//	for (int i=0; i<3; ++i)
+//	{
+//		if (values[i].isNull())
+//			return defaultValue;
+//		if (!values[i].isConvertibleTo(Json::realValue))
+//		{
+//			hud().displayUntilFurtherNotice("Unable to convert to real", "Setting "+path+"/"+valueNames[i]);
+//			return defaultValue;
+//		}
+//	}
+//	return Vec3f(x.asFloat(), y.asFloat(), z.asFloat());
+//}
 
 
 void Settings::addParam(std::shared_ptr<BaseParameter> parameter)

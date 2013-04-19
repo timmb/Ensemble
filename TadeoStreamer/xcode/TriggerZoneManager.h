@@ -11,12 +11,14 @@
 #include "Settings.h"
 #include "Common.h"
 #include "TriggerZone.h"
+
 class Kinect;
+class OscBroadcaster;
 
 class TriggerZoneManager
 {
 public:
-	TriggerZoneManager(Settings& settings, Kinect& kinect);
+	TriggerZoneManager(Settings& settings, Kinect& kinect, OscBroadcaster& osc);
 	
 	void setup();
 	void update(float dt, float elapsedTime);
@@ -25,6 +27,7 @@ public:
 private:
 	Settings& mSettings;
 	Kinect& mKinect;
+	OscBroadcaster& mOsc;
 	
 	std::vector<std::shared_ptr<TriggerZone> > mTriggers;
 };

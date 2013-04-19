@@ -1,28 +1,67 @@
 
 {
-	"deviceId" : 0,
-	"deviceName" : "Kinect0",
+	"device id" : 0,
+	"device name" : "Kinect",
 	"ip" : "127.0.0.1",
-	"port" : 37000,
-	"triggers" : 
+	"left_trigger" : 
 	{
-		"left" : 
+		"axis" : 
 		{
-			"axis" : 
-			{
-				"x" : 1,
-				"y" : 0,
-				"z" : 0
-			},
-			"length" : 1000,
-			"midpoint" : 
-			{
-				"x" : 100,
-				"y" : 100,
-				"z" : 100
-			},
-			"radius" : 20,
-			"type" : "cylinder"
-		}
+			"x" : 0.3516043424606323,
+			"y" : 0.3835052847862244,
+			"z" : 0.8539892435073853
+		},
+		"border thickness" : 10.0,
+		"length" : 1000.0,
+		"midpoint" : 
+		{
+			"x" : 500.0,
+			"y" : 200.0,
+			"z" : 1000.0
+		},
+		"number of points needed to trigger" : 33,
+		"opacity" : 0.50,
+		"radius" : 200.0
+	},
+	"middle_trigger" : 
+	{
+		"axis" : 
+		{
+			"x" : -0.06163784861564636,
+			"y" : 0.4740282595157623,
+			"z" : 0.8783495426177979
+		},
+		"border thickness" : 10.0,
+		"length" : 1000.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 600.0,
+			"z" : 1000.0
+		},
+		"number of points needed to trigger" : 33,
+		"opacity" : 0.50,
+		"radius" : 200.0
+	},
+	"port" : 37000,
+	"right_trigger" : 
+	{
+		"axis" : 
+		{
+			"x" : -0.2232156544923782,
+			"y" : 0.3974480628967285,
+			"z" : 0.8900604844093323
+		},
+		"border thickness" : 15.0,
+		"length" : 1000.0,
+		"midpoint" : 
+		{
+			"x" : -500.0,
+			"y" : 200.0,
+			"z" : 1000.0
+		},
+		"number of points needed to trigger" : 33,
+		"opacity" : 0.50,
+		"radius" : 200.0
 	}
 }

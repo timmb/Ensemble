@@ -21,6 +21,8 @@ public:
 	void setDestination(std::string destinationIp, int destinationPort);
 	void update(double dt, double elapsedTime);
 	
+	void sendTrigger(std::string const& name, bool isTriggered);
+	
 private:
 	ci::osc::Sender mSender;
 	Kinect* mKinect;

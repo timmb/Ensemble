@@ -84,6 +84,7 @@ void Kinect::openKinect()
 //			{
 //				hud().displayForAWhile("Alternative viewpoint for image generator not supported", "Kinect");
 //			}
+			mDevice->setMirrorMode(NODE_TYPE_DEPTH | NODE_TYPE_IMAGE | NODE_TYPE_IR, false);
 		}
 	}
 }
@@ -144,6 +145,12 @@ void Kinect::scene()
 		gl::vertex(mPointCloud[i]);
 	}
 	glEnd();
+	
+	// sphere for kinect
+	gl::enableAlphaBlending();
+	gl::color(ColorA(.2,1,.3,.6));
+	gl::drawSphere(Vec3f(), 40);
+	gl::disableAlphaBlending();
 	
 }
 

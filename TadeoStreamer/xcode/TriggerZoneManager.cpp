@@ -11,40 +11,49 @@
 #include "Json/json.h"
 #include <boost/algorithm/string.hpp>
 #include <set>
+#include "OscBroadcaster.h"
 
 using namespace std;
 using namespace ci;
 
-TriggerZoneManager::TriggerZoneManager(Settings& settings, Kinect& kinect)
+TriggerZoneManager::TriggerZoneManager(Settings& settings, Kinect& kinect, OscBroadcaster& osc)
 : mSettings(settings)
 , mKinect(kinect)
+, mOsc(osc)
 {}
 
 void TriggerZoneManager::setup()
 {
-	Json::Value triggers = mSettings.get("triggers");
-	set<string> names;
-	for (auto it=triggers.begin(); it!=triggers.end(); ++it)
+//	Json::Value triggers = mSettings.get("triggers");
+//	set<string> names;
+//	for (auto it=triggers.begin(); it!=triggers.end(); ++it)
+//	{
+//		string name = it.key().asString();
+//		if (names.count(name)>0)
+//		{
+//			err("Duplicate trigger: "+name, "TriggerZoneManager");
+//			continue;
+//		}
+//		names.insert(name);
+//		
+//		auto& typeJson = (*it)["type"];
+//		string type = typeJson.asString();
+//		// case insensitive compare
+//		if (!boost::iequals(type, "cylinder"))
+//		{
+//			err("Unknown trigger type "+type+" for trigger "+name, "TriggerZoneManager. Defaulting to cylinder.");
+//			typeJson = type = "cylinder";
+//		}
+//		{
+//			mTriggers.push_back(std::shared_ptr<TriggerZone>(new CylinderTriggerZone(mSettings, mKinect, name)));
+	//			mTriggers.back()->setup();
+	//		}
+	//	}
+	string names[] = { "left_trigger", "middle_trigger", "right_trigger" };
+	for (int i=0; i<3; ++i)
 	{
-		string name = it.key().asString();
-		if (names.count(name)>0)
-		{
-			err("Duplicate trigger: "+name, "TriggerZoneManager");
-			continue;
-		}
-		names.insert(name);
-		
-		string type = (*it)["type"].asString();
-		// case insensitive compare
-		if (boost::iequals(type, "cylinder"))
-		{
-			mTriggers.push_back(std::shared_ptr<TriggerZone>(new CylinderTriggerZone(mSettings, mKinect, name)));
-			mTriggers.back()->setup();
-		}
-		else
-		{
-			err("Unknown trigger type "+type+" for trigger "+name, "TriggerZoneManager");
-		}
+		mTriggers.push_back(std::shared_ptr<TriggerZone>(new CylinderTriggerZone(mSettings, mKinect, names[i])));
+		mTriggers.back()->setup();
 	}
 }
 
@@ -54,7 +63,11 @@ void TriggerZoneManager::update(float dt, float elapsedTime)
 	{
 		TriggerZone& trigger = **trig_it;
 		trigger.update(dt, elapsedTime);
-		trigger.apply(mKinect.pointCloud());
+		bool newValue = trigger.apply(mKinect.pointCloud());
+		if (newValue)
+		{
+			mOsc.sendTrigger(trigger.name(), trigger.isTriggered());
+		}
 	}
 }
 

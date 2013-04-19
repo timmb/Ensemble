@@ -20,16 +20,19 @@ TriggerZone::TriggerZone(Settings& settings, Kinect const& kinect, std::string c
 , mName(name)
 , mAlpha(0.5)
 , mKinect(kinect)
-{}
+, mNumIntersectionsToTrigger(50)
+{
+	settings.addParam(new Parameter<float>(&mAlpha, "opacity", path()));
+	settings.addParam(new Parameter<int>(&mNumIntersectionsToTrigger, "number of points needed to trigger", path()));
+}
 
 void TriggerZone::setup()
 {
-	mAlpha = mSettings.getFloat("triggerZoneAlpha");
 }
 
 string TriggerZone::path() const
 {
-	return "triggers/"+mName;
+	return mName;
 }
 
 
@@ -66,7 +69,11 @@ void CylinderTriggerZone::scene()
 	gl::pushModelView();
 	gl::translate(mMidpoint);
 	gl::rotate(Quatf(Vec3f::yAxis(), mAxis));
-	gl::drawCylinder(mRadius, mRadius, mLength, 10, 15);
+	// cinder draws from thebase
+	gl::translate(Vec3f(0,-mRadius, 0));
+	gl::drawCylinder(mRadius, mRadius, mLength, 10, 30);
+	col.a *= .3;
+	gl::drawCylinder(mRadius-mBorderThickness, mRadius-mBorderThickness, mLength-2*mBorderThickness, 10, 30);
 	gl::popModelView();
 }
 
@@ -107,36 +114,37 @@ TriggerZone::PointStatus CylinderTriggerZone::isInside(ci::Vec3f p) const
 	return std::min(projStatus, perpStatus);
 }
 
-void TriggerZone::apply(PointCloud const& pointCloud)
+bool TriggerZone::apply(PointCloud const& pointCloud)
 {
 	int numInside = 0;
 	int numInsideOrBorderline =0;
 	for (auto it=pointCloud.begin(); it!=pointCloud.end(); ++it)
 	{
 		int in = isInside(*it);
-		if (in==TriggerZone::INSIDE)
+		if (in>=TriggerZone::INSIDE)
 			numInside++;
-		if (in>TriggerZone::BORDERLINE)
+		if (in>=TriggerZone::BORDERLINE)
 			numInsideOrBorderline++;
 		
 		if (mIsCurrentlyTriggered && numInsideOrBorderline >= mNumIntersectionsToTrigger)
 		{
 			// already playing. stay playing
-			return;
+			return false;
 		}
 		if (!mIsCurrentlyTriggered && numInside >= mNumIntersectionsToTrigger)
 		{
 			// not play. start playing
 			trigger();
-			return;
+			return true;
 		}
 	}
 	// if we get here then not enough points inside to carry on playing
 	if (mIsCurrentlyTriggered && numInsideOrBorderline < mNumIntersectionsToTrigger)
 	{
 		endTrigger();
+		return true;
 	}
-	app::console() << mName << " intersections: "<<numInside << "/"<<numInsideOrBorderline<<endl;
+	return false;
 }
 
 

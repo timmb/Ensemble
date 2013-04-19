@@ -107,7 +107,7 @@ public:
 	
 	virtual void setup(ci::params::InterfaceGl& params)
 	{
-		params.addParam(name, value);
+		params.addParam(path+" "+name, value, "group=path");
 	}
 	
 protected:
@@ -118,7 +118,14 @@ protected:
 	
 	virtual bool fromJson(Json::Value const& child)
 	{
-		return child >> *value;
+		T tempValue;
+		if (child >> tempValue)
+		{
+			child >> *value;
+			return true;
+		}
+		else
+			return false;
 	}
 	
 	T* value;
@@ -144,25 +151,13 @@ public:
 	{
 		addParam(std::shared_ptr<BaseParameter>(parameter));
 	}
-
-	std::string ip;
-	int port;
-	int deviceId;
-	std::string deviceName;
 	
 	/// path is slash separated list of key names, e.g.
-	/// "/key1/key2". Will return null value and print
-	/// error if value can't be found
-	Json::Value get(std::string const& path) const;
-	float getFloat(std::string const& path, float defaultValue=0) const;
-	std::string getString(std::string const& path, std::string const& defaultValue="") const;
-	ci::Vec3f getVec3f(std::string const& path, ci::Vec3f const& defaultValue=ci::Vec3f()) const;
-
-	Settings()
-	: ip("127.0.0.1")
-	, port(37000)
-	, deviceId(0)
-	{}
+	/// "/key1/key2".
+	Json::Value get(std::string const& basepath) const;
+//	float getFloat(std::string const& path, float defaultValue=0) const;
+//	std::string getString(std::string const& path, std::string const& defaultValue="") const;
+//	ci::Vec3f getVec3f(std::string const& path, ci::Vec3f const& defaultValue=ci::Vec3f()) const;
 
 private:
 	ci::params::InterfaceGl mParams;
@@ -177,18 +172,22 @@ private:
 template <typename T>
 T& BaseParameter::getChild(T& root) const
 {
-	T* child = &root;
-	typedef boost::tokenizer<boost::char_separator<char> >
-    tokenizer;
-	boost::char_separator<char> sep("/");
-	tokenizer tokens(path+"/"+name, sep);
-	std::string prevToken = "/";
-	for (tokenizer::iterator tok_iter = tokens.begin();
-		 tok_iter != tokens.end(); ++tok_iter)
-	{
-		child = &(*child)[*tok_iter];
-	}
-	return *child;
+	if (path=="")
+		return root[name];
+	else
+		return root[path][name];
+//	T* child = &root;
+//	typedef boost::tokenizer<boost::char_separator<char> >
+//    tokenizer;
+//	boost::char_separator<char> sep("/");
+//	tokenizer tokens(path+"/"+name, sep);
+//	std::string prevToken = "/";
+//	for (tokenizer::iterator tok_iter = tokens.begin();
+//		 tok_iter != tokens.end(); ++tok_iter)
+//	{
+//		child = &(*child)[*tok_iter];
+//	}
+//	return *child;
 }
 
 

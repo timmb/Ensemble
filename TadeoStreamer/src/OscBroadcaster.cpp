@@ -66,3 +66,11 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 
 }
 
+void OscBroadcaster::sendTrigger(const std::string &name, bool isTriggered)
+{
+	Message m;
+	m.setAddress("/trigger/"+name);
+	m.addStringArg(mKinectName);
+	m.addStringArg(isTriggered? "on" : "off");
+	mSender.sendMessage(m);
+}

@@ -14,6 +14,7 @@ using namespace std;
 class KinectStreamerApp : public AppNative {
   public:
 	KinectStreamerApp();
+	~KinectStreamerApp();
 	void prepareSettings(Settings* settings);
 	void resize(ResizeEvent event);
 	void setup();
@@ -35,6 +36,7 @@ private:
 	double mElapsedTime;
 	ci::MayaCamUI mCamera;
 	
+	
 	std::string mIp;
 	int mPort;
 	int mDeviceId;
@@ -49,12 +51,17 @@ KinectStreamerApp::KinectStreamerApp()
 , mDeviceName("Kinect")
 , mIp("127.0.0.1")
 , mKinect(mSettings)
-, mTriggers(mSettings, mKinect)
+, mTriggers(mSettings, mKinect, mOscBroadcaster)
 {
 	mSettings.addParam(new Parameter<string>(&mIp, "ip", ""));
 	mSettings.addParam(new Parameter<int>(&mPort, "port", ""));
 	mSettings.addParam(new Parameter<int>(&mDeviceId, "device id", ""));
 	mSettings.addParam(new Parameter<string>(&mDeviceName, "device name", ""));
+}
+
+KinectStreamerApp::~KinectStreamerApp()
+{
+	mSettings.save();
 }
 
 void KinectStreamerApp::prepareSettings(Settings* settings)
@@ -77,8 +84,8 @@ void KinectStreamerApp::setup()
 	mTriggers.setup();
 	mOscBroadcaster.setup(&mKinect);
 //	mOscBroadcaster.setDestination("127.0.0.1", 37000);
-	resetCamera();
 	mSettings.setup();
+	resetCamera();
 }
 
 void KinectStreamerApp::loadJson()
@@ -90,8 +97,8 @@ void KinectStreamerApp::loadJson()
 		return;
 	}
 	mSettings.load(filename);
-	mOscBroadcaster.setDestination(mSettings.ip, mSettings.port);
-	mOscBroadcaster.setKinectName(mSettings.deviceName);
+	mOscBroadcaster.setDestination(mIp, mPort);
+	mOscBroadcaster.setKinectName(mDeviceName);
 }
 
 void KinectStreamerApp::keyDown(KeyEvent event)

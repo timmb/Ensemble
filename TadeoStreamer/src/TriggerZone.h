@@ -20,13 +20,16 @@ public:
 	static const int BORDERLINE = 0;
 	static const int OUTSIDE = -1;
 	typedef int PointStatus;
-	
+		
 	TriggerZone(Settings& settings, Kinect const& kinect, std::string const& name);
 	virtual void setup();
 	virtual void update(float dt, float elapsedTime) {}
 	virtual void scene() {}
 	
-	void apply(PointCloud const& p);
+	/// \return true if the triggered state has changed
+	bool apply(PointCloud const& p);
+	bool isTriggered() const { return mIsCurrentlyTriggered; }
+	std::string name() const { return mName; }
 	
 	void trigger();
 	void endTrigger();
