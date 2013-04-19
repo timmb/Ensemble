@@ -11,13 +11,72 @@
 #include "json/json.h"
 #include "cinder/params/Params.h"
 #include "cinder/Cinder.h"
+#include <boost/tokenizer.hpp>
 
-class Parameter
+
+// To avoid having to specialise the Parameter class
+static bool operator>>(Json::Value const& child, float& value)
+{
+	if (!child.isConvertibleTo(Json::realValue))
+		return false;
+	value = child.asFloat();
+	return true;
+}
+
+static bool operator>>(Json::Value const& child, int& value)
+{
+	if (!child.isConvertibleTo(Json::intValue))
+		return false;
+	value = child.asInt();
+	return true;
+}
+
+static bool operator>>(Json::Value const& child, ci::Vec3f& value)
+{
+	if (child["x"].isConvertibleTo(Json::realValue)
+		&& child["y"].isConvertibleTo(Json::realValue)
+		&& child["z"].isConvertibleTo(Json::realValue))
+	{
+		value.x = child["x"].asFloat();
+		value.y = child["y"].asFloat();
+		value.z = child["z"].asFloat();
+		return true;
+	}
+	return false;
+}
+
+static bool operator>>(Json::Value const& child, std::string& value)
+{
+	if (!child.isConvertibleTo(Json::realValue))
+		return false;
+	value = child.asString();
+	return true;
+}
+
+template <typename T>
+Json::Value& operator<<(Json::Value& lhs, T const& rhs)
+{
+	lhs = rhs;
+	return lhs;
+}
+
+static 
+Json::Value& operator<<(Json::Value& lhs, ci::Vec3f const& rhs)
+{
+	lhs["x"] = rhs.x;
+	lhs["y"] = rhs.y;
+	lhs["z"] = rhs.z;
+	return lhs;
+}
+
+
+
+class BaseParameter
 {
 public:
 	// path is slash separated
 	// e.g. "" or "triggers" or "triggers/my_trigger/part 1"
-	Parameter(std::string const& name, std::string const& path="")
+	BaseParameter(std::string const& name, std::string const& path="")
 	: path(path)
 	, name(name)
 	{}
@@ -36,29 +95,36 @@ protected:
 	virtual bool fromJson(Json::Value const& child) = 0;
 };
 
-class ParameterFloat : public Parameter
+// Main class to represent parameters
+template <typename T>
+class Parameter : public BaseParameter
 {
 public:
-	ParameterFloat(float* value, std::string const& name, std::string const& path="");
-	virtual void setup(ci::params::InterfaceGl& params);
+	Parameter(T* value, std::string const& name, std::string const& path)
+	: BaseParameter(name, path)
+	, value(value)
+	{}
+	
+	virtual void setup(ci::params::InterfaceGl& params)
+	{
+		params.addParam(name, value);
+	}
+	
 protected:
+	virtual void toJson(Json::Value& child) const
+	{
+		child << *value;
+	}
 	
-	virtual void toJson(Json::Value& root) const;
-	virtual bool fromJson(Json::Value const& root);
+	virtual bool fromJson(Json::Value const& child)
+	{
+		return child >> *value;
+	}
 	
-	float* value;
+	T* value;
 };
 
-class ParameterVec3f : public Parameter
-{
-public:
-	ParameterVec3f(ci::Vec3f* value, std::string const& name, std::string const& path="");
-	virtual void setup(ci::params::InterfaceGl& params);
-	virtual void toJson(Json::Value& root) const;
-	virtual bool fromJson(Json::Value const& root);
-	
-	ci::Vec3f* value;
-};
+
 
 
 class Settings
@@ -72,16 +138,13 @@ public:
 	void update(float dt, float elapsedTime);
 	void draw();
 	
-	void addParam(std::shared_ptr<Parameter> parameter);
-	
-	void addParam(float* value, std::string name, std::string path) {
-		addParam(std::shared_ptr<Parameter>(new ParameterFloat(value, name, path)));
+	void addParam(std::shared_ptr<BaseParameter> parameter);
+	/// Takes ownership of \p parameter
+	void addParam(BaseParameter* parameter)
+	{
+		addParam(std::shared_ptr<BaseParameter>(parameter));
 	}
-	
-	void addParam(ci::Vec3f* value, std::string name, std::string path) {
-		addParam(std::shared_ptr<Parameter>(new ParameterVec3f(value, name, path)));
-	}
-	
+
 	std::string ip;
 	int port;
 	int deviceId;
@@ -106,5 +169,26 @@ private:
 	std::string mJsonFile;
 	Json::Value mRoot;
 	
-	std::vector<std::shared_ptr<Parameter> > mParameters;
+	std::vector<std::shared_ptr<BaseParameter> > mParameters;
 };
+
+
+
+template <typename T>
+T& BaseParameter::getChild(T& root) const
+{
+	T* child = &root;
+	typedef boost::tokenizer<boost::char_separator<char> >
+    tokenizer;
+	boost::char_separator<char> sep("/");
+	tokenizer tokens(path+"/"+name, sep);
+	std::string prevToken = "/";
+	for (tokenizer::iterator tok_iter = tokens.begin();
+		 tok_iter != tokens.end(); ++tok_iter)
+	{
+		child = &(*child)[*tok_iter];
+	}
+	return *child;
+}
+
+

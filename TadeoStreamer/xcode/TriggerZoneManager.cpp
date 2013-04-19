@@ -54,11 +54,7 @@ void TriggerZoneManager::update(float dt, float elapsedTime)
 	{
 		TriggerZone& trigger = **trig_it;
 		trigger.update(dt, elapsedTime);
-		auto& pointCloud = mKinect.pointCloud();
-		for (auto it=pointCloud.begin(); it!=pointCloud.end(); ++it)
-		{
-			
-		}
+		trigger.apply(mKinect.pointCloud());
 	}
 }
 

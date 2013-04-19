@@ -14,6 +14,8 @@ using namespace std;
 class KinectStreamerApp : public AppNative {
   public:
 	KinectStreamerApp();
+	void prepareSettings(Settings* settings);
+	void resize(ResizeEvent event);
 	void setup();
 	void mouseDown( MouseEvent event );
 	void mouseDrag(MouseEvent event);
@@ -31,16 +33,41 @@ private:
 	OscBroadcaster mOscBroadcaster;
 	TriggerZoneManager mTriggers;
 	double mElapsedTime;
-	int mDeviceId;
 	ci::MayaCamUI mCamera;
+	
+	std::string mIp;
+	int mPort;
+	int mDeviceId;
+	std::string mDeviceName;
+
 };
 
 KinectStreamerApp::KinectStreamerApp()
 : mElapsedTime(-.1)
 , mDeviceId(-42)
+, mPort(37000)
+, mDeviceName("Kinect")
+, mIp("127.0.0.1")
 , mKinect(mSettings)
 , mTriggers(mSettings, mKinect)
-{}
+{
+	mSettings.addParam(new Parameter<string>(&mIp, "ip", ""));
+	mSettings.addParam(new Parameter<int>(&mPort, "port", ""));
+	mSettings.addParam(new Parameter<int>(&mDeviceId, "device id", ""));
+	mSettings.addParam(new Parameter<string>(&mDeviceName, "device name", ""));
+}
+
+void KinectStreamerApp::prepareSettings(Settings* settings)
+{
+	settings->setWindowSize(900, 600);
+}
+
+void KinectStreamerApp::resize(ResizeEvent event)
+{
+	CameraPersp cam = mCamera.getCamera();
+	cam.setPerspective(cam.getFov(), event.getAspectRatio(), cam.getNearClip(), cam.getFarClip());
+	mCamera.setCurrentCam(cam);
+}
 
 void KinectStreamerApp::setup()
 {

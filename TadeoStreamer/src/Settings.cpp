@@ -13,7 +13,6 @@
 #include "json/json.h"
 #include <fstream>
 #include <iostream>
-#include <boost/tokenizer.hpp>
 #include <ctime>
 
 using namespace std;
@@ -48,10 +47,6 @@ bool Settings::load(string const& filename)
 			this->port = port.asInt();
 			this->deviceId = deviceId.asInt();
 			this->deviceName = deviceName.asString();
-		}
-		for (int i=0; i<mParameters.size(); ++i)
-		{
-			mParameters[i]->readJson(mRoot);
 		}
 		hud().displayUntilFurtherNotice("Successfully loaded "+filename, "JSON");
 	}
@@ -103,9 +98,13 @@ void Settings::save(string const& filename)
 
 void Settings::setup()
 {
-	mParams = params::InterfaceGl("TadeoStreamer", Vec2i(400,600));
+	mParams = params::InterfaceGl("TadeoStreamer", Vec2i(250,400));
 	mParams.addButton("Save", std::bind((void (Settings::*)())&Settings::save, this));
 	mParams.addButton("Save snapshot", std::bind(&Settings::snapshot, this));
+	for (int i=0; i<mParameters.size(); ++i)
+	{
+		mParameters[i]->readJson(mRoot);
+	}
 	for (auto it=mParameters.begin(); it!=mParameters.end(); ++it)
 	{
 		(**it).setup(mParams);
@@ -188,7 +187,7 @@ Vec3f Settings::getVec3f(string const& path, Vec3f const& defaultValue) const
 }
 
 
-void Settings::addParam(std::shared_ptr<Parameter> parameter)
+void Settings::addParam(std::shared_ptr<BaseParameter> parameter)
 {
 	mParameters.push_back(parameter);
 }
@@ -202,93 +201,17 @@ void Settings::draw()
 
 
 
-/////////
-
-ParameterFloat::ParameterFloat(float* value, std::string const& name, std::string const& path)
-: Parameter(name, path)
-, value(value)
-{}
-
-void ParameterFloat::setup(params::InterfaceGl& params)
-{
-	params.addParam(name, value, "group="+path);
-}
-
-void ParameterFloat::toJson(Json::Value& root) const
-{
-	root = *value;
-}
-
-bool ParameterFloat::fromJson(Json::Value const& root)
-{
-	if (root.isConvertibleTo(Json::realValue))
-	{
-		*value = root.asFloat();
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
+////////
 
 
-ParameterVec3f::ParameterVec3f(Vec3f* value, std::string const& name, std::string const& path)
-: Parameter(name, path)
-, value(value)
-{}
-
-void ParameterVec3f::setup(params::InterfaceGl& params){
-	params.addParam(name, value, "group="+path);
-}
-
-void ParameterVec3f::toJson(Json::Value& root) const
-{
-	root["x"] = value->x;
-	root["y"] = value->y;
-	root["z"] = value->z;
-}
-
-bool ParameterVec3f::fromJson(Json::Value const& root)
-{
-	if (root["x"].isConvertibleTo(Json::realValue)
-		&& root["y"].isConvertibleTo(Json::realValue)
-		&& root["z"].isConvertibleTo(Json::realValue))
-	{
-		value->x = root["x"].asFloat();
-		value->y = root["y"].asFloat();
-		value->z = root["z"].asFloat();
-		return true;
-	}
-	return false;
-}
-
-
-template <typename T>
-T& Parameter::getChild(T& root) const
-{
-	T* child = &root;
-	typedef boost::tokenizer<boost::char_separator<char> >
-    tokenizer;
-	boost::char_separator<char> sep("/");
-	tokenizer tokens(path+"/"+name, sep);
-	string prevToken = "/";
-	for (tokenizer::iterator tok_iter = tokens.begin();
-		 tok_iter != tokens.end(); ++tok_iter)
-	{
-		child = &(*child)[*tok_iter];
-	}
-	return *child;
-}
-
-void Parameter::writeJson(Json::Value& root) const
+void BaseParameter::writeJson(Json::Value& root) const
 {
 	Json::Value& child = getChild(root);
 	toJson(child);
 }
 
 
-bool Parameter::readJson(Json::Value const& root)
+bool BaseParameter::readJson(Json::Value const& root)
 {
 	Json::Value const& child = getChild(root);
 	return fromJson(child);

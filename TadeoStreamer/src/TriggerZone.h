@@ -11,7 +11,7 @@
 #include "Common.h"
 #include "cinder/Cinder.h"
 
-class Kinect;
+#include "Kinect.h"
 
 class TriggerZone
 {
@@ -26,14 +26,25 @@ public:
 	virtual void update(float dt, float elapsedTime) {}
 	virtual void scene() {}
 	
-	PointStatus isInside(ci::Vec3f const& p) const;
+	void apply(PointCloud const& p);
+	
+	void trigger();
+	void endTrigger();
 	
 	float mAlpha;
+	int mNumIntersectionsToTrigger;
+	
 protected:
+	virtual PointStatus isInside(ci::Vec3f p) const = 0;
+
+	
 	Settings& mSettings;
 	Kinect const& mKinect;
 	std::string mName;
 	std::string path() const;
+
+	bool mIsCurrentlyTriggered;
+
 };
 
 
@@ -45,8 +56,9 @@ public:
 	virtual void scene();
 	virtual void update(float dt, float elapsedTime);
 	
+protected:
 	PointStatus isInside(ci::Vec3f p) const;
-	
+
 private:
 	ci::Vec3f mMidpoint;
 	// axis is normalized

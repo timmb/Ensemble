@@ -31,6 +31,8 @@
 
 //static const int MAX_DEVICES = 1;
 
+typedef std::vector<ci::Vec3f> PointCloud;
+
 
 class Kinect
 {
@@ -42,7 +44,7 @@ public:
 	void update(float dt, float elapsedTime);
 	void scene();
 	
-	std::vector<ci::Vec3f> const& pointCloud() const { return mPointCloud; }
+	PointCloud const& pointCloud() const { return mPointCloud; }
 	
 	/// Was data updated in the last update() call?
 	bool isDataNew() const;
