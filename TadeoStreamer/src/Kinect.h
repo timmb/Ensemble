@@ -27,7 +27,6 @@
 
 #include "Settings.h"
 
-#include "cinder/MayaCamUI.h"
 #include "cinder/app/MouseEvent.h"
 
 //static const int MAX_DEVICES = 1;
@@ -41,14 +40,12 @@ public:
 	
 	void setup(int deviceId);
 	void update(float dt, float elapsedTime);
-	void draw();
+	void scene();
 	
-	void mouseDown(ci::app::MouseEvent event);
-	void mouseDrag(ci::app::MouseEvent event);
+	std::vector<ci::Vec3f> const& pointCloud() const { return mPointCloud; }
 	
 	/// Was data updated in the last update() call?
 	bool isDataNew() const;
-	void resetCamera();
 		
 private:
 	/// If successful then mDevice!=NULL
@@ -65,19 +62,16 @@ private:
 	ci::gl::Texture mColorTex;
 	
 	std::vector<ci::Vec3f> mPointCloud;
-	std::vector<XnPoint3D> mBufferForPointCloud;
 	
 	V::OpenNIDeviceManager* mOpenNI;
 	V::OpenNIDevice::Ref mDevice;
 	
 	bool mIsDataNew;
 	int mDeviceId;
-	
-	int mImageWidth;
+
 	
 	Settings const& mSettings;
 	
-	ci::MayaCamUI mCamera;
 };
 
 

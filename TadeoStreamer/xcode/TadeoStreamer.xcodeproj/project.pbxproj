@@ -40,6 +40,8 @@
 		22489D44170A00A700032617 /* OscListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489D38170A00A700032617 /* OscListener.cpp */; };
 		22489D45170A00A700032617 /* OscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489D39170A00A700032617 /* OscMessage.cpp */; };
 		22489D46170A00A700032617 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489D3A170A00A700032617 /* OscSender.cpp */; };
+		2297853B1721379800F771BA /* TriggerZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 229785391721379800F771BA /* TriggerZone.cpp */; };
+		22978541172137AD00F771BA /* TriggerZoneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2297853F172137AC00F771BA /* TriggerZoneManager.cpp */; };
 		22B8D1A0170A0CA200881D75 /* KinectStreamerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
@@ -216,6 +218,10 @@
 		22489D39170A00A700032617 /* OscMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscMessage.cpp; sourceTree = "<group>"; };
 		22489D3A170A00A700032617 /* OscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscSender.cpp; sourceTree = "<group>"; };
 		2291BFB1171EE8F9008DD8E2 /* cinder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cinder.xcodeproj; path = ../../../cinder_0.8.4_mac/xcode/cinder.xcodeproj; sourceTree = "<group>"; };
+		229785391721379800F771BA /* TriggerZone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggerZone.cpp; path = ../src/TriggerZone.cpp; sourceTree = "<group>"; };
+		2297853A1721379800F771BA /* TriggerZone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TriggerZone.h; path = ../src/TriggerZone.h; sourceTree = "<group>"; };
+		2297853F172137AC00F771BA /* TriggerZoneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerZoneManager.cpp; sourceTree = "<group>"; };
+		22978540172137AC00F771BA /* TriggerZoneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerZoneManager.h; sourceTree = "<group>"; };
 		22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KinectStreamerApp.cpp; path = ../src/KinectStreamerApp.cpp; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
@@ -270,6 +276,10 @@
 				22489AA91709FE3D00032617 /* Kinect.h */,
 				22489AAA1709FE3D00032617 /* OscBroadcaster.cpp */,
 				22489AAB1709FE3D00032617 /* OscBroadcaster.h */,
+				229785391721379800F771BA /* TriggerZone.cpp */,
+				2297853A1721379800F771BA /* TriggerZone.h */,
+				2297853F172137AC00F771BA /* TriggerZoneManager.cpp */,
+				22978540172137AC00F771BA /* TriggerZoneManager.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -767,6 +777,8 @@
 				22489D45170A00A700032617 /* OscMessage.cpp in Sources */,
 				22489D46170A00A700032617 /* OscSender.cpp in Sources */,
 				22B8D1A0170A0CA200881D75 /* KinectStreamerApp.cpp in Sources */,
+				2297853B1721379800F771BA /* TriggerZone.cpp in Sources */,
+				22978541172137AD00F771BA /* TriggerZoneManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,7 +31,6 @@ using namespace V;
 Kinect::Kinect(Settings const& settings)
 : mDeviceId(0)
 , mSettings(settings)
-, mImageWidth(0)
 {}
 
 
@@ -53,38 +52,13 @@ void Kinect::setup(int deviceId)
 	mColor = Surface8u(mColorSize.x, mColorSize.y, false);
 	mDepth = Channel16u(mDepthSize.x, mDepthSize.y);
 	mPointCloud.assign(mDepthSize.x*mDepthSize.y, Vec3f());
-	mBufferForPointCloud.assign(mDepthSize.x*mDepthSize.y, XnPoint3D());
 	
-	mImageWidth = max(mColorSize.x, mDepthSize.x);
 	
 	mOpenNI->SetPrimaryBuffer(0, NODE_TYPE_DEPTH);
-	resetCamera();
 }
 
-void Kinect::resetCamera()
-{
-	
-	CameraPersp cam(app::getWindowWidth(), app::getWindowHeight(), 60, 0.00001, 1000000);
-	cam.setEyePoint(Vec3f(0,0,0));
-	cam.setCenterOfInterestPoint(Vec3f(0,0,3000));
-//	cam.setEyePoint(Vec3f(0,0,1));
-//	cam.lookAt(Vec3f());
-	mCamera.setCurrentCam(cam);
-}
 
-void Kinect::mouseDown(MouseEvent event)
-{
-	Vec2i pos = event.getPos();
-	pos.x -= mImageWidth;
-	mCamera.mouseDown(event.getPos());
-}
 
-void Kinect::mouseDrag(MouseEvent event)
-{
-	Vec2i pos = event.getPos();
-	pos.x -= mImageWidth;
-	mCamera.mouseDrag(event.getPos(), event.isLeftDown(), event.isMiddleDown()||sIsShiftDown, event.isRightDown());
-}
 
 
 void Kinect::openKinect()
@@ -160,35 +134,16 @@ void Kinect::update(float dt, float elapsedTime)
 }
 
 
-void Kinect::draw()
+void Kinect::scene()
 {
-	gl::pushMatrices();
+	glBegin(GL_POINTS);
+	for (int i=0; i<mPointCloud.size(); ++i)
 	{
-		gl::setMatricesWindow(app::getWindowSize());
-		gl::color(1,1,1, 1);
-		//gl::draw(mColor);
-		
-		//gl::translate(0, mColor.getHeight());
-		//gl::draw(Surface(mDepth));
-		
-//		gl::translate(max(mColor.getWidth(), mDepth.getWidth()), 0);
-		// draw point cloud
-//		glMatrixMode(GL_PROJECTION);
-//		glLoadIdentity();
-//		glMatrixMode(GL_MODELVIEW);
-//		glLoadIdentity();
-		gl::setMatrices(mCamera.getCamera());
-		glBegin(GL_POINTS);
-		for (int i=0; i<mPointCloud.size(); ++i)
-		{
-			ColorA color = mColor.getPixel(Vec2i(i%mColor.getWidth(), i/mColor.getWidth()));
-			gl::color(color);
-			gl::vertex(mPointCloud[i]);
-		}
-		glEnd();
-		gl::drawCoordinateFrame();
+		ColorA color = mColor.getPixel(Vec2i(i%mColor.getWidth(), i/mColor.getWidth()));
+		gl::color(color);
+		gl::vertex(mPointCloud[i]);
 	}
-	gl::popMatrices();
+	glEnd();
 	
 }
 

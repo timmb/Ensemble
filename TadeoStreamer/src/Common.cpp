@@ -48,3 +48,7 @@ void drawCenteredString(std::string const& s)
 }
 
 
+void err(std::string const& errorMessage, std::string const& origin) {
+	std::cout << origin << ": " << errorMessage;
+	hud().displayForAWhile(errorMessage, origin);
+}

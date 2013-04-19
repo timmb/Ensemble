@@ -122,9 +122,9 @@ class Stabilizer(QApplication):
         osc_messages.put(message)
         self.log("%s: %s" % (client, message) )
 
-    def log(self, s):       
+    def log(self, s, module="Stabilizer"):       
         time = datetime.now()
-        self.event_log.addItem("[%s] %s" % (time.strftime("%H:%M:%S.%f")[:-3], s))
+        self.event_log.addItem("[%s] %s %s" % (time.strftime("%H:%M:%S.%f")[:-3], module, s))
 
 if __name__=='__main__':
     app = Stabilizer()

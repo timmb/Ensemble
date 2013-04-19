@@ -4,7 +4,8 @@
 #include "Kinect.h"
 #include "OscBroadcaster.h"
 #include "Settings.h"
-
+#include "TriggerZoneManager.h"
+#include "cinder/MayaCamUI.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -20,6 +21,7 @@ class KinectStreamerApp : public AppNative {
 	void update();
 	void draw();
 	
+	void resetCamera();
 	
 private:
 	void loadJson();
@@ -27,14 +29,17 @@ private:
 	::Settings mSettings;
 	Kinect mKinect;
 	OscBroadcaster mOscBroadcaster;
+	TriggerZoneManager mTriggers;
 	double mElapsedTime;
 	int mDeviceId;
+	ci::MayaCamUI mCamera;
 };
 
 KinectStreamerApp::KinectStreamerApp()
 : mElapsedTime(-.1)
 , mDeviceId(-42)
 , mKinect(mSettings)
+, mTriggers(mSettings, mKinect)
 {}
 
 void KinectStreamerApp::setup()
@@ -42,8 +47,11 @@ void KinectStreamerApp::setup()
 	setupFont();
 	loadJson();
 	mKinect.setup(mDeviceId);
+	mTriggers.setup();
 	mOscBroadcaster.setup(&mKinect);
 //	mOscBroadcaster.setDestination("127.0.0.1", 37000);
+	resetCamera();
+	mSettings.setup();
 }
 
 void KinectStreamerApp::loadJson()
@@ -68,14 +76,25 @@ void KinectStreamerApp::keyDown(KeyEvent event)
 	sIsShiftDown = event.isShiftDown();
 }
 
+void KinectStreamerApp::resetCamera()
+{
+	
+	CameraPersp cam(app::getWindowWidth(), app::getWindowHeight(), 60, 0.01, 100000);
+	cam.setEyePoint(Vec3f(0,0,0));
+	cam.setCenterOfInterestPoint(Vec3f(0,0,3000));
+	//	cam.setEyePoint(Vec3f(0,0,1));
+	//	cam.lookAt(Vec3f());
+	mCamera.setCurrentCam(cam);
+}
+
 void KinectStreamerApp::mouseDown( MouseEvent event )
 {
-	mKinect.mouseDown(event);
+	mCamera.mouseDown(event.getPos());
 }
 
 void KinectStreamerApp::mouseDrag(MouseEvent event)
 {
-	mKinect.mouseDrag(event);
+	mCamera.mouseDrag(event.getPos(), event.isLeftDown(), event.isMiddleDown()||sIsShiftDown, event.isRightDown());
 }
 
 void KinectStreamerApp::update()
@@ -85,6 +104,7 @@ void KinectStreamerApp::update()
 	mElapsedTime = elapsedTime;
 	
 	mKinect.update(dt, mElapsedTime);
+	mTriggers.update(dt, mElapsedTime);
 	mOscBroadcaster.update(dt, mElapsedTime);
 	hud().update(dt, mElapsedTime);
 }
@@ -93,8 +113,20 @@ void KinectStreamerApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-	mKinect.draw();
+	glEnable(GL_DEPTH_TEST);
+	gl::pushMatrices();
+	{
+		gl::setMatricesWindow(app::getWindowSize());
+		gl::setMatrices(mCamera.getCamera());
+		gl::color(1,1,1, 1);
+		mKinect.scene();
+		gl::color(1,1,1, 1);
+		mTriggers.scene();
+	}
+	gl::popMatrices();
+	glDisable(GL_DEPTH_TEST);
 	hud().draw();
+	mSettings.draw();
 }
 
 CINDER_APP_NATIVE( KinectStreamerApp, RendererGl )

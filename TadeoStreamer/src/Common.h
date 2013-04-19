@@ -11,6 +11,7 @@
 #include "cinder/gl/TextureFont.h"
 #include "cinder/gl/gl.h"
 #include "Hud.h"
+#include "Settings.h"
 
 static const bool NO_KINECT = false;
 
@@ -20,5 +21,7 @@ ci::gl::TextureFontRef& statusFont();
 Hud& hud();
 
 void drawCenteredString(std::string const& s);
+
+void err(std::string const& errorMessage, std::string const& origin);
 
 extern bool sIsShiftDown;
