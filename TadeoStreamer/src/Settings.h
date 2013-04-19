@@ -24,15 +24,16 @@ public:
 
 	virtual void setup(ci::params::InterfaceGl& params) = 0;
 	virtual void writeJson(Json::Value& root) const;
-	virtual bool readJson(Json::Value& root);
+	virtual bool readJson(Json::Value const& root);
 	
 	std::string path;
 	std::string name;
 	
 protected:
-	Json::Value getChild(Json::Value& root) const;
+	template <typename JsonOrConstJson>
+	JsonOrConstJson& getChild(JsonOrConstJson& root) const;
 	virtual void toJson(Json::Value& child) const = 0;
-	virtual bool fromJson(Json::Value& child) = 0;
+	virtual bool fromJson(Json::Value const& child) = 0;
 };
 
 class ParameterFloat : public Parameter
@@ -43,7 +44,7 @@ public:
 protected:
 	
 	virtual void toJson(Json::Value& root) const;
-	virtual bool fromJson(Json::Value& root);
+	virtual bool fromJson(Json::Value const& root);
 	
 	float* value;
 };
@@ -54,7 +55,7 @@ public:
 	ParameterVec3f(ci::Vec3f* value, std::string const& name, std::string const& path="");
 	virtual void setup(ci::params::InterfaceGl& params);
 	virtual void toJson(Json::Value& root) const;
-	virtual bool fromJson(Json::Value& root);
+	virtual bool fromJson(Json::Value const& root);
 	
 	ci::Vec3f* value;
 };

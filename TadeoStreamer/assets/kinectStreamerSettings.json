@@ -1,11 +1,29 @@
 
 {
+	"" : 
+	{
+		"axis" : 
+		{
+			"x" : 1.0,
+			"y" : 0.0,
+			"z" : 0.0
+		}
+	},
 	"deviceId" : 0,
 	"deviceName" : "Kinect0",
 	"ip" : "127.0.0.1",
 	"port" : 37000,
 	"triggers" : 
 	{
+		"" : 
+		{
+			"axis" : 
+			{
+				"x" : 1.0,
+				"y" : 0.0,
+				"z" : 0.0
+			}
+		},
 		"left" : 
 		{
 			"axis" : 
@@ -14,14 +32,15 @@
 				"y" : 0,
 				"z" : 0
 			},
-			"length" : 1000,
+			"border thickness" : 2.0,
+			"length" : 50.0,
 			"midpoint" : 
 			{
-				"x" : 100,
-				"y" : 100,
-				"z" : 100
+				"x" : 0.0,
+				"y" : 0.0,
+				"z" : 0.0
 			},
-			"radius" : 20,
+			"radius" : 84.0,
 			"type" : "cylinder"
 		}
 	}

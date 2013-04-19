@@ -219,7 +219,7 @@ void ParameterFloat::toJson(Json::Value& root) const
 	root = *value;
 }
 
-bool ParameterFloat::fromJson(Json::Value& root)
+bool ParameterFloat::fromJson(Json::Value const& root)
 {
 	if (root.isConvertibleTo(Json::realValue))
 	{
@@ -249,7 +249,7 @@ void ParameterVec3f::toJson(Json::Value& root) const
 	root["z"] = value->z;
 }
 
-	bool ParameterVec3f::fromJson(Json::Value& root)
+bool ParameterVec3f::fromJson(Json::Value const& root)
 {
 	if (root["x"].isConvertibleTo(Json::realValue)
 		&& root["y"].isConvertibleTo(Json::realValue)
@@ -264,9 +264,10 @@ void ParameterVec3f::toJson(Json::Value& root) const
 }
 
 
-Json::Value Parameter::getChild(Json::Value& root) const
+template <typename T>
+T& Parameter::getChild(T& root) const
 {
-	Json::Value child = root;
+	T* child = &root;
 	typedef boost::tokenizer<boost::char_separator<char> >
     tokenizer;
 	boost::char_separator<char> sep("/");
@@ -275,21 +276,21 @@ Json::Value Parameter::getChild(Json::Value& root) const
 	for (tokenizer::iterator tok_iter = tokens.begin();
 		 tok_iter != tokens.end(); ++tok_iter)
 	{
-		child = child[*tok_iter];
+		child = &(*child)[*tok_iter];
 	}
-	return child;
+	return *child;
 }
 
 void Parameter::writeJson(Json::Value& root) const
 {
-	Json::Value child = getChild(root);
+	Json::Value& child = getChild(root);
 	toJson(child);
 }
 
 
-bool Parameter::readJson(Json::Value& root)
+bool Parameter::readJson(Json::Value const& root)
 {
-	Json::Value child = getChild(root);
+	Json::Value const& child = getChild(root);
 	return fromJson(child);
 }
 
