@@ -87,7 +87,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>2</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="connectionsPage">
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -99,7 +99,13 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="connectionsText"/>
+           <widget class="QPlainTextEdit" name="connectionsText">
+            <property name="font">
+             <font>
+              <family>Lucida Console</family>
+             </font>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -113,7 +119,13 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="worldStateText"/>
+           <widget class="QPlainTextEdit" name="worldStateText">
+            <property name="font">
+             <font>
+              <family>Lucida Console</family>
+             </font>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QLabel" name="convergedStateLabel">
@@ -123,7 +135,13 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="convergedStateText"/>
+           <widget class="QPlainTextEdit" name="convergedStateText">
+            <property name="font">
+             <font>
+              <family>Lucida Console</family>
+             </font>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -137,7 +155,13 @@
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="instrumentsText"/>
+           <widget class="QPlainTextEdit" name="instrumentsText">
+            <property name="font">
+             <font>
+              <family>Lucida Console</family>
+             </font>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>
