@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Thu Mar 21 18:09:27 2013
+# Created: Tue Apr 23 19:39:52 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -89,14 +89,9 @@ class Ui_MainWindow(object):
         self.instrumentsLabel = QtGui.QLabel(self.instrumentsPage)
         self.instrumentsLabel.setObjectName("instrumentsLabel")
         self.verticalLayout_2.addWidget(self.instrumentsLabel)
-        self.instrumentsAreaScrollArea = QtGui.QScrollArea(self.instrumentsPage)
-        self.instrumentsAreaScrollArea.setWidgetResizable(True)
-        self.instrumentsAreaScrollArea.setObjectName("instrumentsAreaScrollArea")
-        self.instrumentsAreaWidget = QtGui.QWidget()
-        self.instrumentsAreaWidget.setGeometry(QtCore.QRect(0, 0, 587, 214))
-        self.instrumentsAreaWidget.setObjectName("instrumentsAreaWidget")
-        self.instrumentsAreaScrollArea.setWidget(self.instrumentsAreaWidget)
-        self.verticalLayout_2.addWidget(self.instrumentsAreaScrollArea)
+        self.instrumentsText = QtGui.QPlainTextEdit(self.instrumentsPage)
+        self.instrumentsText.setObjectName("instrumentsText")
+        self.verticalLayout_2.addWidget(self.instrumentsText)
         self.pages.addWidget(self.instrumentsPage)
         self.settingsPage = QtGui.QWidget()
         self.settingsPage.setObjectName("settingsPage")
@@ -176,7 +171,7 @@ class Ui_MainWindow(object):
         self.pluginsLabel.setBuddy(self.plugins)
 
         self.retranslateUi(MainWindow)
-        self.pages.setCurrentIndex(0)
+        self.pages.setCurrentIndex(2)
         QtCore.QObject.connect(self.pageSelector, QtCore.SIGNAL("currentRowChanged(int)"), self.pages.setCurrentIndex)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -197,7 +192,7 @@ class Ui_MainWindow(object):
         self.ipAddress.setText(QtGui.QApplication.translate("MainWindow", "127.0.0.1", None, QtGui.QApplication.UnicodeUTF8))
         self.pluginsLabel.setText(QtGui.QApplication.translate("MainWindow", "Loaded plugins", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "Refresh", None, QtGui.QApplication.UnicodeUTF8))
-        self.logLabel.setText(QtGui.QApplication.translate("MainWindow", "Logs", None, QtGui.QApplication.UnicodeUTF8))
+        self.logLabel.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
         self.startOrStopListeningButton.setText(QtGui.QApplication.translate("MainWindow", "Start Listening", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))

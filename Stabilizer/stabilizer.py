@@ -92,6 +92,13 @@ class Stabilizer(QApplication):
         self._server_port = None
         self.aboutToQuit.connect(self.shutdown)
 
+        self.world_state = {}
+        self.converged_state = {}
+        self.instruments = {}
+        
+        self.input_processor = InputProcessor(self.world_state, 
+            self.instruments, self.log)
+
 
     def shutdown(self):
         self.log("Shutting down")
@@ -121,6 +128,7 @@ class Stabilizer(QApplication):
     def osc_message_callback(self, message, client):
         osc_messages.put(message)
         self.log("%s: %s" % (client, message) )
+        self.input_processor.osc_message_callback(message, client)
 
     def log(self, s, module="Stabilizer"):       
         time = datetime.now()
@@ -138,5 +146,5 @@ if __name__=='__main__':
     main_window.show()
     # start event loop
     app.exec_()
-    app.shutdown()
+    # app.shutdown()
 

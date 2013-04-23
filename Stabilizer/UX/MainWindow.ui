@@ -87,7 +87,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="connectionsPage">
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -137,21 +137,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QScrollArea" name="instrumentsAreaScrollArea">
-            <property name="widgetResizable">
-             <bool>true</bool>
-            </property>
-            <widget class="QWidget" name="instrumentsAreaWidget">
-             <property name="geometry">
-              <rect>
-               <x>0</x>
-               <y>0</y>
-               <width>587</width>
-               <height>214</height>
-              </rect>
-             </property>
-            </widget>
-           </widget>
+           <widget class="QPlainTextEdit" name="instrumentsText"/>
           </item>
          </layout>
         </widget>

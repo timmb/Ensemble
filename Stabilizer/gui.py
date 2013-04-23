@@ -7,7 +7,8 @@ designer) to the rest of the code and any hand-written GUI code.
 import UX.MainWindow
 from PySide import QtCore, QtGui
 from PySide.QtGui import *
-
+from PySide.QtCore import QTimer
+from pprint import pformat
 
 
 class MainWindow(QtGui.QMainWindow):
@@ -21,7 +22,17 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.startOrStopListeningButton.clicked.connect(self.start_or_stop_listening)
         self.ui.actionQuit.triggered.connect(stabilizer.quit)
 
+        self.update_timer = QTimer(self)
+        self.update_timer.setInterval(500)
+        self.update_timer.timeout.connect(self.update)
+        self.update_timer.start()
+
         self.show()
+
+    def update(self):
+        '''Refresh gui based on self.stabilizer'''
+        self.ui.worldStateText.setPlainText(pformat(self.stabilizer.world_state))
+        self.ui.instrumentsText.setPlainText(pformat(self.stabilizer.instruments))
 
     def start_or_stop_listening(self):
         if self.stabilizer.is_listening:
