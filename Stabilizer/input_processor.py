@@ -7,7 +7,8 @@ class InputProcessor(object):
 
 	def __init__(self, world_state, instruments, log_function=(lambda message, module: None)):
 		'''world_state is a dictionary (probably empty)
-		instruments is a dictionary (probably empty)
+		instruments is a dictionary (probably empty):
+			{ instrument_name -> { parameter_name -> parameter_value } }
 		log_function is a function for recording log messages
 		'''
 		self.world_state = world_state

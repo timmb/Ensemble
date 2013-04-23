@@ -18,6 +18,7 @@ from state import *
 from plugin import *
 from output_processor import *
 from visualization import *
+from connection_detector import *
 
 import twisted
 
@@ -92,12 +93,22 @@ class Stabilizer(QApplication):
         self._server_port = None
         self.aboutToQuit.connect(self.shutdown)
 
+        # parameter -> { instrument -> value }
         self.world_state = {}
+        # parameter -> converged_value
         self.converged_state = {}
+        # properties of an instrument:
+        # instrument -> { property -> value }
+        # also contains the state of the instrument:
+        # instrument -> { 'state' -> { parameter -> value } }
         self.instruments = {}
+        # instrument -> { instrument -> connection_amount }
+        self.connections = {}
         
         self.input_processor = InputProcessor(self.world_state, 
             self.instruments, self.log)
+        self.connection_detector = ConnectionDetector(self.connections, 
+            self.instruments)
 
 
     def shutdown(self):
@@ -129,6 +140,7 @@ class Stabilizer(QApplication):
         osc_messages.put(message)
         self.log("%s: %s" % (client, message) )
         self.input_processor.osc_message_callback(message, client)
+        self.connection_detector.update()
 
     def log(self, s, module="Stabilizer"):       
         time = datetime.now()

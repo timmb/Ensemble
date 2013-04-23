@@ -9,6 +9,7 @@ from PySide import QtCore, QtGui
 from PySide.QtGui import *
 from PySide.QtCore import QTimer
 from pprint import pformat
+from lib.texttable import Texttable
 
 
 class MainWindow(QtGui.QMainWindow):
@@ -33,6 +34,7 @@ class MainWindow(QtGui.QMainWindow):
         '''Refresh gui based on self.stabilizer'''
         self.ui.worldStateText.setPlainText(pformat(self.stabilizer.world_state))
         self.ui.instrumentsText.setPlainText(pformat(self.stabilizer.instruments))
+        self.ui.connectionsText.setPlainText(self.get_pretty_connections())
 
     def start_or_stop_listening(self):
         if self.stabilizer.is_listening:
@@ -41,3 +43,22 @@ class MainWindow(QtGui.QMainWindow):
         else:
             self.stabilizer.start_listening()
             self.ui.startOrStopListeningButton.setText("Stop Listening")
+
+    def get_pretty_connections(self):
+        names = [name for name in self.stabilizer.instruments]
+        if not names:
+            return 'No instruments'
+        names.sort()
+        c = self.stabilizer.connections
+        data = [[c.setdefault(ni, {}).get(nj,'') for ni in names] for nj in names]
+        for i,row in enumerate(data):
+            row.insert(0, names[i])
+        header_row = ['']+names
+        data.insert(0, header_row)
+
+        table = Texttable()
+        table.set_cols_align(['r']*(len(names)+1))
+        table.add_rows(data)
+        return table.draw() + '\nRaw data:\n'+pformat(c)
+
+
