@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Wed Apr 24 13:17:35 2013
+# Created: Wed Apr 24 17:05:33 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -132,7 +132,13 @@ class Ui_MainWindow(object):
         self.pushButton.setObjectName("pushButton")
         self.formLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.pushButton)
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.formLayout.setItem(3, QtGui.QFormLayout.FieldRole, spacerItem)
+        self.formLayout.setItem(5, QtGui.QFormLayout.FieldRole, spacerItem)
+        self.logIncomingMessagesCheckbox = QtGui.QCheckBox(self.settingsPage)
+        self.logIncomingMessagesCheckbox.setObjectName("logIncomingMessagesCheckbox")
+        self.formLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.logIncomingMessagesCheckbox)
+        self.logOutgoingMessagesCheckbox = QtGui.QCheckBox(self.settingsPage)
+        self.logOutgoingMessagesCheckbox.setObjectName("logOutgoingMessagesCheckbox")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.logOutgoingMessagesCheckbox)
         self.pages.addWidget(self.settingsPage)
         self.layoutWidget = QtGui.QWidget(self.outerSplitter)
         self.layoutWidget.setObjectName("layoutWidget")
@@ -158,11 +164,21 @@ class Ui_MainWindow(object):
         self.footer = QtGui.QHBoxLayout()
         self.footer.setSizeConstraint(QtGui.QLayout.SetFixedSize)
         self.footer.setObjectName("footer")
+        self.enableInputCheckbox = QtGui.QCheckBox(self.layoutWidget)
+        self.enableInputCheckbox.setObjectName("enableInputCheckbox")
+        self.footer.addWidget(self.enableInputCheckbox)
         spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.footer.addItem(spacerItem1)
-        self.startOrStopListeningButton = QtGui.QPushButton(self.layoutWidget)
-        self.startOrStopListeningButton.setObjectName("startOrStopListeningButton")
-        self.footer.addWidget(self.startOrStopListeningButton)
+        self.calculateConvergenceCheckbox = QtGui.QCheckBox(self.layoutWidget)
+        self.calculateConvergenceCheckbox.setObjectName("calculateConvergenceCheckbox")
+        self.footer.addWidget(self.calculateConvergenceCheckbox)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.footer.addItem(spacerItem2)
+        self.enableOutputCheckbox = QtGui.QCheckBox(self.layoutWidget)
+        self.enableOutputCheckbox.setObjectName("enableOutputCheckbox")
+        self.footer.addWidget(self.enableOutputCheckbox)
+        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.footer.addItem(spacerItem3)
         self.lowerSection.addLayout(self.footer)
         self.verticalLayout.addWidget(self.outerSplitter)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -208,8 +224,12 @@ class Ui_MainWindow(object):
         self.ipAddress.setText(QtGui.QApplication.translate("MainWindow", "127.0.0.1", None, QtGui.QApplication.UnicodeUTF8))
         self.pluginsLabel.setText(QtGui.QApplication.translate("MainWindow", "Loaded plugins", None, QtGui.QApplication.UnicodeUTF8))
         self.pushButton.setText(QtGui.QApplication.translate("MainWindow", "Refresh", None, QtGui.QApplication.UnicodeUTF8))
+        self.logIncomingMessagesCheckbox.setText(QtGui.QApplication.translate("MainWindow", "Log incoming messages", None, QtGui.QApplication.UnicodeUTF8))
+        self.logOutgoingMessagesCheckbox.setText(QtGui.QApplication.translate("MainWindow", "Log outgoing messages", None, QtGui.QApplication.UnicodeUTF8))
         self.logLabel.setText(QtGui.QApplication.translate("MainWindow", "Log", None, QtGui.QApplication.UnicodeUTF8))
-        self.startOrStopListeningButton.setText(QtGui.QApplication.translate("MainWindow", "Start Listening", None, QtGui.QApplication.UnicodeUTF8))
+        self.enableInputCheckbox.setText(QtGui.QApplication.translate("MainWindow", "Listen for input", None, QtGui.QApplication.UnicodeUTF8))
+        self.calculateConvergenceCheckbox.setText(QtGui.QApplication.translate("MainWindow", "Calculate convergence", None, QtGui.QApplication.UnicodeUTF8))
+        self.enableOutputCheckbox.setText(QtGui.QApplication.translate("MainWindow", "Send output", None, QtGui.QApplication.UnicodeUTF8))
         self.menuFile.setTitle(QtGui.QApplication.translate("MainWindow", "File", None, QtGui.QApplication.UnicodeUTF8))
         self.actionQuit.setText(QtGui.QApplication.translate("MainWindow", "Quit", None, QtGui.QApplication.UnicodeUTF8))
         self.actionSave_log.setText(QtGui.QApplication.translate("MainWindow", "Save log", None, QtGui.QApplication.UnicodeUTF8))

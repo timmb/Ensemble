@@ -85,7 +85,6 @@ class InputProcessor(object):
 			self.log(message_type+': '+log_message, sender)
 		
 		elif message_type=='listen_port':
-			self.log('received listen_port message')
 			values = message.getValues()
 			if values:
 				port = values[0]

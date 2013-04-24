@@ -12,6 +12,11 @@ from pprint import pformat
 from lib.texttable import Texttable
 
 
+
+def assign(var, value):
+    var = value
+
+
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, stabilizer, parent = None):
         QtGui.QMainWindow.__init__(self, parent)
@@ -19,9 +24,18 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self.stabilizer = stabilizer
         
-        self.ui.logView.setModel(stabilizer.event_log)
-        self.ui.startOrStopListeningButton.clicked.connect(self.start_or_stop_listening)
         self.ui.actionQuit.triggered.connect(stabilizer.quit)
+        self.ui.logView.setModel(stabilizer.event_log)
+        self.ui.enableInputCheckbox.toggled.connect(self.start_or_stop_listening)
+        self.ui.enableOutputCheckbox.toggled.connect(self.start_or_stop_sending)
+        checkbox_variable_pairings = [
+            (self.ui.calculateConvergenceCheckbox, self.stabilizer.enable_calculate_convergence),
+            (self.ui.logIncomingMessagesCheckbox, self.stabilizer.enable_log_incoming_messages),
+            (self.ui.logOutgoingMessagesCheckbox, self.stabilizer.enable_log_outgoing_messages)
+            ]
+        for checkbox, var in checkbox_variable_pairings:
+            checkbox.setChecked(var)
+            checkbox.toggled.connect(lambda x: assign(var,x))
 
         self.update_timer = QTimer(self)
         self.update_timer.setInterval(500)
@@ -43,10 +57,14 @@ class MainWindow(QtGui.QMainWindow):
 
         if start_listening:
             self.stabilizer.start_listening()
-            self.ui.startOrStopListeningButton.setText("Stop Listening")
         else:
             self.stabilizer.stop_listening()
-            self.ui.startOrStopListeningButton.setText("Start Listening")
+
+    def start_or_stop_sending(self, whether_to_start_sending):
+        if whether_to_start_sending:
+            self.stabilizer.start_sending()
+        else:
+            self.stabilizer.stop_sending()
 
     def get_pretty_connections(self):
         names = [name for name in self.stabilizer.instruments]

@@ -135,6 +135,13 @@ class Stabilizer(QApplication):
         # defined in open_output_socket below
         self._output_socket = None
 
+        #settings
+        
+        self.enable_log_incoming_messages = False
+        self.enable_log_outgoing_messages = False
+        self.enable_calculate_convergence = True
+        
+
 
         self.aboutToQuit.connect(self.shutdown)
 
@@ -165,7 +172,8 @@ class Stabilizer(QApplication):
 
         # temporary very basic convergence calculations
         self.convergence_timer = QTimer(self)
-        self.convergence_timer.timeout.connect(lambda: temp_convergence_method(
+        self.convergence_timer.timeout.connect(
+            lambda: self.enable_calculate_convergence and temp_convergence_method(
             self.world_state,
             self.connections,
             self.converged_state))
@@ -229,7 +237,8 @@ class Stabilizer(QApplication):
 
     def osc_message_callback(self, message, client):
         osc_messages.put(message)
-        self.log("%s: %s" % (client, message) )
+        if self.enable_log_incoming_messages:
+            self.log("%s: %s" % (client, message) )
         self.input_processor.osc_message_callback(message, client)
         self.connection_detector.update()
 
@@ -238,7 +247,8 @@ class Stabilizer(QApplication):
             self.log('Error: cannot start osc message as the output socket has'
                 +' not been opened.')
             return
-        self.log('-> {}: {}'.format(message, destination))
+        if self.enable_log_outgoing_messages:
+            self.log('-> {}: {}'.format(message, destination))
         self.osc_sender.send(message, destination)
 
 
