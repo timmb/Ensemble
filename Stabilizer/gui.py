@@ -33,6 +33,7 @@ class MainWindow(QtGui.QMainWindow):
     def update(self):
         '''Refresh gui based on self.stabilizer'''
         self.ui.worldStateText.setPlainText(pformat(self.stabilizer.world_state))
+        self.ui.convergedStateText.setPlainText(pformat(self.stabilizer.converged_state))
         self.ui.instrumentsText.setPlainText(pformat(self.stabilizer.instruments))
         self.ui.connectionsText.setPlainText(self.get_pretty_connections())
 

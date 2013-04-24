@@ -81,6 +81,44 @@ class ListModel(QtCore.QAbstractListModel):
         self.endInsertRows()
 
 
+
+def temp_convergence_method(world_state, connections, converged_state):
+    '''Very basic convergence function. This will be replaced with
+    a proper plugins-based structure in the future.
+
+    Assumes `connections` is a complete mapping with respect to the instruments 
+    described by `world_state`
+    '''
+    converge_using_mean = [
+        'activity',
+        'tempo',
+        'loudness',
+        'immediate_pitch',
+        'root',
+        'detune',
+        'note_density',
+        'note_frequency',
+        'attack',
+        'brightness',
+        'roughness',
+    ]
+    converge_using_mean = [p for p in converge_using_mean if p in world_state]
+
+    for param in converge_using_mean:
+        insts = world_state[param]
+        for inst0 in insts:
+            total_weight = 0
+            total = 0.
+            for inst1 in insts:
+                weight = connections[inst0][inst1]
+                total_weight += weight
+                total += world_state[param][inst1][0] * weight
+            mean = total/total_weight
+            if type(world_state[param][inst0][0])==int:
+                mean = int(mean)
+            converged_state.setdefault(param,{})[inst0] = [mean]
+
+
 class Stabilizer(QApplication):
     def __init__(self):
         QApplication.__init__(self, sys.argv, True)
@@ -124,6 +162,15 @@ class Stabilizer(QApplication):
             self.send_osc,
             lambda message,module='OutputProcessor': self.log(message, module)
             )
+
+        # temporary very basic convergence calculations
+        self.convergence_timer = QTimer(self)
+        self.convergence_timer.timeout.connect(lambda: temp_convergence_method(
+            self.world_state,
+            self.connections,
+            self.converged_state))
+        self.convergence_timer.setInterval(100)
+        self.convergence_timer.start()
 
 
     def shutdown(self):
