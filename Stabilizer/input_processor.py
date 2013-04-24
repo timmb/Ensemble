@@ -76,12 +76,20 @@ class InputProcessor(object):
 				self.log('Invalid parameter/value combination from '
 					+'{} for parameter {}: {}'.format(sender, param, value))
 
-	def we_have_heard_from(self, instrument_name):
+	def we_have_heard_from(self, instrument_name, instrument_address):
+		'''
+		instrument_address is of form (host, port)
+		'''
 		if instrument_name not in self.instruments:
 			self.log('First message received from '+instrument_name, 'InputProcessor')
 			self.instruments[instrument_name] = {}
 			self.instruments[instrument_name]['state'] = {}
+			self.instruments[instrument_name]['address'] = instrument_address
 		self.instruments[instrument_name]['last heard at'] = time.strftime("%H:%M:%S")
+		old_address = self.instruments[intrument_name]['address']
+		if old_address != instrument_address:
+			self.log('Address for {} changed from {} to {}'.format(instrument_name, old_address, instrument_address))
+			self.instruments[instrument_name]['address'] = instrument_address
 
 	def check_valid(self, param, type_tags, arguments):
 		if param in self.valid_message_type_tags:

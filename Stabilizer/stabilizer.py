@@ -93,6 +93,7 @@ class Stabilizer(QApplication):
         self._server_port = None
         self.aboutToQuit.connect(self.shutdown)
 
+        # for now just use dictionaries to represent states
         # parameter -> { instrument -> value }
         self.world_state = {}
         # parameter -> converged_value
@@ -101,6 +102,7 @@ class Stabilizer(QApplication):
         # instrument -> { property -> value }
         # also contains the state of the instrument:
         # instrument -> { 'state' -> { parameter -> value } }
+        # instrument -> { 'address' -> (host, port) }
         self.instruments = {}
         # instrument -> { instrument -> connection_amount }
         self.connections = {}

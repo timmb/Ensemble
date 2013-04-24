@@ -23,7 +23,7 @@ class State(QThread):
 		called from a different thread.
 		'''
 		# to do
-		pass
+		self._state[key] = new_value
 
 	def run(self):
 		'''Called when the thread is started. Every n seconds any callbacks that need
