@@ -27,7 +27,6 @@ class ConnectionDetector(object):
 			for j in range(i,len(names)):
 				state_i = self.instruments[names[i]]['state']
 				state_j = self.instruments[names[j]]['state']
-				print 'state i {}\n state j {}'.format(state_i, state_j)
 				connection = 0
 				if 'activity' in state_i and 'activity' in state_j:
 					# remember all state values are lists
@@ -36,4 +35,3 @@ class ConnectionDetector(object):
 				# so use default value of {}
 				self.connections.setdefault(names[i],{})[names[j]] = connection
 				self.connections.setdefault(names[j],{})[names[i]] = connection
-				print 'connections {}'.format(self.connections)

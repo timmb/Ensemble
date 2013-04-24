@@ -36,13 +36,16 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.instrumentsText.setPlainText(pformat(self.stabilizer.instruments))
         self.ui.connectionsText.setPlainText(self.get_pretty_connections())
 
-    def start_or_stop_listening(self):
-        if self.stabilizer.is_listening:
-            self.stabilizer.stop_listening()
-            self.ui.startOrStopListeningButton.setText("Start Listening")
-        else:
+    def start_or_stop_listening(self, start_listening=None):
+        if start_listening==None:
+            start_listening = not self.stabilizer.is_listening
+
+        if start_listening:
             self.stabilizer.start_listening()
             self.ui.startOrStopListeningButton.setText("Stop Listening")
+        else:
+            self.stabilizer.stop_listening()
+            self.ui.startOrStopListeningButton.setText("Start Listening")
 
     def get_pretty_connections(self):
         names = [name for name in self.stabilizer.instruments]
