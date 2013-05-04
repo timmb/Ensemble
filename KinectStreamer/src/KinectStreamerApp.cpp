@@ -58,7 +58,7 @@ void KinectStreamerApp::loadJson()
 	bool success = true;
 	if (success)
 	{
-		console() << "successful parse";
+		console() << "successful parse\n";
 		Json::Value ip = root["ip"];
 		Json::Value port = root["port"];
 		Json::Value deviceId = root["deviceId"];

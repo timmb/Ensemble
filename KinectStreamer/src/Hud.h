@@ -24,6 +24,9 @@ public:
 	void update(float dt, float elapsedTime);
 	void draw();
 	
+	/// If true everything displayed is also dumpted to console
+	bool mDumpToConsole;
+	
 private:
 	float mCurrentTime;
 	struct TimestampedMessage

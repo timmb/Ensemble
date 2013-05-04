@@ -19,6 +19,7 @@ namespace {
 
 Hud::Hud(TextureFontRef font)
 : mFont(font)
+, mDumpToConsole(false)
 {}
 
 void Hud::display(string const& message, string const& origin)
@@ -28,13 +29,14 @@ void Hud::display(string const& message, string const& origin)
 	{
 		mMessages.pop_front();
 	}
-	cout << origin << ": "<<message<<endl;
+	if (mDumpToConsole)
+		cout << origin << ": "<<message<<endl;
 }
 
 
 void Hud::displayUntilFurtherNotice(const std::string &message, const std::string &origin)
 {
-	if (mPermanentMessages.count(origin)>0 && mPermanentMessages.at(origin)!=message)
+	if (mDumpToConsole && mPermanentMessages.count(origin)>0 && mPermanentMessages.at(origin)!=message)
 	{
 		cout << origin << ": "<<message<<endl;
 	}
@@ -67,7 +69,8 @@ void Hud::displayForAWhile(std::string const& message, std::string const& origin
 {
 	TimestampedMessage t ={ mCurrentTime, message, origin };
 	mMessagesToDisplayForAWhile.push_back(t);
-	cout << origin << ": "<<message<<endl;
+	if (mDumpToConsole)
+		cout << origin << ": "<<message<<endl;
 }
 
 
