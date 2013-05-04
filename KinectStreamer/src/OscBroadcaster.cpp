@@ -151,13 +151,24 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 			message.addIntArg(id);
 			mSender.sendMessage(message);
 		}
+		// find closest confident user
+		User const* closestUser = NULL;
 		for (User const& user: users)
 		{
-			UserMessage userMessage(mKinectName, user);
-			mSender.sendMessage(userMessage);
-			for (Joint const& joint: user.joints)
+			if (closestUser==NULL
+				|| ((user.getJoint(XN_SKEL_TORSO).mPos.lengthSquared() < closestUser->getJoint(XN_SKEL_TORSO).mPos.lengthSquared())
+					&& user.confidence>0.8))
 			{
-				JointMessage message(mKinectName, user.id, joint);
+				closestUser = &user;
+			}
+		}
+		if (closestUser!=NULL)
+		{
+			UserMessage userMessage(mKinectName, *closestUser);
+			mSender.sendMessage(userMessage);
+			for (Joint const& joint: closestUser->joints)
+			{
+				JointMessage message(mKinectName, closestUser->id, joint);
 				mSender.sendMessage(message);
 			}
 		}
