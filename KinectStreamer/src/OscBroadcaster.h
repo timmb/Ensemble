@@ -23,6 +23,9 @@ public:
 	void update(double dt, double elapsedTime);
 	
 private:
+	/// e.g. "joint/head" -> "/kinect/kinect-name/joint/head"
+	std::string makeAddress(std::string const& suffix) const;
+	
 	ci::osc::Sender mSender;
 	Kinect* mKinect;
 	std::string mKinectName;

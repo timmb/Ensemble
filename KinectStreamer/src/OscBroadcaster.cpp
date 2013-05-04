@@ -93,6 +93,11 @@ struct IsUserConfident {
 	bool operator()(User const& user) { return user.confidence==1.f; }
 };
 
+std::string OscBroadcaster::makeAddress(std::string const& suffix) const
+{
+	return "/kinect/"+mKinectName+'/'+suffix;
+}
+
 
 void OscBroadcaster::update(double dt, double elapsedTime)
 {
@@ -169,6 +174,14 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 			for (Joint const& joint: closestUser->joints)
 			{
 				JointMessage message(mKinectName, closestUser->id, joint);
+				mSender.sendMessage(message);
+			}
+			for (int h=0; h<2; ++h)
+			{
+				Message message;
+				message.setAddress(makeAddress(string("expression/")+(h==0?"left_hand":"right_hand")));
+				message.addIntArg(closestUser->id);
+				message.addFloatArg(closestUser->handExpression[h]);
 				mSender.sendMessage(message);
 			}
 		}
