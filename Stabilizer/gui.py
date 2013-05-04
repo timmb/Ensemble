@@ -38,7 +38,7 @@ class MainWindow(QtGui.QMainWindow):
             checkbox.toggled.connect(lambda x: assign(var,x))
 
         self.update_timer = QTimer(self)
-        self.update_timer.setInterval(500)
+        self.update_timer.setInterval(50)
         self.update_timer.timeout.connect(self.update)
         self.update_timer.start()
 

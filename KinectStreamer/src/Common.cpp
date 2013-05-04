@@ -7,7 +7,9 @@
 //
 
 #include "Common.h"
+#include <sstream>
 
+using namespace std;
 using namespace ci;
 using namespace ci::gl;
 
@@ -45,4 +47,15 @@ void drawCenteredString(std::string const& s)
 	ci::gl::popModelView();
 }
 
+string toString(osc::Message const& m)
+{
+	stringstream s;
+	s << '[' << m.getAddress() << ' ';
+	for (int i=0; i<m.getNumArgs(); ++i)
+	{
+		s << m.getArgAsString(i, true);
+	}
+	s << ']';
+	return s.str();
+}
 

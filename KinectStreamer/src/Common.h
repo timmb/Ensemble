@@ -11,6 +11,7 @@
 #include "cinder/gl/TextureFont.h"
 #include "cinder/gl/gl.h"
 #include "Hud.h"
+#include "OscMessage.h"
 
 static const bool NO_KINECT = false;
 
@@ -21,4 +22,6 @@ Hud& hud();
 
 void drawCenteredString(std::string const& s);
 
+
+std::string toString(ci::osc::Message const& m);
 

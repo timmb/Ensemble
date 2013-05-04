@@ -113,10 +113,16 @@ def temp_convergence_method(world_state, connections, converged_state):
                 weight = connections[inst0][inst1]
                 total_weight += weight
                 total += world_state[param][inst1][0] * weight
-            mean = total/total_weight
+            if total_weight==0:
+                mean = world_state[param][inst0][0]
+            else:
+                mean = total/total_weight
             if type(world_state[param][inst0][0])==int:
                 mean = int(mean)
-            converged_state.setdefault(param,{})[inst0] = [mean]
+            if inst0 in converged_state.setdefault(param,{}):
+                converged_state[param][inst0][0] += 0.001*(mean-converged_state[param][inst0][0])
+            else:
+                converged_state[param][inst0] = [mean]
 
 
 class Stabilizer(QApplication):
@@ -219,7 +225,7 @@ class Stabilizer(QApplication):
     def start_listening(self) :
         global PORT
         if self.is_listening:
-            stop_listening()
+            self.stop_listening()
         try:
             self._input_socket = reactor.listenUDP(PORT, async.DatagramServerProtocol(self.osc_receiver))
             self.is_listening = True 

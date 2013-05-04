@@ -60,7 +60,7 @@ class InputProcessor(object):
 			or self.listen_port_pattern.match(message.address)
 			)
 		if not match:
-			self.log("Invalid OSC message received from {}: {}".format(origin, message), "InputProcessor")
+			self.log("Invalid OSC message received from {}: {}".format(origin_address, message), "InputProcessor")
 			return
 		
 		message_type = match.group('type')
