@@ -13,6 +13,7 @@
 //#include "tmb/Utilities.h"
 #include "cinder/Utilities.h"
 //#include <XnTypes.h>
+#include "cinder/app/AppBasic.h"
 
 using namespace ci;
 using namespace std;
@@ -144,8 +145,47 @@ User::User(float elapsedTime)
 	{
 		joints.push_back(Joint(i));
 	}
+	for (int h=0; h<2; ++h)
+	{
+		handExpression[h] = 0;
+		handSpeed[h] = 0;
+		handSmoothSpeed[h] = 0;
+		handPeakSpeed[h] = 0;
+		for (int i=0; i<handSpeedAverageWindowSize; ++i)
+			handSpeeds[h][i] = 0;
+	}
 }
 
+void User::update(float dt, float elapsedTime)
+{
+	for (int h=0; h<2; ++h)
+	{
+		//	mouseX = float(app::AppBasic::get()->getMousePos().x)/app::getWindowWidth();
+		//	mouseY = float(app::AppBasic::get()->getMousePos().y)/app::getWindowHeight();
+		//	printf("mouseX %f mouseY %f\n", mouseX, mouseY);
+		for (int i=handSpeedAverageWindowSize-1; i>0; --i)
+			handSpeeds[h][i] = handSpeeds[h][i-1];
+		handSpeeds[h][0] = getJoint(h==0? XN_SKEL_LEFT_HAND :XN_SKEL_RIGHT_HAND).mVel.length();
+		
+		handSpeed[h] = 0;
+		for (int i=0;i<handSpeedAverageWindowSize; ++i)
+			handSpeed[h] += handSpeeds[h][i];
+		handSpeed[h] /= handSpeedAverageWindowSize;
+		
+		handSpeed[h] *= 0.453*.001;
+		handSmoothSpeed[h] += 0.0458 * (handSpeed[h] - handSmoothSpeed[h]);
+		
+		float peakDecay = 0.965;
+		handPeakSpeed[h] *= peakDecay;
+		handPeakSpeed[h] = max(handPeakSpeed[h], handSpeed[h]);
+		
+		float a = 0.19375;
+		handExpression[h] = a*handSpeed[h] + (1.-a)*handSmoothSpeed[h];
+		float b = 0.823438;
+		handExpression[h] = b*handExpression[h] + (1.-b)*handPeakSpeed[h];
+		handExpression[h] = max(0.f, min(1.f, handExpression[h]));
+	}
+}
 
 void User::draw()
 {
@@ -154,6 +194,29 @@ void User::draw()
 	{
 		it->draw();
 	}
+	gl::pushMatrices();
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	gl::translate(-.5, -.5);
+	gl::scale(.5,.5);
+	for (int h=0; h<2; ++h)
+	{
+		if (h==1) {
+			gl::translate(2,0);
+			gl::scale(-1, 1, 1);
+		}
+		gl::color(Color(1,0,0));
+		gl::drawSolidRect(Rectf(-1,-0.7,-1+2*handSpeed[h], -0.6));
+		gl::color(Color(0,1,0));
+		gl::drawSolidRect(Rectf(-1,-0.8,-1+2*handSmoothSpeed[h], -0.7));
+		gl::color(Color(0,0,1));
+		gl::drawSolidRect(Rectf(-1, -0.9, -1+2*handPeakSpeed[h], -0.8));
+		gl::color(Color(1,1,0));
+		gl::drawSolidRect(Rectf(-1, -1, -1+2*handExpression[h], -0.9));
+	}
+	gl::popMatrices();
 }
 
 Joint User::getJoint(XnSkeletonJointId id) const

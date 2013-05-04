@@ -177,6 +177,7 @@ void Kinect::update(float dt, float elapsedTime)
 							myUser.joints[i].update(dt, getPosition(bone), bone.positionConfidence, myUser.pos);
 						}
 						myUser.age = elapsedTime - myUser.creationTime;
+						myUser.update(dt, elapsedTime);
 						break;
 					}
 				}

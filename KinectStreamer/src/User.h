@@ -75,10 +75,30 @@ struct User
 	/// This is set to true if this is a NULL user (see below)
 	bool isNull;
 	
+	
+	float handExpression[2];
+	
+	// variables for calculating hand expression
+	float handSpeed[2]; // moving avergae of speeds
+	static const unsigned long handSpeedAverageWindowSize = 5;
+	float handSpeeds[2][handSpeedAverageWindowSize];
+	float handSmoothSpeed[2];
+	float handPeakSpeed[2];
+	
+	///temp
+//	float mouseX, mouseY;
+//	float expression;
+//	float rhSpeed;
+//	float rhSpeeds[handSpeedAverageWindowSize];
+//	float rhSmoothSpeed;
+//	float rhPeak;
+	
 	/// Construct a NULL user (does not have proper data or represent an actual user)
 	User();
 	/// Construct a real user
 	User(float elapsedTime);
+	/// Should be called after all joints have been updated
+	void update(float dt, float elapsedTime);
 	void draw();
 	/// Get joint by ID (nb not index). This throws exception
 	/// if id is not in JOINT_IDS
