@@ -43,12 +43,10 @@ class JointMessage : public osc::Message
 public:
 	JointMessage(string const& kinectId, int32_t userId, Joint const& joint)
 	{
-		address = "/kinect/joint";
-		const int numArgs = 10;
+		address = "/kinect/"+kinectId+"/joint/"+joint.name();
+		const int numArgs = 8;
 		Arg* myArgs[numArgs] = {
-			new ArgString(kinectId),
 			new ArgInt32(userId),
-			new ArgString(joint.name()),
 			new ArgFloat(joint.mConfidence),
 			new ArgFloat(joint.mPos.x),
 			new ArgFloat(joint.mPos.y),
