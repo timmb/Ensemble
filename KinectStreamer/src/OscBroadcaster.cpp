@@ -135,24 +135,21 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 		/// /kinect/joint: <string kinect id> <int user id> <string joint name> <float confidence> <float x> <float y> <float z> <float x velocity> <float y velocity> <float z velocity>
 		{
 			Message message;
-			message.setAddress("/kinect/number_of_users");
-			message.addStringArg(mKinectName);
+			message.setAddress(makeAddress("number_of_users"));
 			message.addIntArg(users.size());
 			mSender.sendMessage(message);
 		}
 		for (int id : newUserIds)
 		{
 			Message message;
-			message.setAddress("/kinect/new_user");
-			message.addStringArg(mKinectName);
+			message.setAddress(makeAddress("new_user"));
 			message.addIntArg(id);
 			mSender.sendMessage(message);
 		}
 		for (int id : missingUserIds)
 		{
 			Message message;
-			message.setAddress("/kinect/lost_user");
-			message.addStringArg(mKinectName);
+			message.setAddress(makeAddress("lost_user"));
 			message.addIntArg(id);
 			mSender.sendMessage(message);
 		}
