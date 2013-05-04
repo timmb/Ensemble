@@ -82,8 +82,8 @@ struct User
 	float handSpeed[2]; // moving avergae of speeds
 	static const unsigned long handSpeedAverageWindowSize = 5;
 	float handSpeeds[2][handSpeedAverageWindowSize];
-	float handSmoothSpeed[2];
-	float handPeakSpeed[2];
+	double handSmoothSpeed[2];
+	double handPeakSpeed[2];
 	
 	///temp
 //	float mouseX, mouseY;
