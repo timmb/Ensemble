@@ -31,6 +31,7 @@ class OutputProcessor(QThread):
 		self.update_timer.timeout.connect(self._update)
 		self.update_timer.setInterval(500)
 
+
 	def run(self):
 		'''Start the thread sending messages.
 		'''

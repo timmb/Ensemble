@@ -82,7 +82,7 @@ class ListModel(QtCore.QAbstractListModel):
 
 
 
-def temp_convergence_method(world_state, connections, converged_state):
+def temp_convergence_method(world_state, connections, converged_state, default_values):
     '''Very basic convergence function. This will be replaced with
     a proper plugins-based structure in the future.
 
@@ -123,6 +123,14 @@ def temp_convergence_method(world_state, connections, converged_state):
                 converged_state[param][inst0][0] += 0.001*(mean-converged_state[param][inst0][0])
             else:
                 converged_state[param][inst0] = [mean]
+
+    # if a parameter hasn't been set then use the default value
+    for param in default_values:
+        for inst in connections:
+            if param not in converged_state:
+                converged_state[param] = {}
+            if inst not in converged_state[param]:
+                converged_state[param][inst] = default_values[param][:]
 
 
 class Stabilizer(QApplication):
@@ -176,15 +184,33 @@ class Stabilizer(QApplication):
             lambda message,module='OutputProcessor': self.log(message, module)
             )
 
+        self.default_values = {
+            'activity': [0.],
+            'tempo': [120.],
+            'loudness': [0.5],
+            'root': [24],
+            'harmony': [0, 7, 3, 10, 8],
+            'detune': [0.],
+            'note_frequency': [2.],
+            'note_desity': [0.5],
+            'attack': [0.1],
+            'brightness': [0.5],
+            'roughness': [0.2],
+        }
+
         # temporary very basic convergence calculations
         self.convergence_timer = QTimer(self)
         self.convergence_timer.timeout.connect(
             lambda: self.enable_calculate_convergence and temp_convergence_method(
             self.world_state,
             self.connections,
-            self.converged_state))
+            self.converged_state,
+            self.default_values))
         self.convergence_timer.setInterval(100)
         self.convergence_timer.start()
+
+
+
 
 
     def shutdown(self):
