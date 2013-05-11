@@ -14,6 +14,8 @@
 #include "cinder/Utilities.h"
 //#include <XnTypes.h>
 #include "cinder/app/AppBasic.h"
+#include "Common.h"
+#include "Kinect.h"
 
 using namespace ci;
 using namespace std;
@@ -82,6 +84,7 @@ const map<string, int> STRING_TO_JOINT_INDEX = boost::assign::map_list_of
 Joint::Joint(int index)
 : mIndex(index)
 , mConfidence(0)
+
 {
 	
 }
@@ -100,20 +103,36 @@ int Joint::jointIndexFromName(std::string const& name)
 }
 
 
-void Joint::update(float dt, ci::Vec3f newPos, float newConfidence, ci::Vec3f const& userPos)
+void Joint::update(float dt, ci::Vec3f newPos, float newConfidence, ci::Vec3f const& userPos, JointParameters const& jointParameters)
 {
 	Vec3f prevPos = mPos;
 	mPos = newPos;
 	mRelPos = userPos - mPos;
 	mConfidence = newConfidence;
 	Vec3f newVel = (mPos - prevPos) / dt;
-	if (mVel==mVel)
+	
+	if (newVel==newVel)
 	{
-		mVel += .5f * (newVel - mVel);
-	}
-	else
-	{
-		mVel = newVel;
+		int velSmoothing = min(max(jointParameters.velocitySmoothing, 0), 400);
+		if (velSmoothing != mPrevVels.size())
+		{
+			mPrevVels.resize(velSmoothing, newVel);
+		}
+		if (velSmoothing>0)
+		{
+			mPrevVels.pop_back();
+			mPrevVels.push_front(newVel);
+			mVel = ci::Vec3f::zero();
+			for (auto it=mPrevVels.begin(); it!=mPrevVels.end(); ++it)
+			{
+				mVel += *it;
+			}
+			mVel /= velSmoothing;
+		}
+		else
+		{
+			mVel = newVel;
+		}
 	}
 }
 
@@ -122,8 +141,19 @@ void Joint::update(float dt, ci::Vec3f newPos, float newConfidence, ci::Vec3f co
 
 void Joint::draw()
 {
-	gl::color(.5*mConfidence + .4*isRight(), .86*mConfidence, .44*mConfidence + .4*isLeft());
-	gl::drawSphere(mPos, 20);
+//	gl::drawSphere(mPos, 20);
+	// draw velocity for hands
+	if (id()==::XN_SKEL_LEFT_HAND || id() == ::XN_SKEL_RIGHT_HAND)
+	{
+		gl::color(.5*mConfidence + .4*isRight(), .86*mConfidence, .44*mConfidence + .4*isLeft());
+		glLineWidth(3);
+		glBegin(GL_LINES);
+		{
+			gl::vertex(Vec3f(Kinect::worldToProjective(mPos).xy()));
+			gl::vertex(Vec3f(Kinect::worldToProjective(mPos+mVel*0.33).xy()));
+		}
+		glEnd();
+	}
 }
 
 User::User()
@@ -132,7 +162,6 @@ User::User()
 , confidence(-42)
 , isNull(true)
 {}
-
 
 User::User(float elapsedTime)
 : creationTime(elapsedTime)
@@ -156,7 +185,7 @@ User::User(float elapsedTime)
 	}
 }
 
-void User::update(float dt, float elapsedTime)
+void User::update(float dt, float elapsedTime, JointParameters const& jointParameters)
 {
 	/// to accomodate deviations from 0.0333s between frames
 	/// so exponential decay filters don't screw up
@@ -168,7 +197,7 @@ void User::update(float dt, float elapsedTime)
 //			printf("mouseX %f mouseY %f\n", mouseX, mouseY);
 		for (int i=handSpeedAverageWindowSize-1; i>0; --i)
 			handSpeeds[h][i] = handSpeeds[h][i-1];
-		handSpeeds[h][0] = getJoint(h==0? XN_SKEL_LEFT_HAND :XN_SKEL_RIGHT_HAND).mVel.length();
+		handSpeeds[h][0] = getJoint(h==0? ::XN_SKEL_LEFT_HAND : ::XN_SKEL_RIGHT_HAND).mVel.length();
 		
 		handSpeed[h] = 0;
 		for (int i=0;i<handSpeedAverageWindowSize; ++i)
@@ -176,7 +205,7 @@ void User::update(float dt, float elapsedTime)
 		handSpeed[h] /= handSpeedAverageWindowSize;
 		
 		handSpeed[h] *= 0.453*.001;
-		handSmoothSpeed[h] += 0.0458*framerateFactor * (handSpeed[h] - handSmoothSpeed[h]);
+		handSmoothSpeed[h] += (1.f-jointParameters.expressionDecay)*framerateFactor * (handSpeed[h] - handSmoothSpeed[h]);
 		
 		float peakDecay = 1. - framerateFactor*(1. - 0.965);
 		handPeakSpeed[h] *= peakDecay;

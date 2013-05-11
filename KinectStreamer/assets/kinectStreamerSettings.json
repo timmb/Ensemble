@@ -1,5 +1,11 @@
+
 {
- "ip" : "127.0.0.1",
- "port" : 37000,
- "deviceName" : "Kinect0"
-} 
+	"Expression decay" : 0.06700000166893005,
+	"Velocity smoothing" : 7,
+	"osc" : 
+	{
+		"deviceName" : "",
+		"ip" : "",
+		"port" : 37000
+	}
+}

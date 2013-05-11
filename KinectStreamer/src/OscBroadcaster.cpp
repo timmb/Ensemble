@@ -71,9 +71,9 @@ OscBroadcaster::OscBroadcaster()
 
 void OscBroadcaster::registerParams(Settings& settings)
 {
-	settings.addParam(new Parameter<string>(&mDestinationIp, "ip", "OscBroadcaster"));
-	settings.addParam(new Parameter<int>(&mDestinationPort, "port", "OscBroadcaster"));
-	settings.addParam(new Parameter<string>(&mKinectName, "deviceName", "OscBroadcaster"));
+	settings.addParam(new Parameter<string>(&mDestinationIp, "ip", "osc"));
+	settings.addParam(new Parameter<int>(&mDestinationPort, "port", "osc"));
+	settings.addParam(new Parameter<string>(&mKinectName, "deviceName", "osc"));
 }
 
 void OscBroadcaster::setup(Kinect* kinect)

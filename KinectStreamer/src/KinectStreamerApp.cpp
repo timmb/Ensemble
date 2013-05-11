@@ -28,6 +28,7 @@ private:
 	Kinect mKinect;
 	OscBroadcaster mOscBroadcaster;
 	double mElapsedTime;
+	JointParameters mJointParameters;
 };
 
 KinectStreamerApp::KinectStreamerApp()
@@ -38,6 +39,7 @@ void KinectStreamerApp::setup()
 {
 	setupFont();
 	mOscBroadcaster.registerParams(mSettings);
+	mJointParameters.registerParams(mSettings);
 	mSettings.load(getAssetPath("kinectStreamerSettings.json").string());
 	mSettings.setup();
 	mKinect.setup();
@@ -60,11 +62,13 @@ void KinectStreamerApp::mouseDown( MouseEvent event )
 
 void KinectStreamerApp::update()
 {
+	gMouseX = float(getMousePos().x) / getWindowWidth();
+	gMouseY = float(getMousePos().y) / getWindowHeight();
 	double elapsedTime = getElapsedSeconds();
 	double dt = elapsedTime - mElapsedTime;
 	mElapsedTime = elapsedTime;
 	
-	mKinect.update(dt, mElapsedTime);
+	mKinect.update(dt, mElapsedTime, mJointParameters);
 	mOscBroadcaster.update(dt, mElapsedTime);
 	hud().update(dt, mElapsedTime);
 }
@@ -75,6 +79,7 @@ void KinectStreamerApp::draw()
 	gl::clear( Color( 0, 0, 0 ) );
 	mKinect.draw();
 	hud().draw();
+	mSettings.draw();
 }
 
 CINDER_APP_NATIVE( KinectStreamerApp, RendererGl )

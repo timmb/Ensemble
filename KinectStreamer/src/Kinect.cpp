@@ -26,12 +26,18 @@ using namespace V;
 //typedef boost::shared_lock<boost::shared_mutex> ReadLock;
 //typedef boost::unique_lock<boost::shared_mutex> WriteLock;
 
+Kinect* Kinect::sInstance = NULL;
+
 Kinect::Kinect()
-{}
+{
+	sInstance = this;
+}
 
 
 Kinect::~Kinect()
 {
+	if (sInstance==this)
+		sInstance = NULL;
 }
 
 
@@ -66,7 +72,7 @@ void Kinect::openKinect()
 }
 
 
-void Kinect::update(float dt, float elapsedTime)
+void Kinect::update(float dt, float elapsedTime, JointParameters const& jointParameters)
 {
 //	// tmp
 //	if (int(elapsedTime) % 10 < 5)
@@ -172,10 +178,10 @@ void Kinect::update(float dt, float elapsedTime)
 						for (int i = 0; i<myUser.joints.size(); ++i)
 						{
 							OpenNIBone const& bone = *user->getBone(JOINT_IDS[i]);
-							myUser.joints[i].update(dt, getPosition(bone), bone.positionConfidence, myUser.pos);
+							myUser.joints[i].update(dt, getPosition(bone), bone.positionConfidence, myUser.pos, jointParameters);
 						}
 						myUser.age = elapsedTime - myUser.creationTime;
-						myUser.update(dt, elapsedTime);
+						myUser.update(dt, elapsedTime, jointParameters);
 						break;
 					}
 				}
@@ -289,4 +295,16 @@ ci::Vec3f Kinect::getPosition(V::OpenNIBone const& joint)
 bool Kinect::isUserDataNew() const
 {
 	return mIsUserDataNew;
+}
+
+ci::Vec3f Kinect::worldToProjective(ci::Vec3f const& worldPos)
+{
+	if (instance()==NULL)
+	{
+		return ci::Vec3f();
+	}
+	XnPoint3D point = {worldPos.x, worldPos.y, worldPos.z};
+	XnPoint3D projective;
+	instance()->mDevice->getDepthGenerator()->ConvertRealWorldToProjective(1, &point, &projective);
+	return ci::Vec3f(projective.X, projective.Y, projective.Z);
 }

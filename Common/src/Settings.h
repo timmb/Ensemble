@@ -76,9 +76,10 @@ class BaseParameter
 public:
 	// path is slash separated
 	// e.g. "" or "triggers" or "triggers/my_trigger/part 1"
-	BaseParameter(std::string const& name, std::string const& path="")
+	BaseParameter(std::string const& name, std::string const& path, std::string const& options)
 	: path(path)
 	, name(name)
+	, options(options)
 	{}
 
 	virtual void setup(ci::params::InterfaceGl& params) = 0;
@@ -87,6 +88,7 @@ public:
 	
 	std::string path;
 	std::string name;
+	std::string options;
 	
 protected:
 	template <typename JsonOrConstJson>
@@ -100,14 +102,14 @@ template <typename T>
 class Parameter : public BaseParameter
 {
 public:
-	Parameter(T* value, std::string const& name, std::string const& path)
-	: BaseParameter(name, path)
+	Parameter(T* value, std::string const& name, std::string const& path="", std::string const& options="")
+	: BaseParameter(name, path, options)
 	, value(value)
 	{}
 	
 	virtual void setup(ci::params::InterfaceGl& params)
 	{
-		params.addParam(path+" "+name, value, "group=path");
+		params.addParam(path+" "+name, value, options+(path==""?"":" group="+path));
 	}
 	
 protected:

@@ -37,7 +37,7 @@ public:
 	virtual ~Kinect();
 	
 	void setup();
-	void update(float dt, float elapsedTime);
+	void update(float dt, float elapsedTime, JointParameters const& jointParameters);
 	void draw();
 	
 	/// Was user data updated in the last update() call?
@@ -49,6 +49,9 @@ public:
 	std::vector<User> users() const;
 	
 	static ci::Vec3f getPosition(V::OpenNIBone const& joint);
+	static ci::Vec3f worldToProjective(ci::Vec3f const& worldPos);
+	
+	static Kinect* instance() { return sInstance; }
 	
 private:
 	/// If successful then mDevice!=NULL
@@ -75,6 +78,8 @@ private:
 	std::vector<User> mUsers;
 	
 	bool mIsUserDataNew;
+	
+	static Kinect* sInstance;
 };
 
 

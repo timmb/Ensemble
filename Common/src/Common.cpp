@@ -14,6 +14,8 @@ using namespace ci::gl;
 using namespace std;
 
 bool sIsShiftDown = false;
+float gMouseX = 0.f;
+float gMouseY = 0.f;
 
 namespace {
 	TextureFontRef fFont;

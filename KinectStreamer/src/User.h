@@ -13,6 +13,7 @@
 //#include <XnTypes.h>
 //#include "VOpenNIBone.h"
 #include "cinder/Vector.h"
+#include "Common.h"
 
 /// Labelling of joints used by OpenNI
 typedef int XnSkeletonJointId;
@@ -35,7 +36,7 @@ class Joint
 public:
 	/// index is where the joint appears in our arrays (arrays exclude inactive joints. Not the same as XnSkeletonJoint value
 	Joint(JointIndex index);
-	void update(float dt, ci::Vec3f newPos, float newConfidence, ci::Vec3f const& userPos);
+	void update(float dt, ci::Vec3f newPos, float newConfidence, ci::Vec3f const& userPos, JointParameters const& jointParameters);
 	void draw();
 
 	// VARIABLES
@@ -43,6 +44,7 @@ public:
 	ci::Vec3f mVel;
 	ci::Vec3f mRelPos; ///< relative to the user centre of mass
 	float mConfidence;
+	std::list<ci::Vec3f> mPrevVels;
 	
 	// const elements
 	JointIndex mIndex;
@@ -98,7 +100,7 @@ struct User
 	/// Construct a real user
 	User(float elapsedTime);
 	/// Should be called after all joints have been updated
-	void update(float dt, float elapsedTime);
+	void update(float dt, float elapsedTime, JointParameters const& jointParameters);
 	void draw();
 	/// Get joint by ID (nb not index). This throws exception
 	/// if id is not in JOINT_IDS
