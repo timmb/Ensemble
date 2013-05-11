@@ -9,9 +9,11 @@
 #include "Common.h"
 #include <sstream>
 
-using namespace std;
 using namespace ci;
 using namespace ci::gl;
+using namespace std;
+
+bool sIsShiftDown = false;
 
 namespace {
 	TextureFontRef fFont;
@@ -47,6 +49,12 @@ void drawCenteredString(std::string const& s)
 	ci::gl::popModelView();
 }
 
+
+void err(std::string const& errorMessage, std::string const& origin) {
+	std::cout << origin << ": " << errorMessage << std::endl;
+	hud().displayForAWhile(errorMessage, origin);
+}
+
 string toString(osc::Message const& m)
 {
 	stringstream s;
@@ -58,4 +66,3 @@ string toString(osc::Message const& m)
 	s << ']';
 	return s.str();
 }
-

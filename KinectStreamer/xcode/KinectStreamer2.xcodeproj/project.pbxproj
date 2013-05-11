@@ -15,8 +15,6 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00CCAF14116A9FEE008396D5 /* CinderApp.icns */; };
 		22489AAE1709FE3D00032617 /* .DS_Store in Resources */ = {isa = PBXBuildFile; fileRef = 22489AA11709FE3D00032617 /* .DS_Store */; };
-		22489AAF1709FE3D00032617 /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AA21709FE3D00032617 /* Common.cpp */; };
-		22489AB01709FE3D00032617 /* Hud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AA41709FE3D00032617 /* Hud.cpp */; };
 		22489AB11709FE3D00032617 /* JsonLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AA61709FE3D00032617 /* JsonLoader.cpp */; };
 		22489AB21709FE3D00032617 /* Kinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AA81709FE3D00032617 /* Kinect.cpp */; };
 		22489AB31709FE3D00032617 /* OscBroadcaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AAA1709FE3D00032617 /* OscBroadcaster.cpp */; };
@@ -42,6 +40,9 @@
 		22489D45170A00A700032617 /* OscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489D39170A00A700032617 /* OscMessage.cpp */; };
 		22489D46170A00A700032617 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489D3A170A00A700032617 /* OscSender.cpp */; };
 		22B8D1A0170A0CA200881D75 /* KinectStreamerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */; };
+		22C04E03173E491700577D8D /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22C04E01173E491700577D8D /* Settings.cpp */; };
+		22C04E08173E49FF00577D8D /* Common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22C04E04173E49FF00577D8D /* Common.cpp */; };
+		22C04E09173E49FF00577D8D /* Hud.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22C04E06173E49FF00577D8D /* Hud.cpp */; };
 		5323E6B20EAFCA74003A9687 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B10EAFCA74003A9687 /* CoreVideo.framework */; };
 		5323E6B60EAFCA7E003A9687 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5323E6B50EAFCA7E003A9687 /* QTKit.framework */; };
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
@@ -59,10 +60,6 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		22489AA11709FE3D00032617 /* .DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; name = .DS_Store; path = ../src/.DS_Store; sourceTree = "<group>"; };
-		22489AA21709FE3D00032617 /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = ../src/Common.cpp; sourceTree = "<group>"; };
-		22489AA31709FE3D00032617 /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../src/Common.h; sourceTree = "<group>"; };
-		22489AA41709FE3D00032617 /* Hud.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hud.cpp; path = ../src/Hud.cpp; sourceTree = "<group>"; };
-		22489AA51709FE3D00032617 /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hud.h; path = ../src/Hud.h; sourceTree = "<group>"; };
 		22489AA61709FE3D00032617 /* JsonLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JsonLoader.cpp; path = ../src/JsonLoader.cpp; sourceTree = "<group>"; };
 		22489AA71709FE3D00032617 /* JsonLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLoader.h; path = ../src/JsonLoader.h; sourceTree = "<group>"; };
 		22489AA81709FE3D00032617 /* Kinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Kinect.cpp; path = ../src/Kinect.cpp; sourceTree = "<group>"; };
@@ -195,6 +192,12 @@
 		22489D39170A00A700032617 /* OscMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscMessage.cpp; sourceTree = "<group>"; };
 		22489D3A170A00A700032617 /* OscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscSender.cpp; sourceTree = "<group>"; };
 		22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KinectStreamerApp.cpp; path = ../src/KinectStreamerApp.cpp; sourceTree = "<group>"; };
+		22C04E01173E491700577D8D /* Settings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Settings.cpp; path = ../../Common/src/Settings.cpp; sourceTree = "<group>"; };
+		22C04E02173E491700577D8D /* Settings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Settings.h; path = ../../Common/src/Settings.h; sourceTree = "<group>"; };
+		22C04E04173E49FF00577D8D /* Common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Common.cpp; path = ../../Common/src/Common.cpp; sourceTree = "<group>"; };
+		22C04E05173E49FF00577D8D /* Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Common.h; path = ../../Common/src/Common.h; sourceTree = "<group>"; };
+		22C04E06173E49FF00577D8D /* Hud.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Hud.cpp; path = ../../Common/src/Hud.cpp; sourceTree = "<group>"; };
+		22C04E07173E49FF00577D8D /* Hud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Hud.h; path = ../../Common/src/Hud.h; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* KinectStreamer2_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KinectStreamer2_Prefix.pch; sourceTree = "<group>"; };
@@ -236,12 +239,14 @@
 		080E96DDFE201D6D7F000001 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				22C04E04173E49FF00577D8D /* Common.cpp */,
+				22C04E05173E49FF00577D8D /* Common.h */,
+				22C04E06173E49FF00577D8D /* Hud.cpp */,
+				22C04E07173E49FF00577D8D /* Hud.h */,
+				22C04E01173E491700577D8D /* Settings.cpp */,
+				22C04E02173E491700577D8D /* Settings.h */,
 				22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */,
 				22489AA11709FE3D00032617 /* .DS_Store */,
-				22489AA21709FE3D00032617 /* Common.cpp */,
-				22489AA31709FE3D00032617 /* Common.h */,
-				22489AA41709FE3D00032617 /* Hud.cpp */,
-				22489AA51709FE3D00032617 /* Hud.h */,
 				22489AA61709FE3D00032617 /* JsonLoader.cpp */,
 				22489AA71709FE3D00032617 /* JsonLoader.h */,
 				22489AA81709FE3D00032617 /* Kinect.cpp */,
@@ -654,7 +659,7 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
-			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KinectStreamer" */;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KinectStreamer2" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
@@ -690,8 +695,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22489AAF1709FE3D00032617 /* Common.cpp in Sources */,
-				22489AB01709FE3D00032617 /* Hud.cpp in Sources */,
 				22489AB11709FE3D00032617 /* JsonLoader.cpp in Sources */,
 				22489AB21709FE3D00032617 /* Kinect.cpp in Sources */,
 				22489AB31709FE3D00032617 /* OscBroadcaster.cpp in Sources */,
@@ -707,6 +710,9 @@
 				22489D45170A00A700032617 /* OscMessage.cpp in Sources */,
 				22489D46170A00A700032617 /* OscSender.cpp in Sources */,
 				22B8D1A0170A0CA200881D75 /* KinectStreamerApp.cpp in Sources */,
+				22C04E03173E491700577D8D /* Settings.cpp in Sources */,
+				22C04E08173E49FF00577D8D /* Common.cpp in Sources */,
+				22C04E09173E49FF00577D8D /* Hud.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -795,7 +801,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../Common/src";
 			};
 			name = Debug;
 		};
@@ -810,7 +816,7 @@
 				HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/boost\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.5;
 				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.6.sdk";
-				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include";
+				USER_HEADER_SEARCH_PATHS = "\"$(CINDER_PATH)/include\" ../include ../../Common/src";
 			};
 			name = Release;
 		};
@@ -826,7 +832,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KinectStreamer" */ = {
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "KinectStreamer2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
