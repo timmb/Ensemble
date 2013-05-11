@@ -24,10 +24,9 @@ class UserMessage : public osc::Message
 public:
 	UserMessage(string const& kinectId, User const& user)
 	{
-		address = "/kinect/user";
-		const int numArgs = 5;
+		address = "/kinect/"+kinectId+"/user";
+		const int numArgs = 4;
 		Arg* myArgs[numArgs] = {
-			new ArgString(kinectId),
 			new ArgInt32(user.id),
 			new ArgFloat(user.confidence),
 			new ArgFloat(user.getJoint(XN_SKEL_TORSO).mPos.length()),
