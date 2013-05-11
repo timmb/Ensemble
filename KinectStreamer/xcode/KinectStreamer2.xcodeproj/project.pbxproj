@@ -15,7 +15,6 @@
 		00B784B60FF439BC000DE1D7 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00B784B20FF439BC000DE1D7 /* CoreAudio.framework */; };
 		00CCAF15116A9FEE008396D5 /* CinderApp.icns in Resources */ = {isa = PBXBuildFile; fileRef = 00CCAF14116A9FEE008396D5 /* CinderApp.icns */; };
 		22489AAE1709FE3D00032617 /* .DS_Store in Resources */ = {isa = PBXBuildFile; fileRef = 22489AA11709FE3D00032617 /* .DS_Store */; };
-		22489AB11709FE3D00032617 /* JsonLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AA61709FE3D00032617 /* JsonLoader.cpp */; };
 		22489AB21709FE3D00032617 /* Kinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AA81709FE3D00032617 /* Kinect.cpp */; };
 		22489AB31709FE3D00032617 /* OscBroadcaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AAA1709FE3D00032617 /* OscBroadcaster.cpp */; };
 		22489AB41709FE3D00032617 /* User.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AAC1709FE3D00032617 /* User.cpp */; };
@@ -60,8 +59,6 @@
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
 		22489AA11709FE3D00032617 /* .DS_Store */ = {isa = PBXFileReference; lastKnownFileType = file; name = .DS_Store; path = ../src/.DS_Store; sourceTree = "<group>"; };
-		22489AA61709FE3D00032617 /* JsonLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = JsonLoader.cpp; path = ../src/JsonLoader.cpp; sourceTree = "<group>"; };
-		22489AA71709FE3D00032617 /* JsonLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JsonLoader.h; path = ../src/JsonLoader.h; sourceTree = "<group>"; };
 		22489AA81709FE3D00032617 /* Kinect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Kinect.cpp; path = ../src/Kinect.cpp; sourceTree = "<group>"; };
 		22489AA91709FE3D00032617 /* Kinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Kinect.h; path = ../src/Kinect.h; sourceTree = "<group>"; };
 		22489AAA1709FE3D00032617 /* OscBroadcaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscBroadcaster.cpp; path = ../src/OscBroadcaster.cpp; sourceTree = "<group>"; };
@@ -247,8 +244,6 @@
 				22C04E02173E491700577D8D /* Settings.h */,
 				22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */,
 				22489AA11709FE3D00032617 /* .DS_Store */,
-				22489AA61709FE3D00032617 /* JsonLoader.cpp */,
-				22489AA71709FE3D00032617 /* JsonLoader.h */,
 				22489AA81709FE3D00032617 /* Kinect.cpp */,
 				22489AA91709FE3D00032617 /* Kinect.h */,
 				22489AAA1709FE3D00032617 /* OscBroadcaster.cpp */,
@@ -695,7 +690,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				22489AB11709FE3D00032617 /* JsonLoader.cpp in Sources */,
 				22489AB21709FE3D00032617 /* Kinect.cpp in Sources */,
 				22489AB31709FE3D00032617 /* OscBroadcaster.cpp in Sources */,
 				22489AB41709FE3D00032617 /* User.cpp in Sources */,
