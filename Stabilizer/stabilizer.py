@@ -134,11 +134,14 @@ def temp_convergence_method(world_state, connections, converged_state, default_v
 
 
 class Stabilizer(QApplication):
+
     def __init__(self):
         QApplication.__init__(self, sys.argv, True)
+
         self.event_log = ListModel([])
         self.dispatcher = ThreadDispatcher(self)
         self.dispatcher.start()
+        
         # OSC input
         self.osc_receiver = dispatch.Receiver()
         self.osc_receiver.fallback = self.osc_message_callback
@@ -198,8 +201,8 @@ class Stabilizer(QApplication):
             'roughness': [0.2],
         }
 
-        # temporary very basic convergence calculations
         self.convergence_timer = QTimer(self)
+
         self.convergence_timer.timeout.connect(
             lambda: self.enable_calculate_convergence and temp_convergence_method(
             self.world_state,
@@ -208,9 +211,6 @@ class Stabilizer(QApplication):
             self.default_values))
         self.convergence_timer.setInterval(100)
         self.convergence_timer.start()
-
-
-
 
 
     def shutdown(self):
@@ -290,12 +290,12 @@ class Stabilizer(QApplication):
 
 if __name__=='__main__':
     app = Stabilizer()
+
     # Set up twisted events
     import qt4reactor
     qt4reactor.install()
     from twisted.internet import reactor
     reactor.addSystemEventTrigger('before', 'shutdown', reactor.stop)
-    # app.open_output_socket()
     app.start_sending()
     # Create gui
     main_window = MainWindow(app)
@@ -303,5 +303,4 @@ if __name__=='__main__':
     main_window.start_or_stop_listening(True)
     # start event loop
     app.exec_()
-    # app.shutdown()
 

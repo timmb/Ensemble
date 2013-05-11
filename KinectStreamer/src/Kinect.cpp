@@ -27,7 +27,6 @@ using namespace V;
 //typedef boost::unique_lock<boost::shared_mutex> WriteLock;
 
 Kinect::Kinect()
-: mDeviceId(0)
 {}
 
 
@@ -37,9 +36,8 @@ Kinect::~Kinect()
 
 
 
-void Kinect::setup(int deviceId)
+void Kinect::setup()
 {
-	mDeviceId = deviceId;
 	mFont = gl::TextureFont::create(Font("Helvetica", 16));
 	mDepthSize = Vec2i(640, 480);
 	mColorSize = Vec2i(640, 480);
@@ -94,7 +92,7 @@ void Kinect::update(float dt, float elapsedTime)
 	}
 	else
 	{
-		hud().display("Opened Kinect device "+toString(mDeviceId), "Kinect");
+		hud().display("Opened Kinect", "Kinect");
 		if ( mDevice->_isImageOn && mDevice->getImageGenerator()->IsValid() && mDevice->isImageDataNew() )
 		{
 			uint8_t *pixels = mDevice->getColorMap();

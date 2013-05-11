@@ -18,6 +18,13 @@
 using namespace std;
 using namespace ci;
 
+bool Settings::reload()
+{
+	if (mJsonFile=="")
+		return false;
+	return load(mJsonFile);
+}
+
 bool Settings::load(string const& filename)
 {
 	mJsonFile = filename;
@@ -87,7 +94,7 @@ void Settings::save(string const& filename)
 
 void Settings::setup()
 {
-	mParams = params::InterfaceGl("TadeoStreamer", Vec2i(250,400));
+	mParams = params::InterfaceGl("Settings", Vec2i(250,400));
 	mParams.addButton("Save", std::bind((void (Settings::*)())&Settings::save, this));
 	mParams.addButton("Save snapshot", std::bind(&Settings::snapshot, this));
 	for (int i=0; i<mParameters.size(); ++i)

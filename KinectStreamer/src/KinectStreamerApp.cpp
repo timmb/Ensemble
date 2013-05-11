@@ -4,6 +4,7 @@
 
 #include "Kinect.h"
 #include "OscBroadcaster.h"
+#include "Settings.h"
 
 #include <fstream>
 #include <iostream>
@@ -23,66 +24,33 @@ class KinectStreamerApp : public AppNative {
 	
 	
 private:
-	void loadJson();
+	::Settings mSettings; // keep before other objects that depend on it
 	Kinect mKinect;
 	OscBroadcaster mOscBroadcaster;
 	double mElapsedTime;
-	int mDeviceId;
 };
 
 KinectStreamerApp::KinectStreamerApp()
 : mElapsedTime(-.1)
-, mDeviceId(-42)
 {}
 
 void KinectStreamerApp::setup()
 {
 	setupFont();
-	loadJson();
-	mKinect.setup(mDeviceId);
+	mOscBroadcaster.registerParams(mSettings);
+	mSettings.load(getAssetPath("kinectStreamerSettings.json").string());
+	mSettings.setup();
+	mKinect.setup();
 	mOscBroadcaster.setup(&mKinect);
 //	mOscBroadcaster.setDestination("127.0.0.1", 37000);
 }
 
-void KinectStreamerApp::loadJson()
-{
-	std::string filename = getAssetPath("kinectStreamerSettings.json").string();
-	if (filename=="")
-	{
-		console() << "Error: Could not load kinectStreamerSettings.json from assets folder." << endl;
-		return;
-	}
-	Json::Value root;
-	ifstream in(filename.c_str(), ifstream::in);
-	in >> root;
-	bool success = true;
-	if (success)
-	{
-		console() << "successful parse\n";
-		Json::Value ip = root["ip"];
-		Json::Value port = root["port"];
-		Json::Value deviceId = root["deviceId"];
-		Json::Value deviceName = root["deviceName"];
-		success = ip.isString() && port.isIntegral() && deviceId.isIntegral() && deviceName.isString();
-		if (success)
-		{
-			mOscBroadcaster.setDestination(ip.asString(), port.asInt());
-			mDeviceId = deviceId.asInt();
-			hud().displayUntilFurtherNotice("Successfully loaded "+filename, "JSON");
-			mOscBroadcaster.setKinectName(deviceName.asString());
-		}
-	}
-	if (!success)
-	{
-		hud().displayUntilFurtherNotice("Unable to load json file.", "JSON");
-	}
-}
 
 void KinectStreamerApp::keyDown(KeyEvent event)
 {
 	if (event.getChar()==' ')
 	{
-		loadJson();
+		mSettings.reload();
 	}
 }
 

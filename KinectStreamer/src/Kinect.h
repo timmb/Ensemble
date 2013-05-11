@@ -13,6 +13,7 @@
 
 #include "User.h"
 #include "Common.h"
+#include "Settings.h"
 //#include "HardwareDriver.h"
 
 #include "cinder/Surface.h"
@@ -35,7 +36,7 @@ public:
 	Kinect();
 	virtual ~Kinect();
 	
-	void setup(int deviceId);
+	void setup();
 	void update(float dt, float elapsedTime);
 	void draw();
 	
@@ -74,7 +75,6 @@ private:
 	std::vector<User> mUsers;
 	
 	bool mIsUserDataNew;
-	int mDeviceId;
 };
 
 

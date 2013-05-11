@@ -18,6 +18,10 @@ def assign(var, value):
 
 
 class MainWindow(QtGui.QMainWindow):
+
+    sig_start_listening = QtCore.Signal()
+    sig_stop_listening = QtCore.Signal()
+
     def __init__(self, stabilizer, parent = None):
         QtGui.QMainWindow.__init__(self, parent)
         self.ui = UX.MainWindow.Ui_MainWindow()
@@ -42,6 +46,10 @@ class MainWindow(QtGui.QMainWindow):
         self.update_timer.timeout.connect(self.update)
         self.update_timer.start()
 
+        # Signals emitted by this class
+        self.sig_start_listening.connect(self.stabilizer.start_listening)
+        self.sig_stop_listening.connect(self.stabilizer.stop_listening)
+
         self.show()
 
     def update(self):
@@ -56,9 +64,9 @@ class MainWindow(QtGui.QMainWindow):
             start_listening = not self.stabilizer.is_listening
 
         if start_listening:
-            self.stabilizer.start_listening()
+            self.sig_start_listening.emit()
         else:
-            self.stabilizer.stop_listening()
+            self.sig_stop_listening.emit()
 
     def start_or_stop_sending(self, whether_to_start_sending):
         if whether_to_start_sending:

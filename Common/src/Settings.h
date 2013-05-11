@@ -138,6 +138,7 @@ class Settings
 {
 public:
 	bool load(std::string const& jsonFile);
+	bool reload();
 	void setup();
 	void save();
 	void save(std::string const& filename);

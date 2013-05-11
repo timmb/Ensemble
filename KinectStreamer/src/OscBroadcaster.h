@@ -10,6 +10,7 @@
 #include "cinder/Cinder.h"
 #include "OscSender.h"
 #include <set>
+#include "Settings.h"
 
 class Kinect;
 
@@ -17,9 +18,10 @@ class OscBroadcaster
 {
 public:
 	OscBroadcaster();
+	void registerParams(Settings& settings);
+	/// Should be called after registerParams
 	void setup(Kinect* kinect);
 	void setKinectName(std::string const& kinectName);
-	void setDestination(std::string destinationIp, int destinationPort);
 	void update(double dt, double elapsedTime);
 	
 private:
