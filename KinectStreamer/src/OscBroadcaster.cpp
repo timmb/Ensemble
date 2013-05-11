@@ -65,6 +65,7 @@ public:
 OscBroadcaster::OscBroadcaster()
 : mKinect(NULL)
 , mDestinationPort(0)
+, mKinectName("Kinect0")
 {
 	
 }
@@ -83,11 +84,6 @@ void OscBroadcaster::setup(Kinect* kinect)
 	mSender.setup(mDestinationIp, mDestinationPort);
 }
 
-
-void OscBroadcaster::setKinectName(std::string const& kinectName)
-{
-	mKinectName = kinectName;
-}
 
 
 struct IsUserConfident {

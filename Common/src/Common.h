@@ -8,6 +8,8 @@
 #pragma once
 
 #include <iostream>
+#include <string>
+#include <vector>
 #include "cinder/gl/TextureFont.h"
 #include "cinder/gl/gl.h"
 #include "Hud.h"
@@ -47,3 +49,5 @@ struct JointParameters
 		settings.addParam(new Parameter<int>(&velocitySmoothing, "Velocity smoothing", "", "min=0 max=400"));
 	}
 };
+
+std::vector<std::string> split(std::string const& str, std::string const& delimiters);

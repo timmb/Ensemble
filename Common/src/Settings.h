@@ -47,7 +47,7 @@ static bool operator>>(Json::Value const& child, ci::Vec3f& value)
 
 static bool operator>>(Json::Value const& child, std::string& value)
 {
-	if (!child.isConvertibleTo(Json::realValue))
+	if (!child.isConvertibleTo(Json::stringValue))
 		return false;
 	value = child.asString();
 	return true;

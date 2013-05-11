@@ -4,8 +4,8 @@
 	"Velocity smoothing" : 7,
 	"osc" : 
 	{
-		"deviceName" : "",
-		"ip" : "",
+		"deviceName" : "Kinect0",
+		"ip" : "127.0.0.1",
 		"port" : 37000
 	}
 }

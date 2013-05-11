@@ -68,3 +68,21 @@ string toString(osc::Message const& m)
 	s << ']';
 	return s.str();
 }
+
+
+vector<string> split(string const& str, string const& delimiters)
+{
+	vector<string> l;
+	int pos = 0;
+	while (pos<str.size())
+	{
+		int tok = str.find_first_of(delimiters, pos);
+		if (tok==string::npos)
+			tok = str.size();
+		int len = tok - pos;
+		if (len>0)
+			l.push_back(str.substr(pos, len));
+		pos = tok+1;
+	}
+	return l;
+}

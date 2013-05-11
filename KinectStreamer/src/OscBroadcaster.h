@@ -21,7 +21,6 @@ public:
 	void registerParams(Settings& settings);
 	/// Should be called after registerParams
 	void setup(Kinect* kinect);
-	void setKinectName(std::string const& kinectName);
 	void update(double dt, double elapsedTime);
 	
 private:
