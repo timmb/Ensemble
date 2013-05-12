@@ -63,6 +63,8 @@ class MainWindow(QtGui.QMainWindow):
         update_text(self.ui.convergedStateText, pformat(self.stabilizer.converged_state))
         update_text(self.ui.instrumentsText, pformat(self.stabilizer.instruments))
         update_text(self.ui.connectionsText, self.get_pretty_connections())
+        update_text(self.ui.worldStatePageText, get_state_table(self.stabilizer.world_state))
+        update_text(self.ui.convergedStatePageText, get_state_table(self.stabilizer.converged_state))
 
     def start_or_stop_listening(self, start_listening=None):
         if start_listening==None:
@@ -95,5 +97,32 @@ class MainWindow(QtGui.QMainWindow):
         table.set_cols_align(['r']*(len(names)+1))
         table.add_rows(data)
         return table.draw() + '\nRaw data:\n'+pformat(c)
+
+def get_state_table(state):
+    ''' State is dict of: param -> instrument -> [value]
+    '''
+    if not state:
+        return ''
+    # def s(lst):
+        # return ', '.join(('%0.2f' % x for x in lst))
+    params = state.keys()
+    insts = set()
+    for param in params:
+        for inst in state[param].keys():
+            insts.add(inst)
+    insts = list(insts)
+
+    header_row = [' ']+insts
+    data = [header_row]
+    if len(data)==1:
+        data.append(['']*len(data[0]))
+    for param in params:
+        row = [param]+[(state.get(param,{}).get(inst,[[]]))[0] for inst in insts]
+        data.append(row)
+    table = Texttable()
+    table.set_cols_align(['r']*(len(header_row)))
+    table.add_rows(data)
+    return table.draw()
+
 
 
