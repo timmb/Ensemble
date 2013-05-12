@@ -162,6 +162,7 @@ public:
 //	std::string getString(std::string const& path, std::string const& defaultValue="") const;
 //	ci::Vec3f getVec3f(std::string const& path, ci::Vec3f const& defaultValue=ci::Vec3f()) const;
 
+	ci::params::InterfaceGl& antTweakBar() { return mParams; }
 private:
 	ci::params::InterfaceGl mParams;
 	std::string mJsonFile;

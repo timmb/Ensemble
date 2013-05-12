@@ -79,6 +79,7 @@ struct User
 	
 	
 	float handExpression[2];
+	float handExpressionSlow[2];
 	
 	// variables for calculating hand expression
 	float handSpeed[2]; // moving avergae of speeds

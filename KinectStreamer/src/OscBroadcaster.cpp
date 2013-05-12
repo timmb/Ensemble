@@ -171,11 +171,20 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 			}
 			for (int h=0; h<2; ++h)
 			{
-				Message message;
-				message.setAddress(makeAddress(string("expression/")+(h==0?"left_hand":"right_hand")));
-				message.addIntArg(closestUser->id);
-				message.addFloatArg(closestUser->handExpression[h]);
-				mSender.sendMessage(message);
+				{
+					Message message;
+					message.setAddress(makeAddress(string("expression/")+(h==0?"left_hand":"right_hand")));
+					message.addIntArg(closestUser->id);
+					message.addFloatArg(closestUser->handExpression[h]);
+					mSender.sendMessage(message);
+				}
+				{
+					Message message;
+					message.setAddress(makeAddress(string("expression_slow/")+(h==0?"left_hand":"right_hand")));
+					message.addIntArg(closestUser->id);
+					message.addFloatArg(closestUser->handExpressionSlow[h]);
+					mSender.sendMessage(message);
+				}
 			}
 		}
 	}

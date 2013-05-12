@@ -177,6 +177,7 @@ User::User(float elapsedTime)
 	for (int h=0; h<2; ++h)
 	{
 		handExpression[h] = 0;
+		handExpressionSlow[h] = 0;
 		handSpeed[h] = 0;
 		handSmoothSpeed[h] = 0;
 		handPeakSpeed[h] = 0;
@@ -216,6 +217,7 @@ void User::update(float dt, float elapsedTime, JointParameters const& jointParam
 		float b = 0.796875;//0.823438;
 		handExpression[h] = b*handExpression[h] + (1.-b)*handPeakSpeed[h];
 		handExpression[h] = max(0.f, min(1.f, handExpression[h]));
+		handExpressionSlow[h] = handPeakSpeed[h];
 	}
 }
 

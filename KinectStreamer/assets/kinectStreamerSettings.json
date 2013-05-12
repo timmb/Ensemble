@@ -1,11 +1,11 @@
 
 {
-	"Expression decay" : 0.06700000166893005,
+	"Expression decay" : 0.6680000424385071,
 	"Velocity smoothing" : 7,
 	"osc" : 
 	{
 		"deviceName" : "Kinect0",
-		"ip" : "127.0.0.1",
+		"ip" : "localhost",
 		"port" : 37000
 	}
 }
