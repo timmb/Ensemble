@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Sat May 11 14:31:53 2013
+# Created: Sun May 12 19:57:31 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -81,6 +81,7 @@ class Ui_MainWindow(object):
         font.setFamily("Lucida Console")
         self.worldStateText.setFont(font)
         self.worldStateText.setReadOnly(True)
+        self.worldStateText.setCenterOnScroll(True)
         self.worldStateText.setObjectName("worldStateText")
         self.verticalLayout_3.addWidget(self.worldStateText)
         self.convergedStateLabel = QtGui.QLabel(self.convergencePage)
@@ -91,6 +92,7 @@ class Ui_MainWindow(object):
         font.setFamily("Lucida Console")
         self.convergedStateText.setFont(font)
         self.convergedStateText.setReadOnly(True)
+        self.convergedStateText.setCenterOnScroll(True)
         self.convergedStateText.setObjectName("convergedStateText")
         self.verticalLayout_3.addWidget(self.convergedStateText)
         self.pages.addWidget(self.convergencePage)
@@ -203,7 +205,7 @@ class Ui_MainWindow(object):
         self.pluginsLabel.setBuddy(self.plugins)
 
         self.retranslateUi(MainWindow)
-        self.pages.setCurrentIndex(3)
+        self.pages.setCurrentIndex(1)
         QtCore.QObject.connect(self.pageSelector, QtCore.SIGNAL("currentRowChanged(int)"), self.pages.setCurrentIndex)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

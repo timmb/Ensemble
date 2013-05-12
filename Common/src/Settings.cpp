@@ -213,15 +213,21 @@ void Settings::draw()
 
 void BaseParameter::writeJson(Json::Value& root) const
 {
-	Json::Value& child = getChild(root);
-	toJson(child);
+	if (writeToJson)
+	{
+		Json::Value& child = getChild(root);
+		toJson(child);
+	}
 }
 
 
 bool BaseParameter::readJson(Json::Value const& root)
 {
-	Json::Value const& child = getChild(root);
-	return fromJson(child);
+	if (loadFromJson)
+	{
+		Json::Value const& child = getChild(root);
+		return fromJson(child);
+	}
 }
 
 

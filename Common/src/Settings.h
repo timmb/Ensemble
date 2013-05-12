@@ -76,10 +76,12 @@ class BaseParameter
 public:
 	// path is slash separated
 	// e.g. "" or "triggers" or "triggers/my_trigger/part 1"
-	BaseParameter(std::string const& name, std::string const& path, std::string const& options)
+	BaseParameter(std::string const& name, std::string const& path, std::string const& options, bool loadFromJson, bool writeToJson)
 	: path(path)
 	, name(name)
 	, options(options)
+	, loadFromJson(loadFromJson)
+	, writeToJson(writeToJson)
 	{}
 
 	virtual void setup(ci::params::InterfaceGl& params) = 0;
@@ -89,6 +91,8 @@ public:
 	std::string path;
 	std::string name;
 	std::string options;
+	bool loadFromJson;
+	bool writeToJson;
 	
 protected:
 	template <typename JsonOrConstJson>
@@ -102,8 +106,8 @@ template <typename T>
 class Parameter : public BaseParameter
 {
 public:
-	Parameter(T* value, std::string const& name, std::string const& path="", std::string const& options="")
-	: BaseParameter(name, path, options)
+	Parameter(T* value, std::string const& name, std::string const& path="", std::string const& options="", bool loadFromJson=true, bool writeToJson=true)
+	: BaseParameter(name, path, options, loadFromJson, writeToJson)
 	, value(value)
 	{}
 	

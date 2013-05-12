@@ -195,7 +195,7 @@ class Stabilizer(QApplication):
             'harmony': [0, 7, 3, 10, 8],
             'detune': [0.],
             'note_frequency': [2.],
-            'note_desity': [0.5],
+            'note_density': [0.5],
             'attack': [0.1],
             'brightness': [0.5],
             'roughness': [0.2],

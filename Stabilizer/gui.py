@@ -54,10 +54,15 @@ class MainWindow(QtGui.QMainWindow):
 
     def update(self):
         '''Refresh gui based on self.stabilizer'''
-        self.ui.worldStateText.setPlainText(pformat(self.stabilizer.world_state))
-        self.ui.convergedStateText.setPlainText(pformat(self.stabilizer.converged_state))
-        self.ui.instrumentsText.setPlainText(pformat(self.stabilizer.instruments))
-        self.ui.connectionsText.setPlainText(self.get_pretty_connections())
+        def update_text(text_edit, new_text):
+            '''Prevents scroll bar from changing when updating'''
+            scroll_bar_value = text_edit.verticalScrollBar().sliderPosition()
+            text_edit.setPlainText(new_text)
+            text_edit.verticalScrollBar().setSliderPosition(scroll_bar_value)
+        update_text(self.ui.worldStateText, pformat(self.stabilizer.world_state))
+        update_text(self.ui.convergedStateText, pformat(self.stabilizer.converged_state))
+        update_text(self.ui.instrumentsText, pformat(self.stabilizer.instruments))
+        update_text(self.ui.connectionsText, self.get_pretty_connections())
 
     def start_or_stop_listening(self, start_listening=None):
         if start_listening==None:
