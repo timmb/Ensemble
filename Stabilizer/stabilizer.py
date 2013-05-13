@@ -135,8 +135,6 @@ def universal_convergence_method(world_state, connections, converged_state, conv
     old_narrative = converged_values.setdefault('narrative', [0.])[0]
     old_narrative *= 1. - (1.-narrative_decay)*dt
     converged_values['narrative'][0] += narrative_alpha*(narrative - old_narrative)
-    print 'narrative',narrative,'narrative_alpha',narrative_alpha,'old_narrative',old_narrative
-    print "converged_values['narrative'][0]",converged_values['narrative'][0] 
 
     # apply this converged_values to all instruments
     for inst in instruments:
@@ -196,6 +194,7 @@ def temp_convergence_method(world_state, connections, converged_state, default_v
                 converged_state[param] = {}
             if inst not in converged_state[param]:
                 converged_state[param][inst] = default_values[param][:]
+
 
 
 class Stabilizer(QApplication):
