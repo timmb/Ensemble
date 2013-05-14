@@ -16,10 +16,6 @@ from lib.texttable import Texttable
 def assign(var, value):
     var = value
 
-def assign_setting(stabilizer, var_name, new_value):
-    print 'assign_dict dict',dict,'var_name',var_name,'new_value',new_value
-    stabilizer.settings[var_name] = new_value
-
 class MainWindow(QtGui.QMainWindow):
 
     sig_start_listening = QtCore.Signal()
@@ -60,7 +56,7 @@ class MainWindow(QtGui.QMainWindow):
         #create gui elements for settings in stabilizer dynamicall
         # todo: fix this - for some reason the lambda function isn't working
         # and it connects all spinboxes to change the same value
-        return
+        # return
         for var,val in self.stabilizer.settings.iteritems():
             page = self.ui.settingsPage
             layout = self.ui.formLayout
@@ -70,10 +66,16 @@ class MainWindow(QtGui.QMainWindow):
                 spinbox.setValue(val)
                 spinbox.setSingleStep(0.001)
                 spinbox.setDecimals(5)
+                spinbox.setProperty('settingName', var)
+                print 'var',var,'val',val
                 layout.setWidget(layout.rowCount(), layout.LabelRole, label)
                 layout.setWidget(layout.rowCount()-1, layout.FieldRole, spinbox)
-                spinbox.valueChanged[float].connect(lambda x: assign_setting(self.stabilizer, var, x))
-       
+                spinbox.valueChanged[float].connect(self.set_setting_based_on_sender_property)
+    
+    def set_setting_based_on_sender_property(self, newValue):
+        setting = self.sender().property('settingName')
+        self.stabilizer.settings[setting] = newValue
+        self.stabilizer.log('Set {} to {}'.format(setting, newValue), 'Gui' )
 
     def update(self):
         '''Refresh gui based on self.stabilizer'''
@@ -88,7 +90,7 @@ class MainWindow(QtGui.QMainWindow):
         update_text(self.ui.connectionsText, self.get_pretty_connections())
         update_text(self.ui.worldStatePageText, get_state_table(self.stabilizer.world_state))
         update_text(self.ui.convergedStatePageText, get_state_table(self.stabilizer.converged_state))
-        print 'narrative_speed', self.stabilizer.settings['narrative_speed']
+        # print 'narrative_speed', self.stabilizer.settings['narrative_speed']
 
 
     def start_or_stop_listening(self, start_listening=None):
