@@ -10,6 +10,7 @@ from PySide.QtGui import *
 from PySide.QtCore import QTimer
 from pprint import pformat
 from lib.texttable import Texttable
+import json
 
 
 
@@ -27,6 +28,15 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.setupUi(self)
         self.stabilizer = stabilizer
         
+        self.ui.saveSettingsButton.clicked.connect(self.ui.actionSaveSettings.trigger)
+        self.ui.saveSettingsAsButton.clicked.connect(self.ui.actionSaveSettingsAs.trigger)
+        self.ui.openSettingsButton.clicked.connect(self.ui.actionOpenSettings.trigger)
+        self.ui.reloadSettingsButton.clicked.connect(self.ui.actionReloadSettings.trigger)
+        self.ui.actionSaveSettings.triggered.connect(self.save_settings_action)
+        self.ui.actionSaveSettingsAs.triggered.connect(self.save_settings_as_action)
+        self.ui.actionOpenSettings.triggered.connect(self.open_settings_action)
+        self.ui.actionReloadSettings.triggered.connect(self.reload_settings_action)
+
         self.ui.actionQuit.triggered.connect(stabilizer.quit)
         self.ui.logView.setModel(stabilizer.event_log)
         self.ui.enableInputCheckbox.toggled.connect(self.start_or_stop_listening)
@@ -57,6 +67,7 @@ class MainWindow(QtGui.QMainWindow):
         # todo: fix this - for some reason the lambda function isn't working
         # and it connects all spinboxes to change the same value
         # return
+        self.settings_widgets = {}
         for var,val in self.stabilizer.settings.iteritems():
             page = self.ui.settingsPage
             layout = self.ui.formLayout
@@ -67,10 +78,15 @@ class MainWindow(QtGui.QMainWindow):
                 spinbox.setSingleStep(0.001)
                 spinbox.setDecimals(5)
                 spinbox.setProperty('settingName', var)
-                print 'var',var,'val',val
                 layout.setWidget(layout.rowCount(), layout.LabelRole, label)
                 layout.setWidget(layout.rowCount()-1, layout.FieldRole, spinbox)
                 spinbox.valueChanged[float].connect(self.set_setting_based_on_sender_property)
+                self.settings_widgets[var] = spinbox
+
+    def update_dynamic_elements(self):
+        for var,val in self.stabilizer.settings.iteritems():
+            self.settings_widgets[var].setValue(val)
+
     
     def set_setting_based_on_sender_property(self, newValue):
         setting = self.sender().property('settingName')
@@ -124,6 +140,48 @@ class MainWindow(QtGui.QMainWindow):
         table.set_cols_align(['r']*(len(names)+1))
         table.add_rows(data)
         return table.draw() + '\nRaw data:\n'+pformat(c)
+
+    def load_settings(self, json_filename):
+        with open(json_filename, 'r') as f:
+            try:
+                self.stabilizer.settings = json.load(f)
+                self.stabilizer.log('Settings loaded from '+json_filename, 'Gui')
+            except Exception as e:
+                self.stabilizer.log('Error loading settings from {}: {}: {}'.format(json_filename, type(e), e.message), "Gui")
+
+    def save_settings(self, json_filename):
+        with open(json_filename, 'w') as out:
+            out.write(json.dumps(self.stabilizer.settings, indent=4))
+            self.stabilizer.log('Settings written to '+json_filename, 'Gui')
+
+    def open_settings_action(self):
+        filename = QFileDialog.getOpenFileName(self, 'Open JSON Stabilizer settings', '', 'JSON files (*.json)', 'JSON files (*.json)')[0]
+        if filename:
+            self.load_settings(filename)
+            self.update_dynamic_elements()
+        self.ui.settingsFile.setText(filename)
+
+    def reload_settings_action(self):
+        filename = self.ui.settingsFile.text()
+        if filename:
+            self.load_settings(filename)
+        else:
+            self.stabilizer.log('Cannot reload file as no filename has been provided.', 'Gui')
+
+    def save_settings_action(self):
+        filename = self.ui.settingsFile.text()
+        if filename:
+            self.save_settings(filename)
+        else:
+            self.save_settings_as_action()
+
+    def save_settings_as_action(self):
+        filename = QFileDialog.getSaveFileName(self, 'Save JSON Stabilizer settings', '', 'JSON files (*.json)', 'JSON files (*.json)')[0]
+        if filename:
+            self.save_settings(filename)
+            self.ui.settingsFile.setText(filename)
+
+
 
 def get_state_table(state):
     ''' State is dict of: param -> instrument -> [value]
