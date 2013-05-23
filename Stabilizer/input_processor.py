@@ -72,7 +72,7 @@ class InputProcessor(object):
 			value = message.getValues()
 			if self.check_valid(param, message.getTypeTags(), value):
 				if param not in self.world_state:
-					self.log('First value received for '+param, 'InputProcessor')
+					self.log('Warning: Unrecognised parameter {} from {}'.format(param, sender))
 					self.world_state[param] = {}
 				self.world_state[param][sender] = value
 				self.instruments[sender]['state'][param] = value

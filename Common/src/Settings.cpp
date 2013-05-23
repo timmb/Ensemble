@@ -228,6 +228,7 @@ bool BaseParameter::readJson(Json::Value const& root)
 		Json::Value const& child = getChild(root);
 		return fromJson(child);
 	}
+	return true;
 }
 
 

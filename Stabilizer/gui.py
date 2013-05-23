@@ -42,7 +42,7 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.enableInputCheckbox.toggled.connect(self.start_or_stop_listening)
         self.ui.enableOutputCheckbox.toggled.connect(self.start_or_stop_sending)
         checkbox_variable_pairings = [
-            (self.ui.calculateConvergenceCheckbox, self.stabilizer.enable_calculate_convergence),
+            (self.ui.calculateConvergenceCheckbox, self.stabilizer.convergence_manager.enable_calculate_convergence),
             (self.ui.logIncomingMessagesCheckbox, self.stabilizer.enable_log_incoming_messages),
             (self.ui.logOutgoingMessagesCheckbox, self.stabilizer.enable_log_outgoing_messages)
             ]
@@ -202,7 +202,7 @@ def get_state_table(state):
     if len(data)==1:
         data.append(['']*len(data[0]))
     for param in params:
-        row = [param]+[(state.get(param,{}).get(inst,[[]]))[0] for inst in insts]
+        row = [param]+[(state.get(param,{}).get(inst,[[]])) for inst in insts]
         data.append(row)
     table = Texttable()
     table.set_cols_align(['r']*(len(header_row)))
@@ -210,4 +210,6 @@ def get_state_table(state):
     return table.draw()
 
 
-
+class ParamEditor(QWidget):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent)

@@ -20,7 +20,7 @@ from plugins.plugin import *
 from output_processor import *
 from visualization import *
 from connection_detector import *
-from convergence_manager import *
+from ConvergenceManager import *
 
 import twisted
 
@@ -169,9 +169,6 @@ class Stabilizer(QApplication):
         
         self.enable_log_incoming_messages = False
         self.enable_log_outgoing_messages = False
-        self.enable_calculate_convergence = True
-        
-
 
         self.aboutToQuit.connect(self.shutdown)
 
@@ -190,32 +187,29 @@ class Stabilizer(QApplication):
         self.connections = {}
 
 
-        self.input_processor = InputProcessor(self.world_state, 
-            self.instruments, self.log)
+        self.input_processor = InputProcessor(
+            self.world_state, 
+            self.instruments, 
+            lambda message,module='InputProcessor': self.log(message, module))
+
         self.connection_detector = ConnectionDetector(self.connections, 
             self.instruments)
+
         self.output_processor = OutputProcessor(
             self.converged_state,
             self.instruments,
             self.send_osc,
             lambda message,module='OutputProcessor': self.log(message, module)
             )
-        self.convergence_manager = ConvergenceManager(self.settings)
-
-
-
-
-        self.convergence_timer = QTimer(self)
-
-        self.convergence_timer.timeout.connect(
-            lambda: self.enable_calculate_convergence 
-                and self.convergence_manager.universal_convergence_method(
-                self.world_state,
-                self.connections,
-                self.converged_state,
-                ))
-        self.convergence_timer.setInterval(100)
-        self.convergence_timer.start()
+        
+        self.convergence_manager = ConvergenceManager(
+            self.settings, 
+            lambda message,module='ConvergenceManager': self.log(message, module),
+            self.world_state,
+            self.connections,
+            self.converged_state,
+            self,
+            )
 
 
     def shutdown(self):
@@ -276,7 +270,10 @@ class Stabilizer(QApplication):
         osc_messages.put(message)
         if self.enable_log_incoming_messages:
             self.log("%s: %s" % (client, message) )
-        self.input_processor.osc_message_callback(message, client)
+        if message.address.startswith('/convergence/'):
+            self.convergence_manager.osc_message_callback(message, client)
+        else:
+            self.input_processor.osc_message_callback(message, client)
         self.connection_detector.update()
 
     def send_osc(self, message, destination):

@@ -1,0 +1,5 @@
+{
+    "narrative_speed": 1.0, 
+    "narrative_decay": 0.988, 
+    "convergence_speed": 1.0
+}
