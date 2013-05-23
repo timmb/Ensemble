@@ -3,7 +3,7 @@
 import time
 from utilities import *
 from PySide.QtCore import *
-
+import re
 
 class Parameter(object):
 	'''A parameter manages a value present in the world state and writes it to
@@ -121,6 +121,12 @@ class NoteParameter(Parameter):
 		# on how many fifths they are from C. So c->0, c#->7, d->2, etc
 		# values are stored as floats to give us a notion of being midway between
 		# two notes
+		to_fifths = {
+			0:0, 1:7, 2:2, 3:9, 4:4, 5:11, 6:6, 7:1, 8:8, 9:3, 10:10, 11:5
+		}
+		from_fifths = {
+			to_fifths[x] : x for x in to_fifths
+		}
 		notes = []
 		if self._param_state:
 			for inst in self._param_state:
@@ -128,23 +134,24 @@ class NoteParameter(Parameter):
 		notes = notes or self.manual_value
 
 		octave = mean([note/12. for note in notes])
-		tone = modular_mean([(note*7)%12 for note in notes])
+		tone = modular_mean([to_fifths[note%12] for note in notes])
 
 		self._converged_octave += conv_rate*(octave - self._converged_octave)
-		self._converged_tone += conv_rate*(octave - self._converged_tone)
+		self._converged_tone += conv_rate*(tone - self._converged_tone)
 
 		manual_octave = self.manual_value[0] / 12.
-		manual_tone = self.manual_value[0] % 12
+		manual_tone = to_fifths[self.manual_value[0] % 12]
 
 		target_octave = conv_amt*self._converged_octave + (1.-conv_amt)*manual_octave
 		target_tone = conv_amt*self._converged_tone + (1.-conv_amt)*manual_tone
 
-		self.value = [int(target_octave*12 + target_tone)]
+		# round instead of truncate
+		self.value = [int(target_octave*12 + 0.5) + from_fifths[int(target_tone+0.5)]]
 		if self.value[0]<0:
 			self.value[0] += 12
 
 		# not used except displayed in gui for consistency
-		self._converged_value = [self._converged_octave*12 + self._converged_tone]
+		self._converged_value = [self._converged_octave*12 + from_fifths[int(self._converged_tone+0.5)]]
 
 
 class HarmonyParameter(Parameter):
@@ -271,6 +278,12 @@ class ConvergenceManager(QObject):
 		self.update_timer.start()
 
 		self.enable_calculate_convergence = True
+
+		self.osc_pattern = re.compile(
+			r'''
+			 /convergence/ (?P<parameter> [^/]+)
+			''', re.VERBOSE)
+
 		# self.default_values = {
 		# 	'activity': [0.],
 		# 	'tempo': [89.],
@@ -346,16 +359,15 @@ class ConvergenceManager(QObject):
 
 	def osc_message_callback(self, message, origin_address):
 		print 'message',message
-		if message.address.startswith('/convergence/') and message.split('/convergence/')[1] in self.default_values:
-			val = message.split('/convergence/')[1]
-			args = message.getValues()
-			if map(type, self.default_values)!=map(type, args):
-				self.log('argument list {} does not match expected {} for param {}'.format(args, self.default_values, val))
+
+		match = self.osc_pattern.match(message.address)
+		if match:
+			param = match.group('parameter')
+			if param not in self.params:
+				self.log('Unrecognised parameter received over OSC: {}'.format(param))
 			else:
-				self.converged_values[val] = args
-				print val, 'set to ', self.converged_values[val]
-		else:
-			self.log('Unrecognised convergence argument: '+message.address, "ConvergenceManager")
+				self.set_manual_value(param, message.getValues())
+				print param,'set to',self.params[param].manual_value
 
 
 	# def universal_convergence_method(self, world_state, connections, converged_state):
