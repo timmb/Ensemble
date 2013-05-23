@@ -50,3 +50,5 @@ def unique(seq):
 	seen_add = seen.add
 	return [x for x in seq if x not in seen and not seen_add(x)]
 
+def sign(x):
+	return x<0 and -1 or x>0 and 1 or 0

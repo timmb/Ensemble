@@ -27,7 +27,6 @@ class Parameter(object):
 		self._converged_value = None
 		# values exposed on the gui, in addition to self._settings
 		self.editable_values = [
-			'manual_value',
 		]
 		self.readonly_values = [
 			'value',
@@ -136,8 +135,14 @@ class NoteParameter(Parameter):
 		octave = mean([note/12. for note in notes])
 		tone = modular_mean([to_fifths[note%12] for note in notes])
 
-		self._converged_octave += conv_rate*(octave - self._converged_octave)
-		self._converged_tone += conv_rate*(tone - self._converged_tone)
+		self._converged_octave += min(
+			conv_rate*sign(octave-self._converged_octave),
+			octave - self._converged_octave
+			)
+		self._converged_tone += min(
+			conv_rate*sign(tone-self._converged_tone),
+			tone - self._converged_tone
+			)
 
 		manual_octave = self.manual_value[0] / 12.
 		manual_tone = to_fifths[self.manual_value[0] % 12]

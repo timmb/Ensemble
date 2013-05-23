@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 '''
 This module contains code to hook up the GUI (generated using the Qt UI 
 designer) to the rest of the code and any hand-written GUI code.
@@ -11,11 +13,24 @@ from PySide.QtCore import QTimer
 from pprint import pformat
 from lib.texttable import Texttable
 import json
+import ast
+from collections import namedtuple
 
 
 
 def assign(var, value):
     var = value
+
+def assign_dict(dictionary, name, new_value):
+    dictionary[name] = new_value
+
+def try_assign_repr(dictionary, name, string_repr_of_new_value, log_function=None):
+    try:
+        dictionary[name] = ast.literal_eval(string_repr_of_new_value)
+        return True
+    except SyntaxError as e:
+        return False
+
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -82,6 +97,15 @@ class MainWindow(QtGui.QMainWindow):
                 layout.setWidget(layout.rowCount()-1, layout.FieldRole, spinbox)
                 spinbox.valueChanged[float].connect(self.set_setting_based_on_sender_property)
                 self.settings_widgets[var] = spinbox
+            # TODO: create widgets for other parameter types, including nested settings dictionaries
+
+        # create Parameter widgets for the convergence manager parameters
+        self.parameter_widgets = []
+        self.ui.parametersArea.setLayout(QVBoxLayout())
+        for name, param in self.stabilizer.convergence_manager.params.iteritems():
+            p = ParameterWidget(name, param, self.stabilizer.settings, self)
+            self.parameter_widgets.append(p)
+            self.ui.parametersArea.layout().addWidget(p)
 
     def update_dynamic_elements(self):
         for var,val in self.stabilizer.settings.iteritems():
@@ -104,8 +128,8 @@ class MainWindow(QtGui.QMainWindow):
         update_text(self.ui.convergedStateText, pformat(self.stabilizer.converged_state))
         update_text(self.ui.instrumentsText, pformat(self.stabilizer.instruments))
         update_text(self.ui.connectionsText, self.get_pretty_connections())
-        update_text(self.ui.worldStatePageText, get_state_table(self.stabilizer.world_state))
-        update_text(self.ui.convergedStatePageText, get_state_table(self.stabilizer.converged_state))
+        update_text(self.ui.worldStateText, get_state_table(self.stabilizer.world_state))
+        update_text(self.ui.convergedStateText, get_state_table(self.stabilizer.converged_state))
         # print 'narrative_speed', self.stabilizer.settings['narrative_speed']
 
 
@@ -210,6 +234,79 @@ def get_state_table(state):
     return table.draw()
 
 
-class ParamEditor(QWidget):
-    def __init__(self, parent=None):
+class ParameterWidget(QWidget):
+    def __init__(self, name, parameter, global_settings_dict, parent=None):
         QWidget.__init__(self, parent)
+        self._name = name
+        self._settings = global_settings_dict
+        self._layout = QHBoxLayout(self)
+        self.setLayout(self._layout)
+        # model defines the pairings between variables and widgets
+        # all variables live inside a dictionary somewhere
+        self._model = [
+            # {dictionary, var_name, widget, widget_update_function, last_value}
+        ]
+        self.timer = QTimer(self)
+        self.timer.setInterval(200)
+        self.timer.timeout.connect(self.update)
+
+        self._layout.addWidget(QLabel(name, self))
+        self.add_dict_element(parameter.__dict__, 'manual_value', 
+            True, parameter.set_manual_value)
+        for p in parameter.editable_values:
+            self.add_dict_element(parameter.__dict__, p, False)
+        for p in parameter.readonly_values:
+            self.add_dict_element(parameter.__dict__, p, True)
+
+
+    def add_dict_element(self, d, name, is_read_only, 
+        update_function=None):
+        '''
+        Creates a widget that sets the value of `name` in dict `d`,
+        adds these elements to self._model.
+        Leave update_function as None for default.
+        '''
+        if name not in d:
+            print name, d
+            assert(name in d)
+        self._layout.addWidget(QLabel(name, self))
+        if type(d[name]) is float:
+            widget = QDoubleSpinBox(self)
+            widget.setSingleStep(0.01)
+            widget.setValue(d[name])
+            widget.valueChanged.connect(update_function 
+                or (lambda x: assign_dict(d, name, x)))
+            widget_update_function = widget.setValue
+        elif type(d[name]) is int:
+            widget = QSpinBox(self)
+            widget.setValue(d[name])
+            widget.valueChanged.connect(update_function 
+                or (lambda x: assign_dict(d, name, x)))
+            widget_update_function = widget.setValue
+        else:
+            widget = QLineEdit(self)
+            widget.setText(repr(d[name]))
+            widget.editingFinished.connect(update_function 
+                or (lambda x: try_assign_repr(d, name, x)))
+            widget_update_function = widget.setText
+
+        widget.setReadOnly(is_read_only)
+        self._layout.addWidget(widget)
+        self._model.append({
+            'dictionary' : d, 
+            'var_name' : name, 
+            'widget' : widget, 
+            'widget_update_function' : widget_update_function, 
+            'last_value' : d[name],
+            })
+
+    def update(self):
+        for element in self._model:
+            if element['dictionary']['var_name']!=element['prev_value']:
+                element['prev_value'] = element['dictionary']['var_name']
+                element['widget'].blockSignals(True)
+                element['widget_update_function'](element['prev_value'])
+                element['widget'].blockSignals(False)
+
+
+

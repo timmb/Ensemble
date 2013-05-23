@@ -64,12 +64,12 @@
         </item>
         <item>
          <property name="text">
-          <string>Convergence</string>
+          <string>Instruments</string>
          </property>
         </item>
         <item>
          <property name="text">
-          <string>Instruments</string>
+          <string>Parameters</string>
          </property>
         </item>
         <item>
@@ -97,7 +97,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>4</number>
+         <number>3</number>
         </property>
         <widget class="QWidget" name="connectionsPage">
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -125,55 +125,9 @@
         <widget class="QWidget" name="convergedStatePage">
          <layout class="QVBoxLayout" name="verticalLayout_7">
           <item>
-           <widget class="QLabel" name="congergedStatePageLabel">
+           <widget class="QLabel" name="congergedStateLabel">
             <property name="text">
              <string>Converged State</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPlainTextEdit" name="convergedStatePageText">
-            <property name="font">
-             <font>
-              <family>Lucida Console</family>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="convergencePage">
-         <layout class="QVBoxLayout" name="verticalLayout_3">
-          <item>
-           <widget class="QLabel" name="worldStateLabel">
-            <property name="text">
-             <string>World state</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QPlainTextEdit" name="worldStateText">
-            <property name="font">
-             <font>
-              <family>Lucida Console</family>
-             </font>
-            </property>
-            <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="centerOnScroll">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="convergedStateLabel">
-            <property name="text">
-             <string>Converged state</string>
             </property>
            </widget>
           </item>
@@ -182,12 +136,10 @@
             <property name="font">
              <font>
               <family>Lucida Console</family>
+              <pointsize>12</pointsize>
              </font>
             </property>
             <property name="readOnly">
-             <bool>true</bool>
-            </property>
-            <property name="centerOnScroll">
              <bool>true</bool>
             </property>
            </widget>
@@ -213,6 +165,34 @@
             <property name="readOnly">
              <bool>true</bool>
             </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+        <widget class="QWidget" name="parametersPage">
+         <layout class="QVBoxLayout" name="verticalLayout_3">
+          <item>
+           <widget class="QLabel" name="parametersLabel">
+            <property name="text">
+             <string>Parameters</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QScrollArea" name="scrollArea">
+            <property name="widgetResizable">
+             <bool>true</bool>
+            </property>
+            <widget class="QWidget" name="parametersArea">
+             <property name="geometry">
+              <rect>
+               <x>0</x>
+               <y>0</y>
+               <width>595</width>
+               <height>348</height>
+              </rect>
+             </property>
+            </widget>
            </widget>
           </item>
          </layout>
@@ -394,14 +374,14 @@
         <widget class="QWidget" name="worldStatePage">
          <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
-           <widget class="QLabel" name="worldStatePageLabel">
+           <widget class="QLabel" name="worldStateLabel">
             <property name="text">
              <string>World State</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QPlainTextEdit" name="worldStatePageText">
+           <widget class="QPlainTextEdit" name="worldStateText">
             <property name="font">
              <font>
               <family>Lucida Console</family>
