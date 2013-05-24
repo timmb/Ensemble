@@ -52,3 +52,8 @@ def unique(seq):
 
 def sign(x):
 	return x<0 and -1 or x>0 and 1 or 0
+
+def soft_update(dict):
+	'''Recursively update a dictionary without disrupting any existing mutable references.
+	'''
+	

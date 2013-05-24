@@ -20,7 +20,8 @@ from plugins.plugin import *
 from output_processor import *
 from visualization import *
 from connection_detector import *
-from ConvergenceManager import *
+from ConvergenceManager import ConvergenceManager
+from Settings import Settings
 
 import twisted
 
@@ -145,11 +146,10 @@ class Stabilizer(QApplication):
     def __init__(self):
         QApplication.__init__(self, sys.argv, True)
 
-        self.settings = {
-            'convergence_speed': 1.,
-            'narrative_speed': 1.,
-            'narrative_decay': 0.99
-        }
+        # ** All persistent settings need to be put in here **
+        self.settings = Settings({
+           
+        })
 
         self.event_log = ListModel([])
         self.dispatcher = ThreadDispatcher(self)
@@ -165,7 +165,7 @@ class Stabilizer(QApplication):
         # defined in open_output_socket below
         self._output_socket = None
 
-        #settings
+        # program state
         
         self.enable_log_incoming_messages = False
         self.enable_log_outgoing_messages = False

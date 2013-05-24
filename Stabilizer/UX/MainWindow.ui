@@ -97,7 +97,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>4</number>
         </property>
         <widget class="QWidget" name="connectionsPage">
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -192,102 +192,9 @@
         </widget>
         <widget class="QWidget" name="settingsPage">
          <layout class="QFormLayout" name="formLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="settingsFileLabel">
-            <property name="text">
-             <string>Settings file</string>
-            </property>
-            <property name="buddy">
-             <cstring>settingsFile</cstring>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QFrame" name="frame">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>20</width>
-              <height>100</height>
-             </size>
-            </property>
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_5">
-             <item>
-              <widget class="QLineEdit" name="settingsFile">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>22</height>
-                </size>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QWidget" name="settingsFileButtonsContainerWidget" native="true">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>50</height>
-                </size>
-               </property>
-               <layout class="QHBoxLayout" name="horizontalLayout_2">
-                <item>
-                 <widget class="QPushButton" name="reloadSettingsButton">
-                  <property name="text">
-                   <string>Reload</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="openSettingsButton">
-                  <property name="text">
-                   <string>&amp;Open...</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="saveSettingsButton">
-                  <property name="text">
-                   <string>&amp;Save</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="saveSettingsAsButton">
-                  <property name="text">
-                   <string>Save &amp;as...</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::FieldsStayAtSizeHint</enum>
+          </property>
           <item row="1" column="0">
            <widget class="QLabel" name="ipAddressLabel">
             <property name="text">
@@ -308,48 +215,28 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="pluginsLabel">
-            <property name="text">
-             <string>Loaded plugins</string>
-            </property>
-            <property name="buddy">
-             <cstring>plugins</cstring>
-            </property>
-           </widget>
-          </item>
           <item row="2" column="1">
-           <widget class="QListView" name="plugins">
-            <property name="alternatingRowColors">
-             <bool>false</bool>
-            </property>
-            <property name="resizeMode">
-             <enum>QListView::Adjust</enum>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="1">
            <widget class="QPushButton" name="pushButton">
             <property name="text">
              <string>Refresh</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="3" column="1">
            <widget class="QCheckBox" name="logIncomingMessagesCheckbox">
             <property name="text">
              <string>Log incoming messages</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="4" column="1">
            <widget class="QCheckBox" name="logOutgoingMessagesCheckbox">
             <property name="text">
              <string>Log outgoing messages</string>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="5" column="1">
            <spacer name="verticalSpacer">
             <property name="orientation">
              <enum>Qt::Vertical</enum>
@@ -361,6 +248,101 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item row="0" column="0" colspan="2">
+           <widget class="QFrame" name="frame">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="Minimum">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="minimumSize">
+             <size>
+              <width>20</width>
+              <height>100</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::StyledPanel</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QFormLayout" name="formLayout_2">
+             <item row="0" column="0">
+              <widget class="QLabel" name="settingsFileLabel">
+               <property name="text">
+                <string>Settings file</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0" colspan="2">
+              <widget class="QPlainTextEdit" name="settingsText">
+               <property name="font">
+                <font>
+                 <family>Lucida Console</family>
+                 <pointsize>11</pointsize>
+                </font>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QWidget" name="settingsFileContainer" native="true">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="minimumSize">
+                <size>
+                 <width>50</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <layout class="QHBoxLayout" name="horizontalLayout">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <widget class="QLineEdit" name="settingsFile">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>22</height>
+                   </size>
+                  </property>
+                  <property name="readOnly">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="saveSettingsButton">
+                  <property name="text">
+                   <string>&amp;Save</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QPushButton" name="reloadSettingsButton">
+                  <property name="text">
+                   <string>&amp;Reload</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
+             </item>
+            </layout>
+           </widget>
           </item>
          </layout>
         </widget>
@@ -503,10 +485,11 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpenSettings"/>
+    <addaction name="actionOpenSnapshot"/>
     <addaction name="actionReloadSettings"/>
     <addaction name="actionSaveSettings"/>
-    <addaction name="actionSaveSettingsAs"/>
+    <addaction name="actionSaveSnapshot"/>
+    <addaction name="actionSaveSnapshotAs"/>
     <addaction name="separator"/>
     <addaction name="actionSave_log"/>
     <addaction name="separator"/>
@@ -536,22 +519,42 @@
     <enum>Qt::ApplicationShortcut</enum>
    </property>
   </action>
-  <action name="actionOpenSettings">
+  <action name="actionOpenSnapshot">
    <property name="text">
-    <string>&amp;Open...</string>
+    <string>&amp;Open settings snapshot...</string>
+   </property>
+   <property name="toolTip">
+    <string>Open snapshot</string>
    </property>
   </action>
-  <action name="actionSaveSettingsAs">
+  <action name="actionSaveSnapshotAs">
    <property name="text">
-    <string>&amp;Save settings as...</string>
+    <string>&amp;Save settings snapshot as...</string>
+   </property>
+   <property name="toolTip">
+    <string>Save snapshot as...</string>
    </property>
   </action>
   <action name="actionReloadSettings">
    <property name="text">
-    <string>&amp;Reload</string>
+    <string>&amp;Reload settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload settings</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+R</string>
+   </property>
+  </action>
+  <action name="actionSaveSnapshot">
+   <property name="text">
+    <string>Save settings snapshot</string>
+   </property>
+   <property name="toolTip">
+    <string>Save snapshot</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Alt+S</string>
    </property>
   </action>
  </widget>

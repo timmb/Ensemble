@@ -60,18 +60,23 @@ class MainWindow(QtGui.QMainWindow):
         self.ui = UX.MainWindow.Ui_MainWindow()
         self.ui.setupUi(self)
         self.stabilizer = stabilizer
+        self.log = lambda x, module="Gui": self.stabilizer.log(x, module)
         
         self.ui.saveSettingsButton.clicked.connect(self.ui.actionSaveSettings.trigger)
-        self.ui.saveSettingsAsButton.clicked.connect(self.ui.actionSaveSettingsAs.trigger)
-        self.ui.openSettingsButton.clicked.connect(self.ui.actionOpenSettings.trigger)
         self.ui.reloadSettingsButton.clicked.connect(self.ui.actionReloadSettings.trigger)
-        self.ui.actionSaveSettings.triggered.connect(self.save_settings_action)
-        self.ui.actionSaveSettingsAs.triggered.connect(self.save_settings_as_action)
-        self.ui.actionOpenSettings.triggered.connect(self.open_settings_action)
-        self.ui.actionReloadSettings.triggered.connect(self.reload_settings_action)
-
+        self.ui.actionSaveSettings.triggered.connect(self.action_save_settings)
+        self.ui.actionSaveSnapshot.triggered.connect(self.action_save_snapshot)
+        self.ui.actionSaveSnapshotAs.triggered.connect(self.action_save_snapshot_as)
+        self.ui.actionOpenSnapshot.triggered.connect(self.action_open_snapshot)
+        self.ui.actionReloadSettings.triggered.connect(self.action_reload_settings)
         self.ui.actionQuit.triggered.connect(stabilizer.quit)
+
         self.ui.logView.setModel(stabilizer.event_log)
+        self.ui.settingsFile.setText(self.stabilizer.settings.settings_filename)
+        def overridden_settings_focus_out_event(slf, event):
+            QPlainTextEdit.focusOutEvent(slf,event)
+            self.settings_text_updated()
+        self.ui.settingsText.focusOutEvent = lambda event: overridden_settings_focus_out_event(self.ui.settingsText, event);
         self.ui.enableInputCheckbox.setChecked(self.stabilizer.is_listening)
         self.ui.enableInputCheckbox.toggled.connect(self.start_or_stop_listening)
         self.ui.enableOutputCheckbox.setChecked(self.stabilizer.is_sending)
@@ -134,7 +139,9 @@ class MainWindow(QtGui.QMainWindow):
 
     def update_dynamic_elements(self):
         for var,val in self.stabilizer.settings.iteritems():
-            self.settings_widgets[var].setValue(val)
+            if var in self.settings_widgets:
+                with signals_blocked(self.settings_widgets[var]):
+                    self.settings_widgets[var].setValue(val)
 
     
     def set_setting_based_on_sender_property(self, newValue):
@@ -155,8 +162,20 @@ class MainWindow(QtGui.QMainWindow):
         update_text(self.ui.connectionsText, self.get_pretty_connections())
         update_text(self.ui.worldStateText, get_state_table(self.stabilizer.world_state))
         update_text(self.ui.convergedStateText, get_state_table(self.stabilizer.converged_state))
+        if not self.ui.settingsText.hasFocus():
+            update_text(self.ui.settingsText, pformat(self.stabilizer.settings))
         # print 'narrative_speed', self.stabilizer.settings['narrative_speed']
 
+    def settings_text_updated(self):
+        try:
+            d = ast.literal_eval(self.ui.settingsText.toPlainText())
+            if type(d) is dict:
+                self.stabilizer.settings.update(d)
+                self.update_dynamic_elements()
+            else:
+                self.log('Settings must be a dictionary')
+        except SyntaxError as e:
+            self.log('Syntax error parsing settings from string edited by user: '+e.message)
 
     def start_or_stop_listening(self, start_listening=None):
         if start_listening==None:
@@ -190,45 +209,26 @@ class MainWindow(QtGui.QMainWindow):
         table.add_rows(data)
         return table.draw() + '\nRaw data:\n'+pformat(c)
 
-    def load_settings(self, json_filename):
-        with open(json_filename, 'r') as f:
-            try:
-                self.stabilizer.settings = json.load(f)
-                self.stabilizer.log('Settings loaded from '+json_filename, 'Gui')
-            except Exception as e:
-                self.stabilizer.log('Error loading settings from {}: {}: {}'.format(json_filename, type(e), e.message), "Gui")
-
-    def save_settings(self, json_filename):
-        with open(json_filename, 'w') as out:
-            out.write(json.dumps(self.stabilizer.settings, indent=4))
-            self.stabilizer.log('Settings written to '+json_filename, 'Gui')
-
-    def open_settings_action(self):
-        filename = QFileDialog.getOpenFileName(self, 'Open JSON Stabilizer settings', '', 'JSON files (*.json)', 'JSON files (*.json)')[0]
+    def action_open_snapshot(self):
+        filename = QFileDialog.getOpenFileName(self, 'Open settings snapshot', '', 'JSON files (*.json)', 'JSON files (*.json)')[0]
         if filename:
-            self.load_settings(filename)
+            self.stabilizer.settings.load_snapshot(filename)
             self.update_dynamic_elements()
-        self.ui.settingsFile.setText(filename)
 
-    def reload_settings_action(self):
-        filename = self.ui.settingsFile.text()
-        if filename:
-            self.load_settings(filename)
-        else:
-            self.stabilizer.log('Cannot reload file as no filename has been provided.', 'Gui')
+    def action_reload_settings(self):
+        self.stabilizer.settings.reload()
+        self.update_dynamic_elements()
 
-    def save_settings_action(self):
-        filename = self.ui.settingsFile.text()
-        if filename:
-            self.save_settings(filename)
-        else:
-            self.save_settings_as_action()
+    def action_save_settings(self):
+        self.stabilizer.settings.save()
 
-    def save_settings_as_action(self):
-        filename = QFileDialog.getSaveFileName(self, 'Save JSON Stabilizer settings', '', 'JSON files (*.json)', 'JSON files (*.json)')[0]
+    def action_save_snapshot(self):
+        self.stabilizer.settings.save_snapshot_auto()
+
+    def action_save_snapshot_as(self):
+        filename = QFileDialog.getSaveFileName(self, 'Save settings snapshot', '', 'JSON files (*.json)', 'JSON files (*.json)')[0]
         if filename:
-            self.save_settings(filename)
-            self.ui.settingsFile.setText(filename)
+            self.stabilizer.settings.save_snapshot(filename)
 
 
 

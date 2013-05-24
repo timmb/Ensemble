@@ -1,5 +1,90 @@
 {
     "narrative_speed": 1.0, 
-    "narrative_decay": 0.988, 
+    "narrative_decay": 0.99, 
+    "parameters": {
+        "brightness": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "detune": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "tempo": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 100.0, 
+            "default_value": 0.0, 
+            "min": 50.0
+        }, 
+        "roughness": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "note_density": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "attack": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "harmony": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "default_value": [
+                0, 
+                5, 
+                3
+            ]
+        }, 
+        "narrative": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "default_value": 0.0, 
+            "change_speed": 0.1
+        }, 
+        "loudness": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "note_frequency": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "activity": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "max": 1.0, 
+            "default_value": 0.0, 
+            "min": 0.0
+        }, 
+        "root": {
+            "convergence_amount": 1.0, 
+            "convergence_rate": 0.01, 
+            "default_value": 0
+        }
+    }, 
     "convergence_speed": 1.0
 }
