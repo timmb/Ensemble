@@ -16,13 +16,14 @@ import json
 import ast
 from collections import namedtuple
 import copy
+from contextlib import contextmanager
 
 def assign_index(dictionary, name, new_value, log_function=None):
     if log_function: log_function('{} set to {}'.format(name, new_value))
     dictionary[name] = new_value
 
 def assign_member(obj, name, new_value, log_function=None):
-    if log_function: log_function('{}.{} set to {}'.format(obj, name))
+    if log_function: log_function('{} set to {}'.format(name, new_value))
     setattr(obj,name,new_value)
 
 def try_assign_repr_index(dictionary, name, string_repr_of_new_value, log_function=None):
@@ -42,6 +43,12 @@ def try_assign_repr_member(obj, name, string_repr_of_new_value, log_function=Non
     except SyntaxError as e:
         return False
 
+# Context manager to block a QObject's signals:
+@contextmanager
+def signals_blocked(qobject):
+    qobject.blockSignals(True)
+    yield qobject
+    qobject.blockSignals(False)
 
 class MainWindow(QtGui.QMainWindow):
 
@@ -365,7 +372,8 @@ class ParameterWidget(QGroupBox):
                 and (lambda: update_function(widget.text()))
                 or (lambda: try_assign_repr_member(d, name, widget.text(), self._log_function))) # default arg
             widget_update_function = lambda x: widget.setText(repr(x))
-        widget_update_function(getattr(obj, name))
+        with signals_blocked(widget):
+            widget_update_function(getattr(obj, name))
 
         if is_read_only:
             widget.setReadOnly(True)
@@ -429,7 +437,8 @@ class ParameterWidget(QGroupBox):
                 and (lambda: update_function(widget.text()))
                 or (lambda: try_assign_repr_index(d, name, widget.text(), self._log_function))) # default arg
             widget_update_function = lambda x: widget.setText(repr(x))
-        widget_update_function(d[name])
+        with signals_blocked(widget):
+            widget_update_function(d[name])
 
         if is_read_only:
             widget.setReadOnly(True)
@@ -460,17 +469,15 @@ class ParameterWidget(QGroupBox):
             var_name = element['var_name']
             obj = element['object']
             if getattr(obj, var_name)!=element['last_value']:
-                element['widget'].blockSignals(True)
-                element['widget_update_function'](getattr(obj, var_name))
-                element['widget'].blockSignals(False)
+                with signals_blocked(element['widget']):
+                    element['widget_update_function'](getattr(obj, var_name))
                 # print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], getattr(obj, var_name)))
                 element['last_value'] = copy.deepcopy(getattr(obj, var_name))
         for element in self._index_model:
             var_name = element['var_name']
             if element['dictionary'][var_name]!=element['last_value']:
-                element['widget'].blockSignals(True)
-                element['widget_update_function'](element['dictionary'][var_name])
-                element['widget'].blockSignals(False)
+                with signals_blocked(element['widget']):
+                    element['widget_update_function'](element['dictionary'][var_name])
                 # print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], element['dictionary'][var_name]))
                 element['last_value'] = copy.deepcopy(element['dictionary'][var_name])
 
