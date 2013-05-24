@@ -17,11 +17,6 @@ import ast
 from collections import namedtuple
 import copy
 
-
-def pr(x):
-    print(x)
-    return True
-
 def assign_index(dictionary, name, new_value, log_function=None):
     if log_function: log_function('{} set to {}'.format(name, new_value))
     dictionary[name] = new_value
@@ -468,7 +463,7 @@ class ParameterWidget(QGroupBox):
                 element['widget'].blockSignals(True)
                 element['widget_update_function'](getattr(obj, var_name))
                 element['widget'].blockSignals(False)
-                print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], getattr(obj, var_name)))
+                # print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], getattr(obj, var_name)))
                 element['last_value'] = copy.deepcopy(getattr(obj, var_name))
         for element in self._index_model:
             var_name = element['var_name']
@@ -476,6 +471,6 @@ class ParameterWidget(QGroupBox):
                 element['widget'].blockSignals(True)
                 element['widget_update_function'](element['dictionary'][var_name])
                 element['widget'].blockSignals(False)
-                print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], element['dictionary'][var_name]))
+                # print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], element['dictionary'][var_name]))
                 element['last_value'] = copy.deepcopy(element['dictionary'][var_name])
 

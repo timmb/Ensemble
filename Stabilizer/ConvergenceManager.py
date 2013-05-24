@@ -11,7 +11,7 @@ class Parameter(object):
 	within the world state.
 	'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state):
+	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
 		'''world_state is a dict of the form instrument->value and holds 
 		values from incoming OSC data.'''
 		self.name = parameter_name
@@ -19,6 +19,7 @@ class Parameter(object):
 		self._settings = parameter_settings
 		self._settings.setdefault('convergence_amount',1.)
 		self._settings.setdefault('convergence_rate', 0.01)
+		self._log = log_function
 		self.value = []
 		self._param_state = param_world_state
 		# manually set target value
@@ -48,8 +49,8 @@ class Parameter(object):
 		elif self.validate_value([value]):
 			self._manual_value = [value]
 		else:
-			print('Blocked invalid value for {}: {}'.format(self.name, value))
-		print('{}.manual_value set to {}'.format(self.name, self.manual_value))
+			self._log('Blocked invalid value for {}: {}'.format(self.name, value))
+		# print('{}.manual_value set to {}'.format(self.name, self.manual_value))
 
 	def validate_value(self, value):
 		'''Validates whether `value` is valid for this plugin.
@@ -66,8 +67,8 @@ class Parameter(object):
 
 
 class FloatParameter(Parameter):
-	def __init__(self, parameter_name, parameter_settings, param_world_state):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
 		self._settings.setdefault('default_value', 0.)
 		self._settings.setdefault('min', 0.)
 		self._settings.setdefault('max', 1.)
@@ -108,8 +109,8 @@ class FloatParameter(Parameter):
 class NoteParameter(Parameter):
 	'''Parameter that converges over the cycle of fifths'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
 		self._settings.setdefault('default_value', 0)
 		self.manual_value = [self._settings['default_value']]
 		self.value = [self._settings['default_value']]
@@ -177,8 +178,8 @@ class NoteParameter(Parameter):
 class HarmonyParameter(Parameter):
 	'''Parameter for handling sets of integers which measure harmony'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
 		self._settings.setdefault('default_value', [0,5,3])
 		self.value = self._settings['default_value']
 		self.manual_value = self._settings['default_value']
@@ -226,8 +227,8 @@ class NarrativeParameter(Parameter):
 		convergence).
 	'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
 		self._settings.setdefault('default_value',0.)
 		self._settings.setdefault('change_speed', 0.1)
 		self.manual_value = [self._settings['default_value']]
@@ -289,6 +290,7 @@ class ConvergenceManager(QObject):
 				parameter_name = name,
 				parameter_settings = param_settings.setdefault(name, {}),
 				param_world_state = self.world_state.setdefault(name, {}),
+				log_function = lambda x, module=name: self.log(x, module=name)
 				)
 			for name,typ in param_types.iteritems()
 		}
@@ -324,7 +326,7 @@ class ConvergenceManager(QObject):
 
 
 	def set_manual_value(self, param_name, value):
-		print 'set_manual_value({},{})'.format(param_name, value)
+		# print 'set_manual_value({},{})'.format(param_name, value)
 		if type(value) is list:
 			self.params[param_name].manual_value = value
 		else:
