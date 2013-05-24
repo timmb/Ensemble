@@ -164,6 +164,7 @@ class MainWindow(QtGui.QMainWindow):
         update_text(self.ui.convergedStateText, get_state_table(self.stabilizer.converged_state))
         if not self.ui.settingsText.hasFocus():
             update_text(self.ui.settingsText, pformat(self.stabilizer.settings))
+        self.ui.ipAddress.setText(get_local_ip())
         # print 'narrative_speed', self.stabilizer.settings['narrative_speed']
 
     def settings_text_updated(self):
@@ -258,6 +259,19 @@ def get_state_table(state):
     table.add_rows(data)
     return table.draw()
 
+
+def get_local_ip():
+    import PySide.QtNetwork
+    addresses = [a.toString() for a in PySide.QtNetwork.QNetworkInterface.allAddresses()]
+    # filter ipv6
+    ips = [a for a in addresses if ':' not in a]
+    # prioritise ip's starting '192'
+    p = [a for a in ips if a[:3]=='192']
+    if p:
+        return p[0]
+    elif ips:
+        return ips[0]
+    return ''
 
 class IgnoreScrollWheelEventFilter(QObject):
     '''This is a filter to prevent spin boxes from changing in response to scrolling.
