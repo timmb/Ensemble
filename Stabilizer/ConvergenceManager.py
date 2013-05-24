@@ -34,8 +34,14 @@ class Parameter(object):
 		]
 
 	def set_manual_value(self, value):
-		if validate_value(value):
+		'''
+		Set the manually controlled value of this parameter. manual_value is always a list
+		although this function will attempt to wrap invalid values in a list to see if it works.
+		'''
+		if self.validate_value(value):
 			self.manual_value = value
+		elif self.validate_value([value]):
+			self.manual_value = [value]
 
 	def validate_value(self, value):
 		'''Validates whether `value` is valid for this plugin.
@@ -55,8 +61,8 @@ class FloatParameter(Parameter):
 	def __init__(self, parameter_name, parameter_settings, param_world_state):
 		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state)
 		self._settings.setdefault('default_value', 0.)
-		self._settings.setdefault('min', None)
-		self._settings.setdefault('max', None)
+		self._settings.setdefault('min', 0.)
+		self._settings.setdefault('max', 1.)
 		self.value = [self._settings['default_value']]
 		self.manual_value = [self._settings['default_value']]
 		self._converged_value = None
@@ -129,7 +135,7 @@ class NoteParameter(Parameter):
 		notes = []
 		if self._param_state:
 			for inst in self._param_state:
-				notes.append(self._param_state[0])
+				notes.append(self._param_state[inst][0])
 		notes = notes or self.manual_value
 
 		octave = mean([note/12. for note in notes])
@@ -173,34 +179,37 @@ class HarmonyParameter(Parameter):
 		return type(value)==list and all((type(x)==int and 0<=x and x<12 for x in value))
 
 	def update(self, dt):
-		conv_amt = clamp(self._settings['convergence_amount'])
+		try:
+			conv_amt = clamp(self._settings['convergence_amount'])
 
-		harmonies = []
-		if self._param_state:
-			for inst in self._param_state:
-				harmonies.append(self._param_state[0])
-		# find converged harmony
-		self._converged_value = []
-		if harmonies:
-			l = int(mean(map(len, harmonies)))
-			i = 0
-			while harmonies and len(self._converged_value) < l:
-				if harmonies[i]:
-					self._converged_value.append(harmonies[i][0])
-					harmonies[i] = harmonies[i][1:]
-					i = (i+1)%len(harmonies)
-				else:
-					harmonies.remove(harmonies[i])
+			harmonies = []
+			if self._param_state:
+				for inst in self._param_state:
+					harmonies.append(self._param_state[inst])
+			# find converged harmony
+			self._converged_value = []
+			if harmonies:
+				l = int(mean(map(len, harmonies)))
+				i = 0
+				while harmonies and len(self._converged_value) < l:
+					if harmonies[i]:
+						self._converged_value.append(harmonies[i][0])
+						harmonies[i] = harmonies[i][1:]
+						i = (i+1)%len(harmonies)
+					else:
+						harmonies.remove(harmonies[i])
 
-		# now combine converged harmony with manual value - for now just simple splice
-		if conv_amt==1 and self._converged_value:
-			self.value = self._converged_values
-		elif conv_amt==0 and self.manual_value:
-			self.value = self.manual_value
-		else:
-			self.value = unique(splice(self.manual_value, self._converged_value))
-		if not self.value:
-			self.value = self._settings['default_value']
+			# now combine converged harmony with manual value - for now just simple splice
+			if conv_amt==1 and self._converged_value:
+				self.value = self._converged_value
+			elif conv_amt==0 and self.manual_value:
+				self.value = self.manual_value
+			else:
+				self.value = unique(splice(self.manual_value, self._converged_value))
+			if not self.value:
+				self.value = self._settings['default_value']
+		except Exception as e:
+			import pdb; pdb.set_trace()
 
 
 class NarrativeParameter(Parameter):

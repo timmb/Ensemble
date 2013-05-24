@@ -97,7 +97,7 @@
          </size>
         </property>
         <property name="currentIndex">
-         <number>3</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="connectionsPage">
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -172,13 +172,6 @@
         <widget class="QWidget" name="parametersPage">
          <layout class="QVBoxLayout" name="verticalLayout_3">
           <item>
-           <widget class="QLabel" name="parametersLabel">
-            <property name="text">
-             <string>Parameters</string>
-            </property>
-           </widget>
-          </item>
-          <item>
            <widget class="QScrollArea" name="scrollArea">
             <property name="widgetResizable">
              <bool>true</bool>
@@ -189,7 +182,7 @@
                <x>0</x>
                <y>0</y>
                <width>595</width>
-               <height>348</height>
+               <height>372</height>
               </rect>
              </property>
             </widget>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Thu May 23 21:13:55 2013
+# Created: Fri May 24 14:40:17 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -106,14 +106,11 @@ class Ui_MainWindow(object):
         self.parametersPage.setObjectName("parametersPage")
         self.verticalLayout_3 = QtGui.QVBoxLayout(self.parametersPage)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.parametersLabel = QtGui.QLabel(self.parametersPage)
-        self.parametersLabel.setObjectName("parametersLabel")
-        self.verticalLayout_3.addWidget(self.parametersLabel)
         self.scrollArea = QtGui.QScrollArea(self.parametersPage)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.parametersArea = QtGui.QWidget()
-        self.parametersArea.setGeometry(QtCore.QRect(0, 0, 595, 348))
+        self.parametersArea.setGeometry(QtCore.QRect(0, 0, 595, 372))
         self.parametersArea.setObjectName("parametersArea")
         self.scrollArea.setWidget(self.parametersArea)
         self.verticalLayout_3.addWidget(self.scrollArea)
@@ -292,7 +289,7 @@ class Ui_MainWindow(object):
         self.pluginsLabel.setBuddy(self.plugins)
 
         self.retranslateUi(MainWindow)
-        self.pages.setCurrentIndex(3)
+        self.pages.setCurrentIndex(0)
         QtCore.QObject.connect(self.pageSelector, QtCore.SIGNAL("currentRowChanged(int)"), self.pages.setCurrentIndex)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -310,7 +307,6 @@ class Ui_MainWindow(object):
         self.connectionsLabel.setText(QtGui.QApplication.translate("MainWindow", "Currently detected connections", None, QtGui.QApplication.UnicodeUTF8))
         self.congergedStateLabel.setText(QtGui.QApplication.translate("MainWindow", "Converged State", None, QtGui.QApplication.UnicodeUTF8))
         self.instrumentsLabel.setText(QtGui.QApplication.translate("MainWindow", "Currently connected instruments", None, QtGui.QApplication.UnicodeUTF8))
-        self.parametersLabel.setText(QtGui.QApplication.translate("MainWindow", "Parameters", None, QtGui.QApplication.UnicodeUTF8))
         self.settingsFileLabel.setText(QtGui.QApplication.translate("MainWindow", "Settings file", None, QtGui.QApplication.UnicodeUTF8))
         self.reloadSettingsButton.setText(QtGui.QApplication.translate("MainWindow", "Reload", None, QtGui.QApplication.UnicodeUTF8))
         self.openSettingsButton.setText(QtGui.QApplication.translate("MainWindow", "&Open...", None, QtGui.QApplication.UnicodeUTF8))

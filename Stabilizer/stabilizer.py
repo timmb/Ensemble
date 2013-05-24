@@ -239,6 +239,10 @@ class Stabilizer(QApplication):
         self.output_processor.start()
         self.log('OSC output started')
 
+    @property
+    def is_sending(self):
+        return self._output_socket != None
+
     def stop_sending(self):
         '''Stops the output processor thread stopping outgoing osc messages.'''
         self.output_processor.quit()
@@ -288,7 +292,7 @@ class Stabilizer(QApplication):
 
     def log(self, s, module="Stabilizer"):       
         time = datetime.now()
-        self.event_log.addItem("[%s] %s %s" % (time.strftime("%H:%M:%S.%f")[:-3], module, s))
+        self.event_log.addItem("[%s] %s: %s" % (time.strftime("%H:%M:%S.%f")[:-3], module, s))
 
 if __name__=='__main__':
     app = Stabilizer()
@@ -299,10 +303,11 @@ if __name__=='__main__':
     from twisted.internet import reactor
     reactor.addSystemEventTrigger('before', 'shutdown', reactor.stop)
     app.start_sending()
+    app.start_listening()
     # Create gui
     main_window = MainWindow(app)
     main_window.show()
-    main_window.start_or_stop_listening(True)
+    # main_window.start_or_stop_listening(True)
     # start event loop
     app.exec_()
 

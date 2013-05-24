@@ -9,7 +9,7 @@ designer) to the rest of the code and any hand-written GUI code.
 import UX.MainWindow
 from PySide import QtCore, QtGui
 from PySide.QtGui import *
-from PySide.QtCore import QTimer
+from PySide.QtCore import *
 from pprint import pformat
 from lib.texttable import Texttable
 import json
@@ -17,16 +17,21 @@ import ast
 from collections import namedtuple
 
 
+def pr(x):
+    print(x)
+    return True
 
 def assign(var, value):
     var = value
 
-def assign_dict(dictionary, name, new_value):
+def assign_index(dictionary, name, new_value, log_function=None):
+    if log_function: log_function('{} set to {}'.format(name, new_value, log_function))
     dictionary[name] = new_value
 
 def try_assign_repr(dictionary, name, string_repr_of_new_value, log_function=None):
     try:
         dictionary[name] = ast.literal_eval(string_repr_of_new_value)
+        if log_function: log_function('{} set to {}'.format(name, dictionary[name], log_function))
         return True
     except SyntaxError as e:
         return False
@@ -54,7 +59,9 @@ class MainWindow(QtGui.QMainWindow):
 
         self.ui.actionQuit.triggered.connect(stabilizer.quit)
         self.ui.logView.setModel(stabilizer.event_log)
+        self.ui.enableInputCheckbox.setChecked(self.stabilizer.is_listening)
         self.ui.enableInputCheckbox.toggled.connect(self.start_or_stop_listening)
+        self.ui.enableOutputCheckbox.setChecked(self.stabilizer.is_sending)
         self.ui.enableOutputCheckbox.toggled.connect(self.start_or_stop_sending)
         checkbox_variable_pairings = [
             (self.ui.calculateConvergenceCheckbox, self.stabilizer.convergence_manager.enable_calculate_convergence),
@@ -101,9 +108,14 @@ class MainWindow(QtGui.QMainWindow):
 
         # create Parameter widgets for the convergence manager parameters
         self.parameter_widgets = []
-        self.ui.parametersArea.setLayout(QVBoxLayout())
+        self.ui.parametersArea.setLayout(QHBoxLayout())
         for name, param in self.stabilizer.convergence_manager.params.iteritems():
-            p = ParameterWidget(name, param, self.stabilizer.settings, self)
+            p = ParameterWidget(
+                name=name,
+                parameter=param, 
+                global_settings_dict=self.stabilizer.settings, 
+                log_function=lambda x, name=name: self.stabilizer.log(x, module="Gui - "+name),
+                parent=self)
             self.parameter_widgets.append(p)
             self.ui.parametersArea.layout().addWidget(p)
 
@@ -234,12 +246,26 @@ def get_state_table(state):
     return table.draw()
 
 
-class ParameterWidget(QWidget):
-    def __init__(self, name, parameter, global_settings_dict, parent=None):
-        QWidget.__init__(self, parent)
+class IgnoreScrollWheelEventFilter(QObject):
+    '''This is a filter to prevent spin boxes from changing in response to scrolling.
+    '''
+    def eventFilter(self, object, event):
+        if event.type() == QEvent.Wheel and not object.hasFocus():
+            event.ignore()
+            return True
+        return object.eventFilter(object, event)
+
+
+
+class ParameterWidget(QGroupBox):
+    ignoreScrollWheelEventFilter = IgnoreScrollWheelEventFilter()
+
+    def __init__(self, name, parameter, global_settings_dict, log_function=None, parent=None):
+        QGroupBox.__init__(self, parent)
         self._name = name
         self._settings = global_settings_dict
-        self._layout = QHBoxLayout(self)
+        self._layout = QFormLayout(self)
+        self._log_function = log_function
         self.setLayout(self._layout)
         # model defines the pairings between variables and widgets
         # all variables live inside a dictionary somewhere
@@ -250,48 +276,88 @@ class ParameterWidget(QWidget):
         self.timer.setInterval(200)
         self.timer.timeout.connect(self.update)
 
-        self._layout.addWidget(QLabel(name, self))
-        self.add_dict_element(parameter.__dict__, 'manual_value', 
-            True, parameter.set_manual_value)
+        # self._layout.addRow(QLabel(name, self))
+        self.setTitle(name)
+        if type(parameter.manual_value) is list and map(type, parameter.manual_value) in ([float],[int]):
+            self.add_indexed_element(
+                parameter.manual_value, 
+                0, 
+                False, 
+                parameter.set_manual_value,
+                widget_label='Manual value',
+                )
+        else:
+            self.add_indexed_element(
+                parameter.__dict__, 
+                'manual_value', 
+                False, 
+                parameter.set_manual_value, 
+                widget_label='Manual value',
+                )
+        
+        self.add_heading('State')
         for p in parameter.editable_values:
-            self.add_dict_element(parameter.__dict__, p, False)
+            self.add_indexed_element(parameter.__dict__, p, False)
         for p in parameter.readonly_values:
-            self.add_dict_element(parameter.__dict__, p, True)
+            self.add_indexed_element(parameter.__dict__, p, True)
+
+        self.add_heading('Settings')
+        for p in sorted(parameter._settings.iterkeys()):
+            self.add_indexed_element(parameter._settings, p, False)
 
 
-    def add_dict_element(self, d, name, is_read_only, 
-        update_function=None):
+    def add_heading(self, title):
+        label = QLabel(title, self)
+        font = label.font()
+        font.setBold(True)
+        label.setFont(font)
+        self._layout.addRow(label)
+        self._layout.addRow(self.make_horizontal_line())
+
+
+    def add_indexed_element(self, d, name, is_read_only, 
+        update_function=None, widget_label=None):
         '''
-        Creates a widget that sets the value of `name` in dict `d`,
+        Creates a widget that sets the value indexed by `name` in dict/list `d`,
         adds these elements to self._model.
         Leave update_function as None for default.
+        widget_label defaults to name
         '''
-        if name not in d:
-            print name, d
+        # print 'name',self._name,'log function',self._log_function
+        if ((type(d) is dict and name not in d)
+                or (type(d) is list and name>=len(d))):
+            print('ParameterWidget: Error indexing {} in {}'.format(name, d))
             assert(name in d)
-        self._layout.addWidget(QLabel(name, self))
         if type(d[name]) is float:
             widget = QDoubleSpinBox(self)
             widget.setSingleStep(0.01)
             widget.setValue(d[name])
             widget.valueChanged.connect(update_function 
-                or (lambda x: assign_dict(d, name, x)))
+                or (lambda x: assign_index(d, name, x, self._log_function))) # default arg
             widget_update_function = widget.setValue
         elif type(d[name]) is int:
             widget = QSpinBox(self)
             widget.setValue(d[name])
             widget.valueChanged.connect(update_function 
-                or (lambda x: assign_dict(d, name, x)))
+                or (lambda x: assign_index(d, name, x, self._log_function))) # default arg
             widget_update_function = widget.setValue
         else:
             widget = QLineEdit(self)
             widget.setText(repr(d[name]))
-            widget.editingFinished.connect(update_function 
-                or (lambda x: try_assign_repr(d, name, x)))
+            widget.editingFinished.connect(
+                update_function 
+                and (lambda: update_function(widget.text()))
+                or (lambda: try_assign_repr(d, name, widget.text(), self._log_function))) # default arg
             widget_update_function = widget.setText
 
-        widget.setReadOnly(is_read_only)
-        self._layout.addWidget(widget)
+        if is_read_only:
+            widget.setReadOnly(True)
+            widget.setEnabled(False)
+        # widget.focusInEvent = lambda event: widget.setFocusPolicy(Qt.WheelFocus)
+        # widget.focusOutEvent = lambda event: widget.setFocusPolicy(Qt.StrongFocus)
+        widget.setFocusPolicy(Qt.StrongFocus)
+        widget.installEventFilter(self.ignoreScrollWheelEventFilter)
+        self._layout.addRow(widget_label or name, widget)
         self._model.append({
             'dictionary' : d, 
             'var_name' : name, 
@@ -300,13 +366,24 @@ class ParameterWidget(QWidget):
             'last_value' : d[name],
             })
 
+    def make_horizontal_line(self):
+        line = QFrame(self);
+        line.setGeometry(QRect(320, 150, 118, 3))
+        line.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        line.setFrameShape(QFrame.HLine)
+        line.setFrameShadow(QFrame.Sunken)
+        return line
+
     def update(self):
-        for element in self._model:
-            if element['dictionary']['var_name']!=element['prev_value']:
-                element['prev_value'] = element['dictionary']['var_name']
-                element['widget'].blockSignals(True)
-                element['widget_update_function'](element['prev_value'])
-                element['widget'].blockSignals(False)
+        try:
+            for element in self._model:
+                if element['dictionary']['var_name']!=element['prev_value']:
+                    element['prev_value'] = element['dictionary']['var_name']
+                    element['widget'].blockSignals(True)
+                    element['widget_update_function'](element['prev_value'])
+                    element['widget'].blockSignals(False)
+        except Exceptions as e:
+            import pdb; pdb.set_trace()
 
 
 
