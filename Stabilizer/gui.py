@@ -15,23 +15,34 @@ from lib.texttable import Texttable
 import json
 import ast
 from collections import namedtuple
+import copy
 
 
 def pr(x):
     print(x)
     return True
 
-def assign(var, value):
-    var = value
-
 def assign_index(dictionary, name, new_value, log_function=None):
-    if log_function: log_function('{} set to {}'.format(name, new_value, log_function))
+    if log_function: log_function('{} set to {}'.format(name, new_value))
     dictionary[name] = new_value
 
-def try_assign_repr(dictionary, name, string_repr_of_new_value, log_function=None):
+def assign_member(obj, name, new_value, log_function=None):
+    if log_function: log_function('{}.{} set to {}'.format(obj, name))
+    setattr(obj,name,new_value)
+
+def try_assign_repr_index(dictionary, name, string_repr_of_new_value, log_function=None):
     try:
         dictionary[name] = ast.literal_eval(string_repr_of_new_value)
-        if log_function: log_function('{} set to {}'.format(name, dictionary[name], log_function))
+        if log_function: log_function('{} set to {}'.format(name, dictionary[name]))
+        return True
+    except SyntaxError as e:
+        return False
+
+def try_assign_repr_member(obj, name, string_repr_of_new_value, log_function=None):
+    try:
+        setattr(obj, name, ast.literal_eval(string_repr_of_new_value))
+        if log_function:
+            log_function('{} set to {}'.format(name, getattr(obj,name)))
         return True
     except SyntaxError as e:
         return False
@@ -268,38 +279,44 @@ class ParameterWidget(QGroupBox):
         self._log_function = log_function
         self.setLayout(self._layout)
         # model defines the pairings between variables and widgets
-        # all variables live inside a dictionary somewhere
-        self._model = [
-            # {dictionary, var_name, widget, widget_update_function, last_value}
+        # all variables live either inside a dictionary somewhere or
+        # are member variables of an object
+        self._index_model = [
+            # {param_name, dictionary, var_name, widget, widget_update_function, last_value}
+        ]
+        self._member_model = [
+            # {param_name, object, var_name, widget, widget_update_function, last_value}
         ]
         self.timer = QTimer(self)
         self.timer.setInterval(200)
         self.timer.timeout.connect(self.update)
+        self.timer.start()
 
         # self._layout.addRow(QLabel(name, self))
         self.setTitle(name)
-        if type(parameter.manual_value) is list and map(type, parameter.manual_value) in ([float],[int]):
-            self.add_indexed_element(
-                parameter.manual_value, 
-                0, 
-                False, 
-                parameter.set_manual_value,
-                widget_label='Manual value',
-                )
-        else:
-            self.add_indexed_element(
-                parameter.__dict__, 
-                'manual_value', 
-                False, 
-                parameter.set_manual_value, 
-                widget_label='Manual value',
-                )
+        self.add_member_element(parameter, 'manual_value', False)
+        # if type(parameter.manual_value) is list and map(type, parameter.manual_value) in ([float],[int]):
+        #     self.add_indexed_element(
+        #         parameter.manual_value, 
+        #         0, 
+        #         False, 
+        #         parameter.set_manual_value,
+        #         widget_label='Manual value',
+        #         )
+        # else:
+        #     self.add_indexed_element(
+        #         parameter.__dict__, 
+        #         'manual_value', 
+        #         False, 
+        #         parameter.set_manual_value, 
+        #         widget_label='Manual value',
+        #         )
         
         self.add_heading('State')
         for p in parameter.editable_values:
-            self.add_indexed_element(parameter.__dict__, p, False)
+            self.add_member_element(parameter, p, False)
         for p in parameter.readonly_values:
-            self.add_indexed_element(parameter.__dict__, p, True)
+            self.add_member_element(parameter, p, True)
 
         self.add_heading('Settings')
         for p in sorted(parameter._settings.iterkeys()):
@@ -315,40 +332,45 @@ class ParameterWidget(QGroupBox):
         self._layout.addRow(self.make_horizontal_line())
 
 
-    def add_indexed_element(self, d, name, is_read_only, 
-        update_function=None, widget_label=None):
+    def add_member_element(self, obj, name, is_read_only, update_function=None, widget_label=None):
         '''
-        Creates a widget that sets the value indexed by `name` in dict/list `d`,
-        adds these elements to self._model.
-        Leave update_function as None for default.
-        widget_label defaults to name
+        Creates a widget that set the value of a member variable of object `obj`.
+        Updates happen via assignment unless `update_function`!=None.
         '''
-        # print 'name',self._name,'log function',self._log_function
-        if ((type(d) is dict and name not in d)
-                or (type(d) is list and name>=len(d))):
-            print('ParameterWidget: Error indexing {} in {}'.format(name, d))
-            assert(name in d)
-        if type(d[name]) is float:
+        # see comments in add_indexed_element...
+
+        value = getattr(obj, name)
+        wrapped_type = False
+        if type(value) is list and len(value)==1:
+            wrapped_type = type(value[0])
+
+        t = type(value)
+        if t is float or wrapped_type is float:
             widget = QDoubleSpinBox(self)
             widget.setSingleStep(0.01)
-            widget.setValue(d[name])
-            widget.valueChanged.connect(update_function 
-                or (lambda x: assign_index(d, name, x, self._log_function))) # default arg
-            widget_update_function = widget.setValue
-        elif type(d[name]) is int:
+            widget.valueChanged.connect(update_function
+                or (lambda x: assign_member(obj, name, x, self._log_function))
+                )
+            if wrapped_type:
+                widget_update_function = lambda x: x and widget.setValue(x[0])
+            else:
+                widget_update_function = widget.setValue
+        elif t is int or wrapped_type is int:
             widget = QSpinBox(self)
-            widget.setValue(d[name])
-            widget.valueChanged.connect(update_function 
-                or (lambda x: assign_index(d, name, x, self._log_function))) # default arg
-            widget_update_function = widget.setValue
+            widget.valueChanged.connect(update_function
+                or (lambda x: assign_member(obj, name, x, self._log_function)))
+            if wrapped_type:
+                widget_update_function = lambda x: x and widget.setValue(x[0])
+            else:
+                widget_update_function = widget.setValue
         else:
             widget = QLineEdit(self)
-            widget.setText(repr(d[name]))
             widget.editingFinished.connect(
                 update_function 
                 and (lambda: update_function(widget.text()))
-                or (lambda: try_assign_repr(d, name, widget.text(), self._log_function))) # default arg
-            widget_update_function = widget.setText
+                or (lambda: try_assign_repr_member(d, name, widget.text(), self._log_function))) # default arg
+            widget_update_function = lambda x: widget.setText(repr(x))
+        widget_update_function(getattr(obj, name))
 
         if is_read_only:
             widget.setReadOnly(True)
@@ -358,12 +380,76 @@ class ParameterWidget(QGroupBox):
         widget.setFocusPolicy(Qt.StrongFocus)
         widget.installEventFilter(self.ignoreScrollWheelEventFilter)
         self._layout.addRow(widget_label or name, widget)
-        self._model.append({
+        self._member_model.append({
+            'object' : obj, 
+            'var_name' : name, 
+            'widget' : widget, 
+            'widget_update_function' : widget_update_function, 
+            'last_value' : copy.deepcopy(getattr(obj, name)),
+            })            
+
+
+
+    def add_indexed_element(self, d, name, is_read_only, 
+        update_function=None, widget_label=None):
+        '''
+        Creates a widget that sets the value indexed by `name` in dict/list `d`,
+        adds these elements to self._index_model.
+        Leave update_function as None for default.
+        widget_label defaults to name
+        '''
+        # print 'name',self._name,'log function',self._log_function
+        if ((type(d) is dict and name not in d)
+                or (type(d) is list and name>=len(d))):
+            print('ParameterWidget: Error indexing {} in {}'.format(name, d))
+            assert(name in d)
+
+        # some values are wrapped in lists but we still want normal widgets for them
+        wrapped_type = False
+
+        if type(d[name]) is list and len(d[name])==1:
+            wrapped_type = type(d[name][0])
+
+        if type(d[name]) is float or wrapped_type is float:
+            widget = QDoubleSpinBox(self)
+            widget.setSingleStep(0.01)
+            widget.valueChanged.connect(update_function 
+                or (lambda x: assign_index(d, name, x, self._log_function))) # default arg
+            if wrapped_type:
+                widget_update_function = lambda x: x and widget.setValue(x[0])
+            else:
+                widget_update_function = widget.setValue
+        elif type(d[name]) is int or wrapped_type is int:
+            widget = QSpinBox(self)
+            widget.valueChanged.connect(update_function 
+                or (lambda x: assign_index(d, name, x, self._log_function))) # default arg
+            if wrapped_type:
+                widget_update_function = lambda x: x and widget.setValue(x[0])
+            else:
+                widget_update_function = widget.setValue
+        else:
+            widget = QLineEdit(self)
+            widget.editingFinished.connect(
+                update_function 
+                and (lambda: update_function(widget.text()))
+                or (lambda: try_assign_repr_index(d, name, widget.text(), self._log_function))) # default arg
+            widget_update_function = lambda x: widget.setText(repr(x))
+        widget_update_function(d[name])
+
+        if is_read_only:
+            widget.setReadOnly(True)
+            widget.setEnabled(False)
+        # widget.focusInEvent = lambda event: widget.setFocusPolicy(Qt.WheelFocus)
+        # widget.focusOutEvent = lambda event: widget.setFocusPolicy(Qt.StrongFocus)
+        widget.setFocusPolicy(Qt.StrongFocus)
+        widget.installEventFilter(self.ignoreScrollWheelEventFilter)
+        self._layout.addRow(widget_label or name, widget)
+        self._index_model.append({
             'dictionary' : d, 
             'var_name' : name, 
             'widget' : widget, 
             'widget_update_function' : widget_update_function, 
-            'last_value' : d[name],
+            'last_value' : copy.deepcopy(d[name]),
             })
 
     def make_horizontal_line(self):
@@ -375,15 +461,21 @@ class ParameterWidget(QGroupBox):
         return line
 
     def update(self):
-        try:
-            for element in self._model:
-                if element['dictionary']['var_name']!=element['prev_value']:
-                    element['prev_value'] = element['dictionary']['var_name']
-                    element['widget'].blockSignals(True)
-                    element['widget_update_function'](element['prev_value'])
-                    element['widget'].blockSignals(False)
-        except Exceptions as e:
-            import pdb; pdb.set_trace()
-
-
+        for element in self._member_model:
+            var_name = element['var_name']
+            obj = element['object']
+            if getattr(obj, var_name)!=element['last_value']:
+                element['widget'].blockSignals(True)
+                element['widget_update_function'](getattr(obj, var_name))
+                element['widget'].blockSignals(False)
+                print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], getattr(obj, var_name)))
+                element['last_value'] = copy.deepcopy(getattr(obj, var_name))
+        for element in self._index_model:
+            var_name = element['var_name']
+            if element['dictionary'][var_name]!=element['last_value']:
+                element['widget'].blockSignals(True)
+                element['widget_update_function'](element['dictionary'][var_name])
+                element['widget'].blockSignals(False)
+                print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], element['dictionary'][var_name]))
+                element['last_value'] = copy.deepcopy(element['dictionary'][var_name])
 

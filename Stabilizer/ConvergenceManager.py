@@ -22,7 +22,7 @@ class Parameter(object):
 		self.value = []
 		self._param_state = param_world_state
 		# manually set target value
-		self.manual_value = []
+		self._manual_value = []
 		# value derived through calculating convergence
 		self._converged_value = None
 		# values exposed on the gui, in addition to self._settings
@@ -33,15 +33,23 @@ class Parameter(object):
 			'_converged_value',
 		]
 
-	def set_manual_value(self, value):
+	@property
+	def manual_value(self):
+		return self._manual_value
+
+	@manual_value.setter
+	def manual_value(self, value):
 		'''
 		Set the manually controlled value of this parameter. manual_value is always a list
 		although this function will attempt to wrap invalid values in a list to see if it works.
 		'''
 		if self.validate_value(value):
-			self.manual_value = value
+			self._manual_value = value
 		elif self.validate_value([value]):
-			self.manual_value = [value]
+			self._manual_value = [value]
+		else:
+			print('Blocked invalid value for {}: {}'.format(self.name, value))
+		print('{}.manual_value set to {}'.format(self.name, self.manual_value))
 
 	def validate_value(self, value):
 		'''Validates whether `value` is valid for this plugin.
@@ -114,7 +122,7 @@ class NoteParameter(Parameter):
 		]
 
 	def validate_value(self, value):
-		return type(value)==list and map(type, value)==[float]
+		return type(value)==list and map(type, value) in ([float], [int])
 
 	def update(self, dt):
 		Parameter.update(self, dt)
@@ -311,25 +319,10 @@ class ConvergenceManager(QObject):
 		# 	'brightness': [0.5],
 		# 	'roughness': [0.2],
 		# }
-		# self.single_valued_parameters = [
-		# 	'activity',
-		# 	'tempo',
-		# 	'loudness',
-		# 	'immediate_pitch',
-		# 	'root',
-		# 	'detune',
-		# 	'note_density',
-		# 	'note_frequency',
-		# 	'attack',
-		# 	'brightness',
-		# 	'roughness',
-		# ]
 
-		# # this is used for the universal convergence method (temp function)
-		# self.converged_values = dict(self.default_values)
-		# self.last_time_of_universal_convergence = None
 
 	def set_manual_value(self, param_name, value):
+		print 'set_manual_value({},{})'.format(param_name, value)
 		if type(value) is list:
 			self.params[param_name].manual_value = value
 		else:
@@ -382,53 +375,3 @@ class ConvergenceManager(QObject):
 			else:
 				self.set_manual_value(param, message.getValues())
 				print param,'set to',self.params[param].manual_value
-
-
-	# def universal_convergence_method(self, world_state, connections, converged_state):
-	# 	'''This is called by stabilizer on a timer.
-
-	# 	converged_values are updated based on world_state regardless of connections.
-	# 	converged_state is set for all instruments based on converged_values
-	# 	'narrative' is updated based on connections
-	# 	'''
-	# 	convergence_speed = self.settings['convergence_speed']
-	# 	narrative_speed = self.settings['narrative_speed']
-	# 	narrative_decay = self.settings['narrative_decay']
-
-	# 	self.last_time_of_universal_convergence = self.last_time_of_universal_convergence or time.time()
-	# 	t = time.time()
-	# 	dt = t - self.last_time_of_universal_convergence
-	# 	self.last_time_of_universal_convergence = t
-	# 	alpha = max(0,min(1,convergence_speed*dt))
-	# 	narrative_alpha = max(0,min(1,narrative_speed*dt))
-
-	# 	params = set(world_state.keys() + self.converged_values.keys())
-	# 	instruments = connections.keys()
-
-	# 	# update converged state for those parmaeters that we've received
-	# 	for p in set(world_state.keys()).intersection(self.single_valued_parameters):
-	# 		# import pdb; pdb.set_trace()
-	# 		set_values = [x[0] for x in world_state[p].values()]
-	# 		if set_values:
-	# 			value = sum(set_values)/len(set_values)
-	# 			self.converged_values[p][0] += alpha*(value - self.converged_values[p][0])
-
-	# 	# todo: parameters that aren't single valued
-
-	# 	# update narrative
-	# 	narrative = 0.
-	# 	count = 0.
-	# 	for inst1 in instruments:
-	# 		for inst2 in (x for x in instruments if x!=inst1):
-	# 			narrative += connections[inst1][inst2]
-	# 			count += 1.
-	# 	if count:
-	# 		narrative /= count
-	# 	old_narrative = self.converged_values.setdefault('narrative', [0.])[0]
-	# 	old_narrative *= 1. - (1.-narrative_decay)*dt
-	# 	self.converged_values['narrative'][0] += narrative_alpha*(narrative - old_narrative)
-
-	# 	# apply this converged_values to all instruments
-	# 	for inst in instruments:
-	# 		for param in self.converged_values:
-	# 			converged_state.setdefault(param,{})[inst] = self.converged_values[param]
