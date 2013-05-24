@@ -73,7 +73,7 @@ class FloatParameter(Parameter):
 		self._settings.setdefault('max', 1.)
 		self.value = [self._settings['default_value']]
 		self.manual_value = [self._settings['default_value']]
-		self._converged_value = None
+		self._converged_value = [self._settings['default_value']]
 		self.readonly_values += [
 			'_converged_value',
 		]
@@ -113,6 +113,7 @@ class NoteParameter(Parameter):
 		self._settings.setdefault('default_value', 0)
 		self.manual_value = [self._settings['default_value']]
 		self.value = [self._settings['default_value']]
+		self._converged_value = [self._settings['default_value']]
 		self._converged_octave = self.manual_value[0] / 12.
 		# measured in number of fifths above C
 		self._converged_tone = (self.manual_value[0]*7)%12
@@ -181,7 +182,7 @@ class HarmonyParameter(Parameter):
 		self._settings.setdefault('default_value', [0,5,3])
 		self.value = self._settings['default_value']
 		self.manual_value = self._settings['default_value']
-		self._converged_value = []
+		self._converged_value = self._settings['default_value']
 
 	def validate_value(self, value):
 		return type(value)==list and all((type(x)==int and 0<=x and x<12 for x in value))
@@ -231,6 +232,7 @@ class NarrativeParameter(Parameter):
 		self._settings.setdefault('change_speed', 0.1)
 		self.manual_value = [self._settings['default_value']]
 		self.value = self.manual_value[:]
+		self.readonly_values.remove('_converged_value')
 
 	def validate_value(self, value):
 		return type(value) is list and map(type, value)==[float]
