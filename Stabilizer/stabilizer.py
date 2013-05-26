@@ -89,57 +89,6 @@ class ListModel(QtCore.QAbstractListModel):
 
 
 
-def temp_convergence_method(world_state, connections, converged_state, default_values):
-    '''Very basic convergence function. This will be replaced with
-    a proper plugins-based structure in the future.
-
-    Assumes `connections` is a complete mapping with respect to the instruments 
-    described by `world_state`
-    '''
-    converge_using_mean = [
-        'activity',
-        'tempo',
-        'loudness',
-        'immediate_pitch',
-        'root',
-        'detune',
-        'note_density',
-        'note_frequency',
-        'attack',
-        'brightness',
-        'roughness',
-    ]
-    converge_using_mean = [p for p in converge_using_mean if p in world_state]
-
-    for param in converge_using_mean:
-        insts = world_state[param]
-        for inst0 in insts:
-            total_weight = 0
-            total = 0.
-            for inst1 in insts:
-                weight = connections[inst0][inst1]
-                total_weight += weight
-                total += world_state[param][inst1][0] * weight
-            if total_weight==0:
-                mean = world_state[param][inst0][0]
-            else:
-                mean = total/total_weight
-            if type(world_state[param][inst0][0])==int:
-                mean = int(mean)
-            if inst0 in converged_state.setdefault(param,{}):
-                converged_state[param][inst0][0] += 0.001*(mean-converged_state[param][inst0][0])
-            else:
-                converged_state[param][inst0] = [mean]
-
-    # if a parameter hasn't been set then use the default value
-    for param in default_values:
-        for inst in connections:
-            if param not in converged_state:
-                converged_state[param] = {}
-            if inst not in converged_state[param]:
-                converged_state[param][inst] = default_values[param][:]
-
-
 
 class Stabilizer(QApplication):
 
@@ -149,7 +98,7 @@ class Stabilizer(QApplication):
         # ** All persistent settings need to be put in here **
         self.settings = Settings({
            
-        })
+        }, log_function=lambda x, module="Settings": self.log(x, module))
 
         self.event_log = ListModel([])
         self.dispatcher = ThreadDispatcher(self)
