@@ -53,6 +53,9 @@ public:
 	
 	static Kinect* instance() { return sInstance; }
 	
+	/// This only affects how the user is drawn.
+	void setUserBeingBroadcast(int id) { mUserBeingBroadcast = id; }
+	
 private:
 	/// If successful then mDevice!=NULL
 	void openKinect();
@@ -80,6 +83,7 @@ private:
 	bool mIsUserDataNew;
 	
 	static Kinect* sInstance;
+	int mUserBeingBroadcast = -1;
 };
 
 

@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <iterator>
 #include <set>
+#include "cinder/app/AppBasic.h"
 using namespace ci;
 using namespace std;
 using namespace ci::osc;
@@ -156,25 +157,29 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 			mSender.sendMessage(message);
 		}
 		// find closest confident user
-		User const* closestUser = NULL;
-		for (User const& user: users)
+		User* closestUser = NULL;
+		for (User& user: users)
 		{
-			if (closestUser==NULL)
+			Vec3f torso = user.getJoint(XN_SKEL_TORSO).mPos;
+			Vec3f torsoProj = user.projectedPos;
+			std::cout << torso << endl;
+			if (mMinUserX > torsoProj.x
+				|| torsoProj.x > mMaxUserX
+				|| torsoProj.z > mMaxUserDepth
+				|| user.confidence<0.8)
 			{
-				Vec3f torso = user.getJoint(XN_SKEL_TORSO);
-				if (mMinUserX <= torso.x
-					&& torso.x <= mMaxUserX
-					&& torso.z <= mMaxUserDepth
-					&& user.confidence>0.8
-					&& user.getJoint(XN_SKEL_TORSO).mPos.lengthSquared() < closestUser->getJoint(XN_SKEL_TORSO).mPos.lengthSquared()
-					)
-				{
-					closestUser = &user;
-				}
+				continue;
+			}
+			if (closestUser==NULL || torso.lengthSquared() < closestUser->getJoint(XN_SKEL_TORSO).mPos.lengthSquared())
+			{
+				closestUser = &user;
 			}
 		}
 		if (closestUser!=NULL)
 		{
+			mKinect->setUserBeingBroadcast(closestUser->id);
+			cout << "setting to true" << endl;
+			std::cout << "tracking" << endl;
 			UserMessage userMessage(mKinectName, *closestUser);
 			mSender.sendMessage(userMessage);
 			for (Joint const& joint: closestUser->joints)
@@ -200,8 +205,25 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 				}
 			}
 		}
+		else
+		{
+			mKinect->setUserBeingBroadcast(-1);
+		}
 	}
 	
 
 }
 
+void OscBroadcaster::draw()
+{
+	gl::pushMatrices();
+	{
+		gl::setMatricesWindow(app::getWindowSize());
+		gl::enableAdditiveBlending();
+		gl::color(ColorA(1., 0.3, 0.7, 0.5));
+		glLineWidth(1.5);
+		gl::drawLine(Vec2f(mMinUserX, 0), Vec2f(mMinUserX, app::getWindowHeight()));
+		gl::drawLine(Vec2f(mMaxUserX ,0), Vec2f(mMaxUserX, app::getWindowHeight()));
+	}
+	gl::popMatrices();
+}

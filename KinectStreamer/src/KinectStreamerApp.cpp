@@ -78,6 +78,7 @@ void KinectStreamerApp::draw()
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
 	mKinect.draw();
+	mOscBroadcaster.draw();
 	hud().draw();
 	mSettings.draw();
 }

@@ -64,6 +64,7 @@ private:
 struct User
 {
 	ci::Vec3f pos;
+	ci::Vec3f projectedPos; ///< In pixels and millimetres for z.
 	float confidence;
 	/// ID as reported by OpenNIUser
 	int id;

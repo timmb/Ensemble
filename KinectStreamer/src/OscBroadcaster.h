@@ -22,6 +22,7 @@ public:
 	/// Should be called after registerParams
 	void setup(Kinect* kinect);
 	void update(double dt, double elapsedTime);
+	void draw();
 	
 private:
 	/// e.g. "joint/head" -> "/kinect/kinect-name/joint/head"

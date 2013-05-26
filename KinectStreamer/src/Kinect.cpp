@@ -171,7 +171,9 @@ void Kinect::update(float dt, float elapsedTime, JointParameters const& jointPar
 					{
 						{
 							float* pos =user->getBone(SKEL_TORSO)->position;
+							float* proj = user->getBone(SKEL_TORSO)->positionProjective;
 							myUser.pos.set(pos[0], pos[1], pos[2]);
+							myUser.projectedPos.set(proj[0], proj[1], proj[2]);
 							myUser.confidence = user->getBone(SKEL_TORSO)->positionConfidence;
 						}
 						// Copy all active joints
@@ -216,6 +218,14 @@ void Kinect::draw()
 		OpenNIUserList users = mOpenNI->getUserList();
 		for (OpenNIUserRef &user: users)
 		{
+			if (user->getId()==mUserBeingBroadcast)
+			{
+				glLineWidth(5);
+			}
+			else
+			{
+				glLineWidth(2);
+			}
 			user->renderJoints(mDepthSize.x, mDepthSize.y, 0);
 		}
 		

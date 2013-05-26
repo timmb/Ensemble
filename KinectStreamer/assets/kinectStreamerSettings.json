@@ -2,6 +2,12 @@
 {
 	"Expression decay" : 0.6680000424385071,
 	"Velocity smoothing" : 7,
+	"limits" : 
+	{
+		"Depth cutoff distance" : 2256.0,
+		"Left cutoff point" : 141.0,
+		"Right cutoff point" : 521.0
+	},
 	"osc" : 
 	{
 		"deviceName" : "Kinect0",
