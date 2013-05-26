@@ -5,11 +5,13 @@ from utilities import *
 from PySide.QtCore import *
 import re
 
-class Parameter(object):
+class Parameter(QObject):
 	'''A parameter manages a value present in the world state and writes it to
 	the converged state. It does so by registering a callback to changes
 	within the world state.
 	'''
+
+	sig_is_converged_valid_changed = Signal(bool)
 
 	def __init__(self, parameter_name, parameter_settings, param_world_state, 
 		parameters, log_function):
@@ -18,6 +20,7 @@ class Parameter(object):
 		:param parameters: is a dictionary of all parameters (all of which would be 
 			subclasses of Parameter) indexed by name.
 		'''
+		QObject.__init__(self)
 		self.name = parameter_name
 		self.params = parameters
 		# All persistent values should be written to self.settings
@@ -88,11 +91,14 @@ class Parameter(object):
 			c = c[0]
 		try:
 			val = eval(self._settings['convergence_transform'], globals(), dict(self.params.items()+[('convergence', c)]))
-			self.is_convergence_transform_valid = True
+			if not self.is_convergence_transform_valid:
+				self.is_convergence_transform_valid = True
+				self.sig_is_converged_valid_changed.emit(True)
 			return type(val) is list and val or [val]
 		except Exception as e:
 			if self.is_convergence_transform_valid:
 				self.is_convergence_transform_valid = False
+				self.sig_is_converged_valid_changed.emit(False)
 				self._log('Error in convergence transform: '+e.message)
 			return self._converged_value
 
@@ -113,7 +119,7 @@ class FloatParameter(Parameter):
 		self.manual_value = [self._settings['default_value']]
 		self._converged_value = [self._settings['default_value']]
 		self.readonly_values += [
-			'_converged_value',
+
 		]
 
 	def validate_value(self, value):

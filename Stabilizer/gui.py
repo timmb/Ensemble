@@ -338,6 +338,8 @@ class ParameterWidget(QGroupBox):
         for p in sorted(parameter._settings.iterkeys()):
             self.add_indexed_element(parameter._settings, p, False)
 
+        parameter.sig_is_converged_valid_changed.connect(self.is_convergence_transform_valid_has_changed)
+
 
     def add_heading(self, title):
         label = QLabel(title, self)
@@ -483,6 +485,14 @@ class ParameterWidget(QGroupBox):
         line.setFrameShape(QFrame.HLine)
         line.setFrameShadow(QFrame.Sunken)
         return line
+
+    def is_convergence_transform_valid_has_changed(self, new_value):
+        for m in self._index_model:
+            if m['var_name']=='convergence_transform':
+                widget = m['widget']
+                palette = widget.palette()
+                palette.setColor(widget.foregroundRole(), new_value and Qt.black or '#ef304a')
+                widget.setPalette(palette)
 
     def update(self):
         for element in self._member_model:
