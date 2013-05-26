@@ -229,11 +229,17 @@ class NarrativeParameter(Parameter):
 
 	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
 		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
+		del self._settings['convergence_amount']
+		del self._settings['convergence_rate']
 		self._settings.setdefault('default_value',0.)
 		self._settings.setdefault('change_speed', 0.1)
+		self._settings.setdefault('amount_controlled_by_connections', 0.)
 		self.manual_value = [self._settings['default_value']]
+		self._target_value = [self._settings['default_value']]
+		self.value_from_connections = [self._settings['default_value']]
 		self.value = self.manual_value[:]
 		self.readonly_values.remove('_converged_value')
+		self.readonly_values.append('_target_value')
 
 	def validate_value(self, value):
 		return type(value) is list and map(type, value)==[float]
@@ -241,7 +247,9 @@ class NarrativeParameter(Parameter):
 	def update(self, dt):
 		# gradually move towards target value
 		amt = min(1,dt * clamp(self._settings['change_speed']))
-		self.value[0] += amt * (self.manual_value[0] - self.value[0])
+		a = self._settings['amount_controlled_by_connections']
+		self.target_value = [a * self.value_from_connections[0] + (1. - a) * self.manual_value[0]]
+		self.value[0] += amt * (self.target_value[0] - self.value[0])
 
 
 
@@ -356,7 +364,7 @@ class ConvergenceManager(QObject):
 				count += 1.
 		if count:
 			narrative /= count
-		self.set_manual_value('narrative', narrative)
+		self.params['narrative'].value_from_connections = [narrative]
 
 	def update_converged_state(self):
 		'''Write values from self.params to self.converged_state.

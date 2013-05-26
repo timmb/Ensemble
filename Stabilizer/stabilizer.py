@@ -211,6 +211,8 @@ class Stabilizer(QApplication):
             self,
             )
 
+        self.settings.reload()
+
 
     def shutdown(self):
         self.log("Shutting down")
@@ -301,6 +303,7 @@ if __name__=='__main__':
     import qt4reactor
     qt4reactor.install()
     from twisted.internet import reactor
+    ## print all loaded modules:
     reactor.addSystemEventTrigger('before', 'shutdown', reactor.stop)
     app.start_sending()
     app.start_listening()
@@ -310,4 +313,5 @@ if __name__=='__main__':
     # main_window.start_or_stop_listening(True)
     # start event loop
     app.exec_()
+    app.settings.save()
 

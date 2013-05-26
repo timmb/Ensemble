@@ -1,9 +1,7 @@
 {
-    "narrative_speed": 1.0, 
-    "narrative_decay": 0.99, 
     "parameters": {
         "brightness": {
-            "convergence_amount": 1.0, 
+            "convergence_amount": 0.96, 
             "convergence_rate": 0.01, 
             "max": 1.0, 
             "default_value": 0.0, 
@@ -19,9 +17,9 @@
         "tempo": {
             "convergence_amount": 1.0, 
             "convergence_rate": 0.01, 
-            "max": 100.0, 
+            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 50.0
+            "min": 0.0
         }, 
         "roughness": {
             "convergence_amount": 1.0, 
@@ -54,10 +52,11 @@
             ]
         }, 
         "narrative": {
+            "default_value": 0.0, 
             "convergence_amount": 1.0, 
             "convergence_rate": 0.01, 
-            "default_value": 0.0, 
-            "change_speed": 0.1
+            "change_speed": 0.1, 
+            "amount_controlled_by_connections": 0.0
         }, 
         "loudness": {
             "convergence_amount": 1.0, 
@@ -85,6 +84,5 @@
             "convergence_rate": 0.01, 
             "default_value": 0
         }
-    }, 
-    "convergence_speed": 1.0
+    }
 }
