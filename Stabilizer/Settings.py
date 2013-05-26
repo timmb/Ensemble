@@ -60,6 +60,8 @@ def soft_update(dest, d):
 	'''Recursively update dest with values from d without overwriting any references.
 	See http://stackoverflow.com/a/14048316/794283
 	'''
+	# TODO: check this is right... something seems wrong.
+	# Also, prevent mappings from being added to dest if they were not there previously
 	for k,v in d.iteritems():
 		if isinstance(v, Mapping):
 			r = soft_update(dest.get(k, {}), v)

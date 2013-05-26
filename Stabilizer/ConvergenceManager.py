@@ -233,6 +233,7 @@ class NarrativeParameter(Parameter):
 		del self._settings['convergence_rate']
 		self._settings.setdefault('default_value',0.)
 		self._settings.setdefault('change_speed', 0.1)
+		self._settings.setdefault('max_change_per_second', 0.05)
 		self._settings.setdefault('amount_controlled_by_connections', 0.)
 		self.manual_value = [self._settings['default_value']]
 		self._target_value = [self._settings['default_value']]
@@ -248,8 +249,12 @@ class NarrativeParameter(Parameter):
 		# gradually move towards target value
 		amt = min(1,dt * clamp(self._settings['change_speed']))
 		a = self._settings['amount_controlled_by_connections']
+		max_change = dt * self._settings['max_change_per_second']
 		self.target_value = [a * self.value_from_connections[0] + (1. - a) * self.manual_value[0]]
-		self.value[0] += amt * (self.target_value[0] - self.value[0])
+		change_amount = amt * (self.target_value[0] - self.value[0])
+		if abs(change_amount) > max_change:
+			change_amount = sign(change_amount) * max_change
+		self.value[0] += change_amount
 
 
 

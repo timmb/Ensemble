@@ -53,8 +53,7 @@
         }, 
         "narrative": {
             "default_value": 0.0, 
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
+            "max_change_per_second": 0.05, 
             "change_speed": 0.1, 
             "amount_controlled_by_connections": 0.0
         }, 
