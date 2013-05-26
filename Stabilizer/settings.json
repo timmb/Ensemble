@@ -1,46 +1,52 @@
 {
     "parameters": {
         "brightness": {
-            "convergence_amount": 0.96, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "convergence", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 0.51
         }, 
         "detune": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
         }, 
         "tempo": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 0.0
         }, 
         "roughness": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
         }, 
         "note_density": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
         }, 
         "attack": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
         }, 
         "harmony": {
             "convergence_amount": 1.0, 
@@ -58,25 +64,28 @@
             "amount_controlled_by_connections": 0.0
         }, 
         "loudness": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
         }, 
         "note_frequency": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
         }, 
         "activity": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
-            "max": 1.0, 
             "default_value": 0.0, 
-            "min": 0.0
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 0.0
         }, 
         "root": {
             "convergence_amount": 1.0, 

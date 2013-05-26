@@ -446,11 +446,17 @@ class ParameterWidget(QGroupBox):
                 widget_update_function = widget.setValue
         else:
             widget = QLineEdit(self)
+            default_update_function = lambda: try_assign_repr_index(d, name, widget.text(), self._log_function)
+            if isinstance(d[name], basestring):
+                default_update_function = lambda: assign_index(d, name, widget.text(), self._log_function)
             widget.editingFinished.connect(
                 update_function 
                 and (lambda: update_function(widget.text()))
-                or (lambda: try_assign_repr_index(d, name, widget.text(), self._log_function))) # default arg
-            widget_update_function = lambda x: widget.setText(repr(x))
+                or default_update_function) # default arg
+            if isinstance(d[name], basestring):
+                widget_update_function = lambda x: widget.setText(x)
+            else:
+                widget_update_function = lambda x: widget.setText(repr(x))
         with signals_blocked(widget):
             widget_update_function(d[name])
 

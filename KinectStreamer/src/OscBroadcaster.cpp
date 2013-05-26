@@ -65,6 +65,9 @@ OscBroadcaster::OscBroadcaster()
 : mKinect(NULL)
 , mDestinationPort(0)
 , mKinectName("Kinect0")
+, mMaxUserDepth(4000)
+, mMinUserX(-1000)
+, mMaxUserX(1000)
 {
 	
 }
@@ -74,6 +77,9 @@ void OscBroadcaster::registerParams(Settings& settings)
 	settings.addParam(new Parameter<string>(&mDestinationIp, "ip", "osc"));
 	settings.addParam(new Parameter<int>(&mDestinationPort, "port", "osc"));
 	settings.addParam(new Parameter<string>(&mKinectName, "deviceName", "osc"));
+	settings.addParam(new Parameter<float>(&mMaxUserDepth, "Depth cutoff distance", "limits"));
+	settings.addParam(new Parameter<float>(&mMinUserX, "Left cutoff point", "limits"));
+	settings.addParam(new Parameter<float>(&mMaxUserX, "Right cutoff point", "limits"));
 }
 
 void OscBroadcaster::setup(Kinect* kinect)
@@ -153,11 +159,18 @@ void OscBroadcaster::update(double dt, double elapsedTime)
 		User const* closestUser = NULL;
 		for (User const& user: users)
 		{
-			if (closestUser==NULL
-				|| ((user.getJoint(XN_SKEL_TORSO).mPos.lengthSquared() < closestUser->getJoint(XN_SKEL_TORSO).mPos.lengthSquared())
-					&& user.confidence>0.8))
+			if (closestUser==NULL)
 			{
-				closestUser = &user;
+				Vec3f torso = user.getJoint(XN_SKEL_TORSO);
+				if (mMinUserX <= torso.x
+					&& torso.x <= mMaxUserX
+					&& torso.z <= mMaxUserDepth
+					&& user.confidence>0.8
+					&& user.getJoint(XN_SKEL_TORSO).mPos.lengthSquared() < closestUser->getJoint(XN_SKEL_TORSO).mPos.lengthSquared()
+					)
+				{
+					closestUser = &user;
+				}
 			}
 		}
 		if (closestUser!=NULL)

@@ -11,14 +11,26 @@ class Parameter(object):
 	within the world state.
 	'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
-		'''world_state is a dict of the form instrument->value and holds 
-		values from incoming OSC data.'''
+	def __init__(self, parameter_name, parameter_settings, param_world_state, 
+		parameters, log_function):
+		''':param world_state: is a dict of the form instrument->value and holds 
+		values from incoming OSC data.
+		:param parameters: is a dictionary of all parameters (all of which would be 
+			subclasses of Parameter) indexed by name.
+		'''
 		self.name = parameter_name
+		self.params = parameters
 		# All persistent values should be written to self.settings
 		self._settings = parameter_settings
 		self._settings.setdefault('convergence_amount',1.)
 		self._settings.setdefault('convergence_rate', 0.01)
+		# This is what is used to determine 'value', before it is blended with
+		# manual_value. Use any python expression as well as:
+		# <param-name> for the value of other parameters
+		# convergence as short for _converged_value[0].
+		# dt for time since the last update in seconds
+		# It's not safe - be careful.
+		self._settings.setdefault('convergence_transform', 'convergence')
 		self._log = log_function
 		self.value = []
 		self._param_state = param_world_state
@@ -33,6 +45,13 @@ class Parameter(object):
 			'value',
 			'_converged_value',
 		]
+		self.is_convergence_transform_valid = True
+
+	def _disable_convergence_transform(self):
+		'''
+		Remove convergence transform variables from settings, etc.
+		'''
+		del self._settings['convergence_transform']
 
 	@property
 	def manual_value(self):
@@ -60,6 +79,24 @@ class Parameter(object):
 		'''
 		return True
 
+	def get_transformed_convergence(self):
+		'''By default this returns _converged_value but if the user has changed
+		self.convergence_transform then that will be evaluated.
+		'''
+		c = self._converged_value
+		if (type(c) is list and len(c)==1):
+			c = c[0]
+		try:
+			val = eval(self._settings['convergence_transform'], globals(), dict(self.params.items()+[('convergence', c)]))
+			self.is_convergence_transform_valid = True
+			return type(val) is list and val or [val]
+		except Exception as e:
+			if self.is_convergence_transform_valid:
+				self.is_convergence_transform_valid = False
+				self._log('Error in convergence transform: '+e.message)
+			return self._converged_value
+
+
 	def update(self, dt):
 		'''Updates self.value.
 		'''
@@ -67,8 +104,8 @@ class Parameter(object):
 
 
 class FloatParameter(Parameter):
-	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
 		self._settings.setdefault('default_value', 0.)
 		self._settings.setdefault('min', 0.)
 		self._settings.setdefault('max', 1.)
@@ -100,17 +137,14 @@ class FloatParameter(Parameter):
 				self._converged_value[0] += conv_rate * (mean_input - self._converged_value[0])
 			else:
 				self._converged_value = [mean_input]
-			self.value[0] = conv_amt * self._converged_value[0] + (1.-conv_amt)*self.value[0]
-		else:
-			# if nothing to converge then just update using manual value
-			self.value[0] = self.manual_value[0]
+		self.value[0] = conv_amt * self.get_transformed_convergence()[0] + (1.-conv_amt)*self.manual_value[0]
 
 
 class NoteParameter(Parameter):
 	'''Parameter that converges over the cycle of fifths'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
 		self._settings.setdefault('default_value', 0)
 		self.manual_value = [self._settings['default_value']]
 		self.value = [self._settings['default_value']]
@@ -122,6 +156,7 @@ class NoteParameter(Parameter):
 			'_converged_octave',
 			'_converged_tone',
 		]
+		self._disable_convergence_transform()
 
 	def validate_value(self, value):
 		return type(value)==list and map(type, value) in ([float], [int])
@@ -178,12 +213,13 @@ class NoteParameter(Parameter):
 class HarmonyParameter(Parameter):
 	'''Parameter for handling sets of integers which measure harmony'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
 		self._settings.setdefault('default_value', [0,5,3])
 		self.value = self._settings['default_value']
 		self.manual_value = self._settings['default_value']
 		self._converged_value = self._settings['default_value']
+		self._disable_convergence_transform()
 
 	def validate_value(self, value):
 		return type(value)==list and all((type(x)==int and 0<=x and x<12 for x in value))
@@ -227,8 +263,8 @@ class NarrativeParameter(Parameter):
 		convergence).
 	'''
 
-	def __init__(self, parameter_name, parameter_settings, param_world_state, log_function):
-		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, log_function)
+	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
 		del self._settings['convergence_amount']
 		del self._settings['convergence_rate']
 		self._settings.setdefault('default_value',0.)
@@ -241,6 +277,8 @@ class NarrativeParameter(Parameter):
 		self.value = self.manual_value[:]
 		self.readonly_values.remove('_converged_value')
 		self.readonly_values.append('_target_value')
+		self._disable_convergence_transform()
+
 
 	def validate_value(self, value):
 		return type(value) is list and map(type, value)==[float]
@@ -298,15 +336,17 @@ class ConvergenceManager(QObject):
 			'roughness': FloatParameter,
 			'narrative': NarrativeParameter,
 		}
-		self.params = {
+		self.params = {}
+		self.params.update({
 			name : typ(
 				parameter_name = name,
 				parameter_settings = param_settings.setdefault(name, {}),
 				param_world_state = self.world_state.setdefault(name, {}),
+				parameters = self.params,
 				log_function = lambda x, module=name: self.log(x, module=name)
 				)
 			for name,typ in param_types.iteritems()
-		}
+		})
 		self.elapsed_timer = QElapsedTimer()
 		self.elapsed_timer.start()
 		self.time_of_last_update = 0.

@@ -33,4 +33,7 @@ private:
 	std::string mDestinationIp;
 	int mDestinationPort;
 	std::set<int> mPreviousUserIds;
+	float mMaxUserDepth;
+	float mMinUserX;
+	float mMaxUserX;
 };
