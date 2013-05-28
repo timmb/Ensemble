@@ -4,22 +4,29 @@
 def mean(l):
 	return l and sum(l)/len(l)
 
+import math
 def modular_mean(values, modulo=12):
 	'''Calculate the mean of a number of values in modular arithmetic.
-	With a set of numbers on the clock there are two potential 'mean values'
-	opposite each other. We calculate both and then take the one that minimises
-	the distance with the input values.
-
-	NB - I'm not entirely this works 100%
 	'''
-	m0 = mean([float(x)%modulo for x in values])
-	m1 = (m0+modulo/2.)%modulo
-	m0_dist = sum([min((v-m0)%12,(m0-v)%12) for v in values])
-	m1_dist = sum([min((v-m1)%12,(m1-v)%12) for v in values])
-	if m0_dist < m1_dist:
-		return m0
-	else:
-		return m1
+	# Convert polar round-the-clock inputs to rectangular (x,y)s
+	angle_of_one_step = 2*math.pi / modulo
+	rectangular_xs = [math.cos(float(v) * angle_of_one_step)  for v in values]
+	rectangular_ys = [math.sin(float(v) * angle_of_one_step)  for v in values]
+	# Get mean
+	mean_rectangular_x = mean(rectangular_xs)
+	mean_rectangular_y = mean(rectangular_ys)
+	# If input values were exactly balanced around the circle,
+	# eg. modular_mean2([0, 6]) or modular_mean2([1, 11, 5, 7])
+	# then mean_rectangular_x & y will be near-as-dammit zero.
+	# In this case let's just return a normal non-modular mean
+	# and hope for the best, rather than trying to find the angle
+	# of tiny ill-conditioned floats.
+	if abs(mean_rectangular_x < 0.0001) and abs(mean_rectangular_y) < 0.0001:
+		return mean(values) % modulo
+	# Convert rectangular back to angle
+	mean_angle = math.atan2(mean_rectangular_y, mean_rectangular_x)
+	# Convert angle back to number, round to nearest integer, modulo to stay positive
+	return round(mean_angle / angle_of_one_step) % modulo
 
 def clamp(x, min_x=0, max_x=1):
 	return max(min_x, min(max_x, x))
