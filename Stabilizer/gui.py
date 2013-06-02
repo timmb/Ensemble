@@ -96,6 +96,11 @@ class MainWindow(QtGui.QMainWindow):
         self.update_timer.timeout.connect(self.update)
         self.update_timer.start()
 
+        self.update_local_ip_timer = QTimer(self)
+        self.update_local_ip_timer.setInterval(2500)
+        self.update_local_ip_timer.timeout.connect(self.update_local_ip)
+        self.update_local_ip_timer.start()
+
         # Signals emitted by this class
         self.sig_start_listening.connect(self.stabilizer.start_listening)
         self.sig_stop_listening.connect(self.stabilizer.stop_listening)
@@ -156,16 +161,28 @@ class MainWindow(QtGui.QMainWindow):
             scroll_bar_value = text_edit.verticalScrollBar().sliderPosition()
             text_edit.setPlainText(new_text)
             text_edit.verticalScrollBar().setSliderPosition(scroll_bar_value)
-        update_text(self.ui.worldStateText, pformat(self.stabilizer.world_state))
-        update_text(self.ui.convergedStateText, pformat(self.stabilizer.converged_state))
-        update_text(self.ui.instrumentsText, pformat(self.stabilizer.instruments))
-        update_text(self.ui.connectionsText, self.get_pretty_connections())
-        update_text(self.ui.worldStateText, get_state_table(self.stabilizer.world_state))
-        update_text(self.ui.convergedStateText, get_state_table(self.stabilizer.converged_state))
+        def update_dict_view(text_edit, dict_data):
+            '''Updates a textedit view of a dict only if it is visible'''
+            if text_edit.isVisible():
+                update_text(text_edit, pformat(dict_data))
+        def update_state_table(text_edit, dict_data):
+            '''Updates a state table only if it is visible'''
+            if text_edit.isVisible():
+                update_text(text_edit, get_state_table(dict_data))
+
+        update_dict_view(self.ui.worldStateText, self.stabilizer.world_state)
+        update_dict_view(self.ui.convergedStateText, self.stabilizer.converged_state)
+        update_dict_view(self.ui.instrumentsText, self.stabilizer.instruments)
+        update_state_table(self.ui.worldStateText, self.stabilizer.world_state)
+        update_state_table(self.ui.convergedStateText, self.stabilizer.converged_state)
+        if self.ui.connectionsText.isVisible():
+            update_text(self.ui.connectionsText, self.get_pretty_connections())
         if not self.ui.settingsText.hasFocus():
-            update_text(self.ui.settingsText, pformat(self.stabilizer.settings))
-        self.ui.ipAddress.setText(get_local_ip())
+            update_dict_view(self.ui.settingsText, self.stabilizer.settings)
         # print 'narrative_speed', self.stabilizer.settings['narrative_speed']
+
+    def update_local_ip(self):
+        self.ui.ipAddress.setText(get_local_ip())        
 
     def settings_text_updated(self):
         try:
