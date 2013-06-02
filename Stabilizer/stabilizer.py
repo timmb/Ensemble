@@ -16,7 +16,6 @@ from datetime import timedelta
 from gui import *
 from input_processor import *
 # from state import *
-from plugins.plugin import *
 from output_processor import *
 from visualization import *
 from connection_detector import *

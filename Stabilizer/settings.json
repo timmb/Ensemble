@@ -18,8 +18,8 @@
         }, 
         "tempo": {
             "default_value": 0.0, 
-            "min": 0.0, 
-            "max": 1.0, 
+            "min": 50.0, 
+            "max": 99.99, 
             "convergence_transform": "[convergence]", 
             "convergence_rate": 0.01, 
             "convergence_amount": 0.0
@@ -61,7 +61,7 @@
             "default_value": 0.0, 
             "max_change_per_second": 0.05, 
             "change_speed": 0.1, 
-            "amount_controlled_by_connections": 0.0
+            "amount_controlled_by_connections": 1.0
         }, 
         "loudness": {
             "default_value": 0.0, 
@@ -88,8 +88,8 @@
             "convergence_amount": 0.0
         }, 
         "root": {
-            "convergence_amount": 1.0, 
-            "convergence_rate": 0.01, 
+            "convergence_amount": 0.0, 
+            "convergence_rate": 0.02, 
             "default_value": 0
         }
     }
