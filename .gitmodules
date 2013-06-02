@@ -1,0 +1,3 @@
+[submodule "EnsembleVisualization"]
+	path = EnsembleVisualization
+	url = https://github.com/timmb/EnsembleVisualization.git
