@@ -228,20 +228,32 @@ class NoteParameter(Parameter):
 		notes = notes or self.manual_value
 
 		# Get the mean octave, and mean tone number of all instruments
-		octave = mean([note/12. for note in notes])  # (float)
-		tone = modular_mean([to_fifths[note%12] for note in notes])  # (int)
+		octave = mean([note/12. for note in notes])
+		tone = modular_mean([to_fifths[note%12] for note in notes])
 
 		# Smoothly move self._converged_octave/tone towards mean
 		# In additive steps, moving by maximum of conv_rate in each step
-		# (note: bug here when negative)
-		self._converged_octave += min(
-			conv_rate*sign(octave-self._converged_octave),
-			octave - self._converged_octave
-			)
-		self._converged_tone += min(
-			conv_rate*sign(tone-self._converged_tone),
-			tone - self._converged_tone
-			)
+		if (octave > self._converged_octave):
+			self._converged_octave += min(
+				conv_rate * (octave - self._converged_octave),
+				octave - self._converged_octave
+				)
+		elif (octave < self._converged_octave):
+			self._converged_octave += max(
+				conv_rate * (octave - self._converged_octave),
+				octave - self._converged_octave
+				)
+
+		if (tone > self._converged_tone):
+			self._converged_tone += min(
+				conv_rate * sign(tone - self._converged_tone),
+				tone - self._converged_tone
+				)
+		elif (tone < self._converged_tone):
+			self._converged_tone += max(
+				conv_rate * sign(tone - self._converged_tone),
+				tone - self._converged_tone
+				)
 
 		#
 		manual_octave = self.manual_value[0] / 12.
