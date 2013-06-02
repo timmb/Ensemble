@@ -1,0 +1,1 @@
+python -m cProfile -o profiles/cProfile_`date +"%Y-%m-%d--%H%M%S"` stabilizer.py
