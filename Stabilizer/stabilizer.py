@@ -12,6 +12,7 @@ import time
 from time import gmtime, strftime
 from datetime import datetime
 from datetime import timedelta
+from collections import deque
 
 from gui import *
 from input_processor import *
@@ -59,9 +60,9 @@ class ListModel(QtCore.QAbstractListModel):
     '''
     A simple implementation of logs model
     '''
-    def __init__(self, mlist):
+    def __init__(self, mdeque):
         QtCore.QAbstractListModel.__init__(self)
-        self._items = mlist
+        self._items = mdeque
 
     def rowCount(self, parent = QModelIndex()):
         return len(self._items)
@@ -79,7 +80,7 @@ class ListModel(QtCore.QAbstractListModel):
     def addItem(self, item):
         # The str() cast is because we don't want to be storing a Qt type in here.
         self.beginInsertRows(QModelIndex(), len(self._items), len(self._items))
-        self._items.insert(0, str(item))
+        self._items.appendleft(str(item))
         self.endInsertRows()
 
 
@@ -99,7 +100,7 @@ class Stabilizer(QApplication):
            
         }, log_function=lambda x, module="Settings": self.log(x, module))
 
-        self.event_log = ListModel([])
+        self.event_log = ListModel(deque(maxlen=1000))
         self.dispatcher = ThreadDispatcher(self)
         self.dispatcher.start()
         
@@ -244,7 +245,8 @@ class Stabilizer(QApplication):
         time = datetime.now()
         self.event_log.addItem("[%s] %s: %s" % (time.strftime("%H:%M:%S.%f")[:-3], module, s))
 
-if __name__=='__main__':
+def main():
+    global reactor
     app = Stabilizer()
 
     # Set up twisted events
@@ -263,3 +265,5 @@ if __name__=='__main__':
     app.exec_()
     app.settings.save()
 
+if __name__=='__main__':
+    main()
