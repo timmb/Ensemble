@@ -23,10 +23,36 @@ def modular_mean(values, modulo=12):
 	# of tiny ill-conditioned floats.
 	if abs(mean_rectangular_x < 0.0001) and abs(mean_rectangular_y) < 0.0001:
 		return mean(values) % modulo
-	# Convert rectangular back to angle
+	# Convert rectangular back to angle,
+	# and again round off those pesky near-zero floats
+	# (example problem case if don't do this: modular_mean([1,0], 1))
 	mean_angle = math.atan2(mean_rectangular_y, mean_rectangular_x)
-	# Convert angle back to number, round to nearest integer, modulo to stay positive
-	return round(mean_angle / angle_of_one_step) % modulo
+	if abs(mean_angle) < 0.0001:
+		mean_angle = 0
+	# Convert angle back to number, modulo to stay positive
+	return (mean_angle / angle_of_one_step) % modulo
+
+def modular_distance(a, b, ring_length):
+	'''Find the shortest distance from a to b
+	within a ring of numbers starting at 0 and ending at ring_length.
+
+	eg.
+	 modular_distance(2, 7, 12) == 5
+	 modular_distance(2, 9, 12) == -5
+
+	The result will always be in the range [-ring_length/2 .. +ring_length/2].
+	'''
+	# Subtract to get the vector pointing from a to b
+	movement = b - a
+	# If moved more than half the length of the ring,
+	# correct the result to make it look like the shorter path was actually taken
+	ring_half_length = ring_length / 2
+	if (movement > ring_half_length):
+		movement -= ring_length
+	elif (movement < -ring_half_length):
+		movement += ring_length
+	#
+	return movement
 
 def clamp(x, min_x=0, max_x=1):
 	return max(min_x, min(max_x, x))
