@@ -5,14 +5,19 @@ class InputProcessor(object):
 	'''The Input Processor receives OSC messages and updates the world state accordingly.
 	'''
 
-	def __init__(self, world_state, instruments, log_function=(lambda message, module: None)):
+	def __init__(self, world_state, instruments, 
+		internal_settings, log_function=(lambda message, module: None)):
 		'''world_state is a dictionary (probably empty)
 		instruments is a dictionary (probably empty):
 			{ instrument_name -> { parameter_name -> parameter_value } }
+		internal_settings is a dictionary holding non-persistent
+		internal settings for the stabilizer (e.g. visualizer ip and port)
 		log_function is a function for recording log messages
+
 		'''
 		self.world_state = world_state
 		self.instruments = instruments
+		self.internal_settings = internal_settings
 		self.log = log_function
 		
 		self.state_pattern = re.compile(
@@ -28,6 +33,10 @@ class InputProcessor(object):
 			''', re.VERBOSE)
 		self.listen_port_pattern = re.compile(r'''
 			/ (?P<type> listen_port) / (?P<sender> [^/]+)
+			''', re.VERBOSE)
+		# visualizer
+		self.viz_listen_port_pattern = re.compile(r'''
+			/ (?P<type> viz/listen_port)
 			''', re.VERBOSE)
 		
 		type_tags_regex = {
@@ -58,12 +67,30 @@ class InputProcessor(object):
 			or self.ping_pattern.match(message.address)
 			or self.log_pattern.match(message.address)
 			or self.listen_port_pattern.match(message.address)
+			or self.viz_listen_port_pattern.match(message.address)
 			)
 		if not match:
-			self.log("Invalid OSC message received from {}: {}".format(origin_address, message), "InputProcessor")
+			self.log("Invalid OSC message received from {}: {}".format(origin_address, message))
 			return
 		
 		message_type = match.group('type')
+		# Deal with viz messages first as they do not have a 'sender' match
+		if message_type=='viz/listen_port':
+			values = message.getValues()
+			if values:
+				port = values[0]
+				if 0<port and port<65536:
+					address = (origin_address[0], port)
+					if address != self.internal_settings['visualizer_address']:
+						self.log('Updated Visualizer address to {}:{}'.format(*address))
+					self.internal_settings['visualizer_address'] = address
+				else:
+					self.log('Error: Visualizer sent invalid listen_port of {}'.format(port))
+			else:
+				self.log('Error: Visualizer sent listen_port without any arguments')
+			return
+
+
 		sender = match.group('sender')
 		self.we_have_heard_from(sender, origin_address)
 
@@ -92,9 +119,9 @@ class InputProcessor(object):
 					host = self.instruments[sender]['address'][0]
 					self.instruments[sender]['address'] = (host,port)
 				else:
-					self.log('Error: {} sent invalid listen_port of {}'.format(sender, port), 'InputProcessor')
+					self.log('Error: {} sent invalid listen_port of {}'.format(sender, port))
 			else:
-				self.log('Error: {} sent listen_port without any arguments', 'InputProcessor')		
+				self.log('Error: {} sent listen_port without any arguments'.format(sender))				
 
 
 	def we_have_heard_from(self, instrument_name, instrument_address):

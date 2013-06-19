@@ -303,7 +303,8 @@ class NarrativeParameter(Parameter):
 
 
 class ConvergenceManager(QObject):
-	def __init__(self, settings_dict, log_function, world_state, connections, converged_state, parent=None):
+	def __init__(self, settings_dict, log_function, world_state, 
+		connections, converged_state, visualizer_state, parent=None):
 		'''
 		:param settings_dict: a dictionary of persistent
 
@@ -326,6 +327,7 @@ class ConvergenceManager(QObject):
 		self.world_state = world_state
 		self.connections = connections
 		self.converged_state = converged_state
+		self.visualizer_state = visualizer_state
 
 		param_settings = self.settings.setdefault('parameters',{})
 		param_types = {
@@ -403,6 +405,7 @@ class ConvergenceManager(QObject):
 			for param in self.params.itervalues():
 				param.update(dt)
 			self.update_converged_state()
+		self.update_visualizer_state()
 
 	def update_narrative(self):
 		'''Update narrative parameter based on instrument connections'''
@@ -425,7 +428,10 @@ class ConvergenceManager(QObject):
 			for param in self.params:
 				self.converged_state.setdefault(param,{})[inst] = self.params[param].value
 
-
+	def update_visualizer_state(self):
+		'''Copy over whichever parameters are needed by the
+		Visualizer'''
+		self.visualizer_state['narrative'] = self.params['narrative'].value
 
 	def osc_message_callback(self, message, origin_address):
 		print 'message',message

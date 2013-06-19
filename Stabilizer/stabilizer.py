@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*- 
+
 import sys
 import Queue
 
@@ -97,7 +99,8 @@ class Stabilizer(QApplication):
 
         # ** All persistent settings need to be put in here **
         self.settings = Settings({
-           
+            # Counter clockwise order starting at instrument 0 (from visualizer's point of view)
+           'instrument_order' : ['tim','daniel','sus','dom','kacper','panos','tadeo','wallace']
         }, log_function=lambda x, module="Settings": self.log(x, module))
 
         self.event_log = ListModel(deque(maxlen=1000))
@@ -115,6 +118,12 @@ class Stabilizer(QApplication):
         self._output_socket = None
 
         # program state
+
+        # ** Non-persistent internal settings go here ** #
+        self.internal_settings = {
+            # Of form (host, port)
+            'visualizer_address' : None
+        }
         
         self.enable_log_incoming_messages = False
         self.enable_log_outgoing_messages = False
@@ -134,11 +143,17 @@ class Stabilizer(QApplication):
         self.instruments = {}
         # instrument -> { instrument -> connection_amount }
         self.connections = {}
+        # State variables that are to be sent to the visualizer
+        # property -> value (where value is always a list)
+        self.visualizer_state = {
+            'connections' : self.connections
+        }
 
 
         self.input_processor = InputProcessor(
             self.world_state, 
-            self.instruments, 
+            self.instruments,
+            self.internal_settings,
             lambda message,module='InputProcessor': self.log(message, module))
 
         self.connection_detector = ConnectionDetector(self.connections, 
@@ -147,6 +162,9 @@ class Stabilizer(QApplication):
         self.output_processor = OutputProcessor(
             self.converged_state,
             self.instruments,
+            self.visualizer_state,
+            self.settings,
+            self.internal_settings,
             self.send_osc,
             lambda message,module='OutputProcessor': self.log(message, module)
             )
@@ -157,6 +175,7 @@ class Stabilizer(QApplication):
             self.world_state,
             self.connections,
             self.converged_state,
+            self.visualizer_state,
             self,
             )
 
@@ -222,7 +241,7 @@ class Stabilizer(QApplication):
         self.log("Stopped listening at %d ..." % PORT)         
 
     def osc_message_callback(self, message, client):
-        osc_messages.put(message)
+        # osc_messages.put(message)
         if self.enable_log_incoming_messages:
             self.log("%s: %s" % (client, message) )
         if message.address.startswith('/convergence/'):

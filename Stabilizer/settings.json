@@ -92,5 +92,15 @@
             "convergence_rate": 0.02, 
             "default_value": 0
         }
-    }
+    }, 
+    "instrument_order": [
+        "tim", 
+        "daniel", 
+        "sus", 
+        "dom", 
+        "kacper", 
+        "panos", 
+        "tadeo", 
+        "wallace"
+    ]
 }

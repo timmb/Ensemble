@@ -247,8 +247,8 @@
 , 			{
 				"box" : 				{
 					"maxclass" : "newobj",
-					"text" : "sprintf /listenport/%s",
-					"patching_rect" : [ 699.0, 217.0, 119.0, 20.0 ],
+					"text" : "sprintf /listen_port/%s",
+					"patching_rect" : [ 699.0, 217.0, 125.0, 20.0 ],
 					"numinlets" : 1,
 					"id" : "obj-29",
 					"fontname" : "Arial",
@@ -455,6 +455,24 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
+					"source" : [ "obj-29", 0 ],
+					"destination" : [ "obj-30", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"source" : [ "obj-33", 0 ],
+					"destination" : [ "obj-29", 0 ],
+					"hidden" : 0,
+					"midpoints" : [  ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"source" : [ "obj-52", 0 ],
 					"destination" : [ "obj-51", 0 ],
 					"hidden" : 0,
@@ -617,26 +635,8 @@
 			}
 , 			{
 				"patchline" : 				{
-					"source" : [ "obj-33", 0 ],
-					"destination" : [ "obj-29", 0 ],
-					"hidden" : 0,
-					"midpoints" : [  ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
 					"source" : [ "obj-32", 0 ],
 					"destination" : [ "obj-31", 0 ],
-					"hidden" : 0,
-					"midpoints" : [  ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"source" : [ "obj-29", 0 ],
-					"destination" : [ "obj-30", 0 ],
 					"hidden" : 0,
 					"midpoints" : [  ]
 				}
