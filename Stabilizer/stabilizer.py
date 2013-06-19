@@ -122,7 +122,11 @@ class Stabilizer(QApplication):
         # ** Non-persistent internal settings go here ** #
         self.internal_settings = {
             # Of form (host, port)
-            'visualizer_address' : None
+            'visualizer_address' : None,
+            # For providing feedback in gui:
+            'calculated_instrument_order' : [],
+            'missing_instruments' : [],
+            'surplus_instruments' : [],
         }
         
         self.enable_log_incoming_messages = False

@@ -104,10 +104,17 @@ class OutputProcessor(QThread):
 						if t - self.viz_last_warning_message_time > 3:
 							self.log('Warning, instruments missing from visualizer order: {}. Unrecognised instruments: {}'.format(missing_instruments, surplus_instruments))
 							self.viz_last_warning_message_time = t
+					else:
+						missing_instruments = []
+						surplus_instruments = []
 					args = [len(instruments)]
 					# right for loop is nested inside left for loop
 					args += [connections[instruments[i]][instruments[j]] for i in range(len(instruments)) for j in range(len(instruments))]
 					assert len(args) == 1+len(instruments)*len(instruments)
+					# Save some values above for the gui
+					self.internal_settings['calculated_instrument_order'] = instruments
+					self.internal_settings['missing_instruments'] = missing_instruments
+					self.internal_settings['surplus_instruments'] = surplus_instruments
 				else:
 					args = value
 				message = Message(osc_address, *args)

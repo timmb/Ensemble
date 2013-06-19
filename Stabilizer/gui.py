@@ -90,6 +90,25 @@ class MainWindow(QtGui.QMainWindow):
             checkbox.setChecked(var)
             checkbox.toggled.connect(lambda x: assign(var,x))
         self.create_dynamic_elements()
+
+        self.visualizerCanonicalOrder = QStringListModel(self)
+        self.ui.visualizerCanonicalOrder.setModel(self.visualizerCanonicalOrder)
+        self.visualizerCalculatedOrder = QStringListModel(self)
+        self.ui.visualizerCalculatedOrder.setModel(self.visualizerCalculatedOrder)
+        self.visualizerUnorderedInstruments = QStringListModel(self)
+        self.ui.visualizerUnorderedInstruments.setModel(self.visualizerUnorderedInstruments)
+        for listView in (self.ui.visualizerUnorderedInstruments, self.ui.visualizerCalculatedOrder, self.ui.visualizerCanonicalOrder):
+            listView.installEventFilter(IgnoreScrollWheelEventFilter())
+        for model in (self.visualizerCanonicalOrder, self.visualizerUnorderedInstruments, self.visualizerCalculatedOrder):
+            # make read only
+            model.flags = lambda x: x.isValid() and Qt.ItemIsDragEnabled | Qt.ItemIsSelectable | Qt.ItemIsEnabled or Qt.ItemIsDropEnabled
+        def canonical_widget_callback():
+            # for some reason the data is not immedaitely accurate
+            # this delays by 3 loop cycles
+            self.canonical_order_needs_updating = 3
+        self.canonical_order_needs_updating = 3
+        self.visualizerCanonicalOrder.dataChanged.connect(canonical_widget_callback)
+        self.update_canonical_order_widget()
  
         self.update_timer = QTimer(self)
         self.update_timer.setInterval(50)
@@ -127,7 +146,6 @@ class MainWindow(QtGui.QMainWindow):
                 layout.setWidget(layout.rowCount()-1, layout.FieldRole, spinbox)
                 spinbox.valueChanged[float].connect(self.set_setting_based_on_sender_property)
                 self.settings_widgets[var] = spinbox
-            # TODO: create widgets for other parameter types, including nested settings dictionaries
 
         # create Parameter widgets for the convergence manager parameters
         self.parameter_widgets = []
@@ -147,6 +165,12 @@ class MainWindow(QtGui.QMainWindow):
             if var in self.settings_widgets:
                 with signals_blocked(self.settings_widgets[var]):
                     self.settings_widgets[var].setValue(val)
+        self.update_canonical_order_widget()
+        
+    def update_canonical_order_widget(self):
+        # Update Canonical instrument order in visualizer
+        self.visualizerCanonicalOrder.setStringList(self.stabilizer.settings['instrument_order'])
+        self.update_visualizer_page()
 
     
     def set_setting_based_on_sender_property(self, newValue):
@@ -179,10 +203,27 @@ class MainWindow(QtGui.QMainWindow):
             update_text(self.ui.connectionsText, self.get_pretty_connections())
         if not self.ui.settingsText.hasFocus():
             update_dict_view(self.ui.settingsText, self.stabilizer.settings)
-        # print 'narrative_speed', self.stabilizer.settings['narrative_speed']
+        self.update_visualizer_page()
+        if self.canonical_order_needs_updating:
+            # see comment where this is defined in __init__
+            self.canonical_order_needs_updating -= 1
+            if not self.canonical_order_needs_updating:
+                self.stabilizer.settings['instrument_order'] = self.visualizerCanonicalOrder.stringList()
+
+
+    def update_visualizer_page(self):
+        if not self.ui.visualizerPage.isVisible():
+            return
+        self.ui.visualizerAddress.setText(self.stabilizer.internal_settings['visualizer_address'])
+        self.visualizerCalculatedOrder.setStringList(self.stabilizer.internal_settings['calculated_instrument_order'])
+        self.visualizerUnorderedInstruments.setStringList(self.stabilizer.internal_settings['surplus_instruments'])
+        # set up double clicking action on unordered instruments
+        def unordered_inst_dbl_click(model_index):
+            inst_name = self.visualizerUnorderedInstruments.stringList()[model_index.row()]
+        self.ui.visualizerUnorderedInstruments.doubleClicked.connect(unordered_inst_dbl_click)
 
     def update_local_ip(self):
-        self.ui.ipAddress.setText(get_local_ip())        
+        self.ui.ipAddress.setText(get_local_ip())    
 
     def settings_text_updated(self):
         try:
@@ -527,4 +568,5 @@ class ParameterWidget(QGroupBox):
                     element['widget_update_function'](element['dictionary'][var_name])
                 # print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], element['dictionary'][var_name]))
                 element['last_value'] = copy.deepcopy(element['dictionary'][var_name])
+
 
