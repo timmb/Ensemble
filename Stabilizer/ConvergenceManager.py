@@ -5,6 +5,9 @@ from utilities import *
 from PySide.QtCore import *
 import re
 
+# convergence_rate is amount of convergence per second
+# convergence_amount is 0..1 to use either the manual value or converged value
+
 class Parameter(QObject):
 	'''A parameter manages a value present in the world state and writes it to
 	the converged state. It does so by registering a callback to changes
@@ -23,6 +26,7 @@ class Parameter(QObject):
 		QObject.__init__(self)
 		self.name = parameter_name
 		self.params = parameters
+
 		# All persistent values should be written to self.settings
 		self._settings = parameter_settings
 		self._settings.setdefault('convergence_amount',1.)
@@ -34,6 +38,7 @@ class Parameter(QObject):
 		# dt for time since the last update in seconds
 		# It's not safe - be careful.
 		self._settings.setdefault('convergence_transform', 'convergence')
+
 		self._log = log_function
 		self.value = []
 		self._param_state = param_world_state
@@ -44,10 +49,13 @@ class Parameter(QObject):
 		# values exposed on the gui, in addition to self._settings
 		self.editable_values = [
 		]
+
+		# Readonly values
 		self.readonly_values = [
 			'value',
 			'_converged_value',
 		]
+
 		self.is_convergence_transform_valid = True
 
 	def _disable_convergence_transform(self):
@@ -112,12 +120,20 @@ class Parameter(QObject):
 class FloatParameter(Parameter):
 	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
 		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
+
+		# Get initial ('default') value from settings, set a default if we don't have one
 		self._settings.setdefault('default_value', 0.)
+
+		#
 		self._settings.setdefault('min', 0.)
 		self._settings.setdefault('max', 1.)
+
+		# Set operative values to the initial one
 		self.value = [self._settings['default_value']]
 		self.manual_value = [self._settings['default_value']]
 		self._converged_value = [self._settings['default_value']]
+
+		# Readonly values
 		self.readonly_values += [
 
 		]
@@ -127,6 +143,7 @@ class FloatParameter(Parameter):
 
 	def update(self, dt):
 		Parameter.update(self, dt)
+
 		conv_amt = self._settings['convergence_amount']
 		conv_rate = min(1,self._settings['convergence_rate'] * dt)
 
@@ -134,15 +151,21 @@ class FloatParameter(Parameter):
 
 		if self._param_state:
 			# update using convergence
+			# Get mean value over all instruments
 			mean_input = 0.
 			for inst in self._param_state:
 				mean_input += self._param_state[inst][0]
 			mean_input /= len(self._param_state)
+			# Smoothly move self._converged_value[0] towards mean
+			# In multiplicative steps, moving conv_rate of the way in each step
 			if self._converged_value:
-				# smoothly move converged value
 				self._converged_value[0] += conv_rate * (mean_input - self._converged_value[0])
 			else:
 				self._converged_value = [mean_input]
+
+		# Set self.value[0] to linear blend between manual and converged -
+		#  at conv_amt == 0, use self.manual_value[0]
+		#  at conv_amt == 1, use self.get_transformed_convergence()[0]
 		self.value[0] = conv_amt * self.get_transformed_convergence()[0] + (1.-conv_amt)*self.manual_value[0]
 
 
@@ -151,17 +174,23 @@ class NoteParameter(Parameter):
 
 	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
 		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
+
+		# Get initial ('default') value from settings, set a default if we don't have one
 		self._settings.setdefault('default_value', 0)
+		# Set operative values to the initial one
 		self.manual_value = [self._settings['default_value']]
 		self.value = [self._settings['default_value']]
 		self._converged_value = [self._settings['default_value']]
+
+		# Readonly values
 		self._converged_octave = self.manual_value[0] / 12.
-		# measured in number of fifths above C
+		#  measured in number of fifths above C
 		self._converged_tone = (self.manual_value[0]*7)%12
 		self.readonly_values += [
 			'_converged_octave',
 			'_converged_tone',
 		]
+
 		self._disable_convergence_transform()
 
 	def validate_value(self, value):
@@ -169,44 +198,74 @@ class NoteParameter(Parameter):
 
 	def update(self, dt):
 		Parameter.update(self, dt)
+
 		conv_amt = self._settings['convergence_amount']
 		conv_rate = min(1,self._settings['convergence_rate'] * dt)
 
 		# Notes are considered in terms of letter (with C==0, c#==1, etc) and octave.
-		# We normalize all notes to the range [0,12) and then remap them to [0,12) based
+		# We normalize all notes to the range [0,12) and then remap them to [0,12) based
 		# on how many fifths they are from C. So c->0, c#->7, d->2, etc
 		# values are stored as floats to give us a notion of being midway between
 		# two notes
+
+		# Note that any variable below named '...note' is a normal count of semitones,
+		# and any variable named '...tone' is a count of fifths.
+
+		# Lists for translating from notes (semitones above C) to tones (fifths above C),
+		# and vice versa
 		to_fifths = {
 			0:0, 1:7, 2:2, 3:9, 4:4, 5:11, 6:6, 7:1, 8:8, 9:3, 10:10, 11:5
 		}
 		from_fifths = {
 			to_fifths[x] : x for x in to_fifths
 		}
+
+		# Get the current value of this parameter from all instruments into a straight list
 		notes = []
 		if self._param_state:
 			for inst in self._param_state:
 				notes.append(self._param_state[inst][0])
 		notes = notes or self.manual_value
 
+		# Get the mean octave, and mean tone number of all instruments
 		octave = mean([note/12. for note in notes])
-		tone = modular_mean([to_fifths[note%12] for note in notes])
+		tone = round(modular_mean([to_fifths[note%12] for note in notes])) % 12
 
-		self._converged_octave += min(
-			conv_rate*sign(octave-self._converged_octave),
-			octave - self._converged_octave
-			)
-		self._converged_tone += min(
-			conv_rate*sign(tone-self._converged_tone),
-			tone - self._converged_tone
-			)
+		# Smoothly move self._converged_octave/tone towards mean
+		# In additive steps, moving by maximum of conv_rate in each step
+		if (octave > self._converged_octave):
+			self._converged_octave += min(
+				conv_rate * (octave - self._converged_octave),
+				octave - self._converged_octave
+				)
+		elif (octave < self._converged_octave):
+			self._converged_octave += max(
+				conv_rate * (octave - self._converged_octave),
+				octave - self._converged_octave
+				)
 
+		if (tone > self._converged_tone):
+			self._converged_tone += min(
+				conv_rate * sign(tone - self._converged_tone),
+				tone - self._converged_tone
+				)
+		elif (tone < self._converged_tone):
+			self._converged_tone += max(
+				conv_rate * sign(tone - self._converged_tone),
+				tone - self._converged_tone
+				)
+
+		#
 		manual_octave = self.manual_value[0] / 12.
 		manual_tone = to_fifths[self.manual_value[0] % 12]
 
+		# Set target_octave/tone to linear blend between manual and converged -
+		#  at conv_amt == 0, use self.manual_octave/tone
+		#  at conv_amt == 1, use self._converged_octave/tone
 		target_octave = conv_amt*self._converged_octave + (1.-conv_amt)*manual_octave
 		target_tone = conv_amt*self._converged_tone + (1.-conv_amt)*manual_tone
 
+		# Convert final tone back to note and save it as the value
 		# round instead of truncate
 		self.value = [int(target_octave*12 + 0.5) + from_fifths[int(target_tone+0.5)]]
 		if self.value[0]<0:
@@ -216,15 +275,128 @@ class NoteParameter(Parameter):
 		self._converged_value = [self._converged_octave*12 + from_fifths[int(self._converged_tone+0.5)]]
 
 
+class TempoParameter(Parameter):
+	'''Parameter that converges tempos.
+	
+	Splits tempos into 'octave' and 'offset' where eg. 120 BPM is one octave above 60 BPM
+	so that their similarity can be recognised. The code is quite similar to NoteParameter.'''
+	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
+
+		# Get initial ('default') value from settings, set a default if we don't have one
+		self._settings.setdefault('default_value', 0.1)
+
+		#
+		self._settings.setdefault('min', 1.)
+		self._settings.setdefault('max', 400.)
+
+		# Set operative values to the initial one
+		self.value = [self._settings['default_value']]
+		self.manual_value = [self._settings['default_value']]
+		self._converged_value = [self._settings['default_value']]
+
+		# Readonly values
+		linear_manual_tempo = math.log(self.manual_value[0], 2)
+		self._converged_octave = linear_manual_tempo
+		self._converged_offset = linear_manual_tempo - int(linear_manual_tempo)
+		self._target_offset = self._converged_offset
+		self.readonly_values += [
+			'_converged_octave',
+			'_converged_offset',
+			'_target_offset',
+		]
+
+	def validate_value(self, value):
+		return type(value)==list and map(type, value)==[float]
+
+	def update(self, dt):
+		Parameter.update(self, dt)
+
+		conv_amt = self._settings['convergence_amount']
+		conv_rate = min(1,self._settings['convergence_rate'] * dt)
+
+		# print 'self._param_state',self._param_state
+
+		if True: #self._param_state:
+			# Get all the current values of this parameter from all instruments
+			# into a straight list
+			tempos = []
+			for inst in self._param_state:
+				tempos.append(self._param_state[inst][0])
+			tempos = tempos or self.manual_value
+
+			# Get the mean 'temporal octave',
+			# and mean offset from that octave of all instruments
+			linear_tempos = [math.log(tempo, 2) for tempo in tempos]
+			mean_octave = mean(linear_tempos)
+			mean_offset = modular_mean([tempo - int(tempo) for tempo in linear_tempos], 1.0)
+			#print("tempo mean: " + str(mean_octave) + ", " + str(mean_offset))
+
+			# Smoothly move self._converged_octave/offset towards mean
+			# In additive steps, moving by maximum of conv_rate in each step
+			if (mean_octave > self._converged_octave):
+				self._converged_octave += min(
+					conv_rate * (mean_octave - self._converged_octave),
+					mean_octave - self._converged_octave
+					)
+			elif (mean_octave < self._converged_octave):
+				self._converged_octave += max(
+					conv_rate * (mean_octave - self._converged_octave),
+					mean_octave - self._converged_octave
+					)
+
+			if (mean_offset > self._converged_offset):
+				self._converged_offset += min(
+					conv_rate * sign(mean_offset - self._converged_offset),
+					mean_offset - self._converged_offset
+					)
+			elif (mean_offset < self._converged_offset):
+				self._converged_offset += max(
+					conv_rate * sign(mean_offset - self._converged_offset),
+					mean_offset - self._converged_offset
+					)
+			#print("tempo converged: " + str(self._converged_octave) + ", " + str(self._converged_offset))
+
+			#
+			linear_manual_tempo = math.log(self.manual_value[0], 2)
+			manual_octave = linear_manual_tempo
+			manual_offset = linear_manual_tempo - int(linear_manual_tempo)
+			#print("tempo manual: " + str(manual_octave) + ", " + str(manual_offset))
+
+			# Set target_octave/offset to linear blend between manual and converged -
+			#  at conv_amt == 0, use self.manual_octave/offset
+			#  at conv_amt == 1, use self._converged_octave/offset
+			target_octave = conv_amt*self._converged_octave + (1.-conv_amt)*manual_octave
+			target_offset = conv_amt*self._converged_offset + (1.-conv_amt)*manual_offset
+			#print("tempo target: " + str(target_octave) + ", " + str(target_offset))
+
+			# Save target offset specifically, as we may use it per-instrument in
+			# update_converged_state() below
+			self._target_offset = target_offset
+
+			# Convert final octave/offset back to tempo
+			# and save it as the value
+			# round instead of truncate
+			self.value = [2 ** (round(target_octave) + target_offset)]
+
+			# Also convert converged octave/offset back to note (in same way as target octave/offset above)
+			# and save it (not used except displayed in gui for consistency)
+			self._converged_value = [2 ** (round(self._converged_octave) + self._converged_offset)]
+
+
 class HarmonyParameter(Parameter):
 	'''Parameter for handling sets of integers which measure harmony'''
 
 	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
 		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
+
+		# Get initial ('default') value from settings, set a default if we don't have one
 		self._settings.setdefault('default_value', [0,5,3])
+		# Set operative values to the initial one
 		self.value = self._settings['default_value']
 		self.manual_value = self._settings['default_value']
 		self._converged_value = self._settings['default_value']
+
 		self._disable_convergence_transform()
 
 	def validate_value(self, value):
@@ -234,6 +406,7 @@ class HarmonyParameter(Parameter):
 		try:
 			conv_amt = clamp(self._settings['convergence_amount'])
 
+			# Get the current value of this parameter from all instruments into a straight list
 			harmonies = []
 			if self._param_state:
 				for inst in self._param_state:
@@ -241,7 +414,9 @@ class HarmonyParameter(Parameter):
 			# find converged harmony
 			self._converged_value = []
 			if harmonies:
+				# Give it a length that is the mean of the lengths of the individual harmonies
 				l = int(mean(map(len, harmonies)))
+				# Take one note from each harmony in turn until we have the right length
 				i = 0
 				while harmonies and len(self._converged_value) < l:
 					if harmonies[i]:
@@ -258,6 +433,7 @@ class HarmonyParameter(Parameter):
 				self.value = self.manual_value
 			else:
 				self.value = unique(splice(self.manual_value, self._converged_value))
+
 			if not self.value:
 				self.value = self._settings['default_value']
 		except Exception as e:
@@ -332,7 +508,7 @@ class ConvergenceManager(QObject):
 		param_settings = self.settings.setdefault('parameters',{})
 		param_types = {
 			'activity': FloatParameter,
-			'tempo': FloatParameter,
+			'tempo': TempoParameter,
 			'loudness': FloatParameter,
 			'root': NoteParameter,
 			'harmony': HarmonyParameter,
@@ -345,6 +521,12 @@ class ConvergenceManager(QObject):
 			'narrative': NarrativeParameter,
 		}
 		self.params = {}
+		# Keys: (str) Parameter name
+		# Values: Instance of a Parameter subclass
+
+		# For each parameter
+		# instantiate parameter object subclass,
+		# and store in self.params
 		self.params.update({
 			name : typ(
 				parameter_name = name,
@@ -355,10 +537,13 @@ class ConvergenceManager(QObject):
 				)
 			for name,typ in param_types.iteritems()
 		})
+
+		#
 		self.elapsed_timer = QElapsedTimer()
 		self.elapsed_timer.start()
 		self.time_of_last_update = 0.
 
+		# Every 0.2 seconds, run self.update()
 		self.update_timer = QTimer(self)
 		self.update_timer.timeout.connect(self.update)
 		self.update_timer.setInterval(200)
@@ -372,28 +557,30 @@ class ConvergenceManager(QObject):
 			''', re.VERBOSE)
 
 		# self.default_values = {
-		# 	'activity': [0.],
-		# 	'tempo': [89.],
-		# 	'loudness': [0.5],
-		# 	'root': [24],
-		# 	'harmony': [0, 7, 3, 10, 8],
-		# 	'detune': [0.],
-		# 	'note_frequency': [2.],
-		# 	'note_density': [0.5],
-		# 	'attack': [0.1],
-		# 	'brightness': [0.5],
-		# 	'roughness': [0.2],
+		#	'activity': [0.],
+		#	'tempo': [89.],
+		#	'loudness': [0.5],
+		#	'root': [24],
+		#	'harmony': [0, 7, 3, 10, 8],
+		#	'detune': [0.],
+		#	'note_frequency': [2.],
+		#	'note_density': [0.5],
+		#	'attack': [0.1],
+		#	'brightness': [0.5],
+		#	'roughness': [0.2],
 		# }
 
 
 	def set_manual_value(self, param_name, value):
 		# print 'set_manual_value({},{})'.format(param_name, value)
+		# Wrap the value in a list if it isn't already
 		if type(value) is list:
 			self.params[param_name].manual_value = value
 		else:
 			self.params[param_name].manual_value = [value]
 
 	def update(self):
+		# Get time since last update
 		elapsed_time = self.elapsed_timer.elapsed()
 		dt = elapsed_time - self.time_of_last_update
 		dt = clamp(0.0001, 0.5)
@@ -409,6 +596,8 @@ class ConvergenceManager(QObject):
 
 	def update_narrative(self):
 		'''Update narrative parameter based on instrument connections'''
+		# Get the mean connection level across every pair of instruments
+		# (not including self-connections)
 		instruments = self.connections.keys()
 		narrative = 0.
 		count = 0.
@@ -418,6 +607,7 @@ class ConvergenceManager(QObject):
 				count += 1.
 		if count:
 			narrative /= count
+		# Save it in the NarrativeParameter in self.params['narrative']
 		self.params['narrative'].value_from_connections = [narrative]
 
 	def update_converged_state(self):
@@ -426,7 +616,24 @@ class ConvergenceManager(QObject):
 		# apply this converged_values to all instruments
 		for inst in self.connections.keys():
 			for param in self.params:
-				self.converged_state.setdefault(param,{})[inst] = self.params[param].value
+				# If it's the tempo param, it requires special treatment
+				# as different instruments may get different converged value
+				if param == "tempo":
+					self.converged_state.setdefault("tempo", {})
+					# If instrument doesn't already have a tempo value then give it the
+					# full converged tempo made of both averaged octave and averaged offset.
+					if inst not in self.world_state[param]:
+						self.converged_state["tempo"][inst] = self.params[param].value
+					# Else if instrument already has a tempo then just slide it (up or down,
+					# whichever is the shortest modular distance) to the the averaged offset
+					else:
+						existing_tempo = self.world_state[param][inst][0]
+						linear_existing_tempo = math.log(existing_tempo, 2)
+						existing_offset = linear_existing_tempo - int(linear_existing_tempo)
+						self.converged_state["tempo"][inst] = [existing_tempo * 2**modular_distance(existing_offset, self.params[param]._target_offset, 1.0)]
+				# For all other params, all instruments get the same converged value
+				else:
+					self.converged_state.setdefault(param,{})[inst] = self.params[param].value
 
 	def update_visualizer_state(self):
 		'''Copy over whichever parameters are needed by the
