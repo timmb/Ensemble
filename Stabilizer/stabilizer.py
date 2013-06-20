@@ -150,7 +150,8 @@ class Stabilizer(QApplication):
         # State variables that are to be sent to the visualizer
         # property -> value (where value is always a list)
         self.visualizer_state = {
-            'connections' : self.connections
+            'connections' : self.connections,
+            'debug' : False,
         }
 
 

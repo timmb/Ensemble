@@ -89,6 +89,10 @@ class MainWindow(QtGui.QMainWindow):
         for checkbox, var in checkbox_variable_pairings:
             checkbox.setChecked(var)
             checkbox.toggled.connect(lambda x: assign(var,x))
+        def debug_mode_checkbox_callback(value):
+            self.stabilizer.visualizer_state['debug'] = value
+        self.ui.visualizerEnableDebugModeCheckbox.toggled.connect(debug_mode_checkbox_callback)
+
         self.create_dynamic_elements()
 
         self.visualizerCanonicalOrder = QStringListModel(self)
@@ -214,6 +218,10 @@ class MainWindow(QtGui.QMainWindow):
             self.canonical_order_needs_updating -= 1
             if not self.canonical_order_needs_updating:
                 self.stabilizer.settings['instrument_order'] = self.visualizerCanonicalOrder.stringList()
+        if self.ui.visualizerEnableDebugModeCheckbox.isEnabled() != bool(self.stabilizer.internal_settings['visualizer_address']):
+            self.ui.visualizerEnableDebugModeCheckbox.setEnabled(bool(self.stabilizer.internal_settings['visualizer_address']))
+            if not self.ui.visualizerEnableDebugModeCheckbox.isEnabled():
+                self.ui.visualizerEnableDebugModeCheckbox.setChecked(False)
 
 
     def update_visualizer_page(self):

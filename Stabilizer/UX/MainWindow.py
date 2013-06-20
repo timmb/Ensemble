@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Thu Jun 20 11:26:16 2013
+# Created: Thu Jun 20 15:14:51 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -200,7 +200,7 @@ class Ui_MainWindow(object):
         self.visualizerPageScrollArea.setWidgetResizable(True)
         self.visualizerPageScrollArea.setObjectName("visualizerPageScrollArea")
         self.scrollAreaWidgetContents = QtGui.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 606, 372))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 610, 394))
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -226,7 +226,10 @@ class Ui_MainWindow(object):
         font.setBold(True)
         self.visualizerOverviewLabel.setFont(font)
         self.visualizerOverviewLabel.setObjectName("visualizerOverviewLabel")
-        self.gridLayout.addWidget(self.visualizerOverviewLabel, 1, 0, 1, 2)
+        self.gridLayout.addWidget(self.visualizerOverviewLabel, 2, 0, 1, 2)
+        self.visualizerEnableDebugModeCheckbox = QtGui.QCheckBox(self.scrollAreaWidgetContents)
+        self.visualizerEnableDebugModeCheckbox.setObjectName("visualizerEnableDebugModeCheckbox")
+        self.gridLayout.addWidget(self.visualizerEnableDebugModeCheckbox, 1, 1, 1, 1)
         self.verticalLayout_9 = QtGui.QVBoxLayout()
         self.verticalLayout_9.setObjectName("verticalLayout_9")
         self.visualizerCanonicalOrderLabel = QtGui.QLabel(self.scrollAreaWidgetContents)
@@ -239,7 +242,7 @@ class Ui_MainWindow(object):
         self.visualizerCanonicalOrder.setDragDropMode(QtGui.QAbstractItemView.InternalMove)
         self.visualizerCanonicalOrder.setObjectName("visualizerCanonicalOrder")
         self.verticalLayout_9.addWidget(self.visualizerCanonicalOrder)
-        self.gridLayout.addLayout(self.verticalLayout_9, 2, 0, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_9, 3, 0, 1, 1)
         self.verticalLayout_8 = QtGui.QVBoxLayout()
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.visualizerCalculatedOrderLabel = QtGui.QLabel(self.scrollAreaWidgetContents)
@@ -251,7 +254,7 @@ class Ui_MainWindow(object):
         self.visualizerCalculatedOrder.setMovement(QtGui.QListView.Static)
         self.visualizerCalculatedOrder.setObjectName("visualizerCalculatedOrder")
         self.verticalLayout_8.addWidget(self.visualizerCalculatedOrder)
-        self.gridLayout.addLayout(self.verticalLayout_8, 2, 1, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_8, 3, 1, 1, 1)
         self.verticalLayout_5 = QtGui.QVBoxLayout()
         self.verticalLayout_5.setObjectName("verticalLayout_5")
         self.visualizerSurplusInstrumentsLabel = QtGui.QLabel(self.scrollAreaWidgetContents)
@@ -261,7 +264,7 @@ class Ui_MainWindow(object):
         self.visualizerSurplusInstruments.setFocusPolicy(QtCore.Qt.NoFocus)
         self.visualizerSurplusInstruments.setObjectName("visualizerSurplusInstruments")
         self.verticalLayout_5.addWidget(self.visualizerSurplusInstruments)
-        self.gridLayout.addLayout(self.verticalLayout_5, 3, 0, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_5, 4, 0, 1, 1)
         self.verticalLayout_10 = QtGui.QVBoxLayout()
         self.verticalLayout_10.setObjectName("verticalLayout_10")
         self.visualizerMissingInstrumentsLabel = QtGui.QLabel(self.scrollAreaWidgetContents)
@@ -271,7 +274,7 @@ class Ui_MainWindow(object):
         self.visualizerMissingInstruments.setFocusPolicy(QtCore.Qt.NoFocus)
         self.visualizerMissingInstruments.setObjectName("visualizerMissingInstruments")
         self.verticalLayout_10.addWidget(self.visualizerMissingInstruments)
-        self.gridLayout.addLayout(self.verticalLayout_10, 3, 1, 1, 1)
+        self.gridLayout.addLayout(self.verticalLayout_10, 4, 1, 1, 1)
         self.verticalLayout_11.addLayout(self.gridLayout)
         self.visualizerPageScrollArea.setWidget(self.scrollAreaWidgetContents)
         self.pages.addWidget(self.visualizerPage)
@@ -370,7 +373,7 @@ class Ui_MainWindow(object):
         self.ipAddressLabel.setBuddy(self.ipAddress)
 
         self.retranslateUi(MainWindow)
-        self.pages.setCurrentIndex(0)
+        self.pages.setCurrentIndex(5)
         QtCore.QObject.connect(self.pageSelector, QtCore.SIGNAL("currentRowChanged(int)"), self.pages.setCurrentIndex)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -398,6 +401,7 @@ class Ui_MainWindow(object):
         self.logOutgoingMessagesCheckbox.setText(QtGui.QApplication.translate("MainWindow", "Log outgoing messages", None, QtGui.QApplication.UnicodeUTF8))
         self.visualizerAddressLabel.setText(QtGui.QApplication.translate("MainWindow", "Visualizer Address", None, QtGui.QApplication.UnicodeUTF8))
         self.visualizerOverviewLabel.setText(QtGui.QApplication.translate("MainWindow", "Instrument order for visualization (anti-clockwise)", None, QtGui.QApplication.UnicodeUTF8))
+        self.visualizerEnableDebugModeCheckbox.setText(QtGui.QApplication.translate("MainWindow", "Draw debug info", None, QtGui.QApplication.UnicodeUTF8))
         self.visualizerCanonicalOrderLabel.setText(QtGui.QApplication.translate("MainWindow", "Canonical order (drag and drop)", None, QtGui.QApplication.UnicodeUTF8))
         self.visualizerCalculatedOrderLabel.setText(QtGui.QApplication.translate("MainWindow", "Calculated order based on current instruments", None, QtGui.QApplication.UnicodeUTF8))
         self.visualizerSurplusInstrumentsLabel.setText(QtGui.QApplication.translate("MainWindow", "Instruments missing from canonical order", None, QtGui.QApplication.UnicodeUTF8))

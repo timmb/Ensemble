@@ -108,6 +108,11 @@ class OutputProcessor(QThread):
 					# right for loop is nested inside left for loop
 					args += [connections[instruments[i]][instruments[j]] for i in range(len(instruments)) for j in range(len(instruments))]
 					assert len(args) == 1+len(instruments)*len(instruments)
+				elif param=='debug':
+					args = [int(value)]
+					if value:
+						# provide instrument names
+						args.extend((x.encode('ascii', 'ignore') for x in self.internal_settings['calculated_instrument_order']))
 				else:
 					args = value
 				message = Message(osc_address, *args)

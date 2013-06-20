@@ -370,8 +370,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>606</width>
-             <height>372</height>
+             <width>610</width>
+             <height>394</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -403,7 +403,7 @@
                 </property>
                </widget>
               </item>
-              <item row="1" column="0" colspan="2">
+              <item row="2" column="0" colspan="2">
                <widget class="QLabel" name="visualizerOverviewLabel">
                 <property name="font">
                  <font>
@@ -416,7 +416,14 @@
                 </property>
                </widget>
               </item>
-              <item row="2" column="0">
+              <item row="1" column="1">
+               <widget class="QCheckBox" name="visualizerEnableDebugModeCheckbox">
+                <property name="text">
+                 <string>Draw debug info</string>
+                </property>
+               </widget>
+              </item>
+              <item row="3" column="0">
                <layout class="QVBoxLayout" name="verticalLayout_9">
                 <item>
                  <widget class="QLabel" name="visualizerCanonicalOrderLabel">
@@ -446,7 +453,7 @@
                 </item>
                </layout>
               </item>
-              <item row="2" column="1">
+              <item row="3" column="1">
                <layout class="QVBoxLayout" name="verticalLayout_8">
                 <item>
                  <widget class="QLabel" name="visualizerCalculatedOrderLabel">
@@ -473,7 +480,7 @@
                 </item>
                </layout>
               </item>
-              <item row="3" column="0">
+              <item row="4" column="0">
                <layout class="QVBoxLayout" name="verticalLayout_5">
                 <item>
                  <widget class="QLabel" name="visualizerSurplusInstrumentsLabel">
@@ -491,7 +498,7 @@
                 </item>
                </layout>
               </item>
-              <item row="3" column="1">
+              <item row="4" column="1">
                <layout class="QVBoxLayout" name="verticalLayout_10">
                 <item>
                  <widget class="QLabel" name="visualizerMissingInstrumentsLabel">
