@@ -28,13 +28,14 @@ class ConnectionDetector(object):
 			for j in range(i,len(names)):
 				state_i = self.instruments[names[i]]['state']
 				state_j = self.instruments[names[j]]['state']
-				connection = 0
+				# NB all values should be floats
+				connection = 0.
 				if 'activity' in state_i and 'activity' in state_j:
 					# remember all state values are lists
 					connection = min(state_i['activity'][0], state_j['activity'][0])
 				# instruments are always connected to themselves
 				if names[i] == names[j]:
-					connection = 1
+					connection = 1.
 				# instrument names might not yet be in the connections list
 				# so use default value of {}
 				self.connections.setdefault(names[i],{})[names[j]] = connection
