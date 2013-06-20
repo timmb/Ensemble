@@ -107,7 +107,7 @@
          </font>
         </property>
         <property name="currentIndex">
-         <number>5</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="connectionsPage">
          <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -355,8 +355,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>631</width>
-            <height>360</height>
+            <width>621</width>
+            <height>371</height>
            </rect>
           </property>
           <property name="frameShape">
@@ -370,8 +370,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>616</width>
-             <height>370</height>
+             <width>606</width>
+             <height>372</height>
             </rect>
            </property>
            <property name="sizePolicy">
@@ -380,106 +380,134 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
-           <layout class="QGridLayout" name="gridLayout">
-            <item row="0" column="0">
-             <widget class="QLabel" name="visualizerAddressLabel">
-              <property name="text">
-               <string>Visualizer Address</string>
-              </property>
-              <property name="alignment">
-               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QLineEdit" name="visualizerAddress">
-              <property name="enabled">
-               <bool>false</bool>
-              </property>
-              <property name="readOnly">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0" colspan="2">
-             <widget class="QLabel" name="visualizerOverviewLabel">
-              <property name="font">
-               <font>
-                <weight>75</weight>
-                <bold>true</bold>
-               </font>
-              </property>
-              <property name="text">
-               <string>Instrument order for visualization (anti-clockwise)</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <layout class="QVBoxLayout" name="verticalLayout_9">
-              <item>
-               <widget class="QLabel" name="visualizerCanonicalOrderLabel">
+           <layout class="QVBoxLayout" name="verticalLayout_11">
+            <item>
+             <layout class="QGridLayout" name="gridLayout">
+              <item row="0" column="0">
+               <widget class="QLabel" name="visualizerAddressLabel">
                 <property name="text">
-                 <string>Canonical order (change in Settings)</string>
+                 <string>Visualizer Address</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QListView" name="visualizerCanonicalOrder">
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>150</height>
-                 </size>
+              <item row="0" column="1">
+               <widget class="QLineEdit" name="visualizerAddress">
+                <property name="enabled">
+                 <bool>false</bool>
                 </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
+                <property name="readOnly">
+                 <bool>true</bool>
                 </property>
                </widget>
               </item>
-             </layout>
-            </item>
-            <item row="2" column="1">
-             <layout class="QVBoxLayout" name="verticalLayout_8">
-              <item>
-               <widget class="QLabel" name="visualizerCalculatedOrderLabel">
+              <item row="1" column="0" colspan="2">
+               <widget class="QLabel" name="visualizerOverviewLabel">
+                <property name="font">
+                 <font>
+                  <weight>75</weight>
+                  <bold>true</bold>
+                 </font>
+                </property>
                 <property name="text">
-                 <string>Calculated order based on current instruments</string>
+                 <string>Instrument order for visualization (anti-clockwise)</string>
                 </property>
                </widget>
               </item>
-              <item>
-               <widget class="QListView" name="visualizerCalculatedOrder">
-                <property name="minimumSize">
-                 <size>
-                  <width>150</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::ClickFocus</enum>
-                </property>
-                <property name="movement">
-                 <enum>QListView::Static</enum>
-                </property>
-               </widget>
+              <item row="2" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_9">
+                <item>
+                 <widget class="QLabel" name="visualizerCanonicalOrderLabel">
+                  <property name="text">
+                   <string>Canonical order (drag and drop)</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QListView" name="visualizerCanonicalOrder">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>150</height>
+                   </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="dragEnabled">
+                   <bool>true</bool>
+                  </property>
+                  <property name="dragDropMode">
+                   <enum>QAbstractItemView::InternalMove</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
-             </layout>
-            </item>
-            <item row="3" column="0" colspan="2">
-             <layout class="QVBoxLayout" name="verticalLayout_5">
-              <item>
-               <widget class="QLabel" name="visualizerUnorderedInstrumentsLabel">
-                <property name="text">
-                 <string>Unordered instruments</string>
-                </property>
-               </widget>
+              <item row="2" column="1">
+               <layout class="QVBoxLayout" name="verticalLayout_8">
+                <item>
+                 <widget class="QLabel" name="visualizerCalculatedOrderLabel">
+                  <property name="text">
+                   <string>Calculated order based on current instruments</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QListView" name="visualizerCalculatedOrder">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="movement">
+                   <enum>QListView::Static</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
-              <item>
-               <widget class="QListView" name="visualizerUnorderedInstruments">
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-               </widget>
+              <item row="3" column="0">
+               <layout class="QVBoxLayout" name="verticalLayout_5">
+                <item>
+                 <widget class="QLabel" name="visualizerSurplusInstrumentsLabel">
+                  <property name="text">
+                   <string>Instruments missing from canonical order</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QListView" name="visualizerSurplusInstruments">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item row="3" column="1">
+               <layout class="QVBoxLayout" name="verticalLayout_10">
+                <item>
+                 <widget class="QLabel" name="visualizerMissingInstrumentsLabel">
+                  <property name="text">
+                   <string>Instruments that are not connected</string>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QListView" name="visualizerMissingInstruments">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </item>
              </layout>
             </item>

@@ -51,13 +51,21 @@ class OutputProcessor(QThread):
 		# visualizer sender may print warning message - this is to prevent it spamming too much
 		self.viz_last_warning_message_time = 0
 
+		# Calculate instrument order for the visualizer
+		self.viz_instrument_order_update_timer = QTimer(self)
+		self.viz_instrument_order_update_timer.timeout.connect(self._update_instrument_order)
+		self.viz_instrument_order_update_timer.setInterval(413)
+
+
 
 	def run(self):
 		'''Start the thread sending messages.
 		'''
 		self.update_timer.start()
 		self.viz_update_timer.start()
+		self.viz_instrument_order_update_timer.start()
 		self.exec_()
+		self.viz_instrument_order_update_timer.stop()
 		self.viz_update_timer.stop()
 		self.update_timer.stop()
 
@@ -94,31 +102,37 @@ class OutputProcessor(QThread):
 				osc_address = '/viz/' + param
 				if param=='connections':
 					connections = value
-					# instrument names in order needed for viz
-					# remove any instrument names that aren't in connections
-					instruments = [i for i in self.settings['instrument_order'] if i in connections]
-					if len(instruments) != len(self.settings['instrument_order']):
-						missing_instruments = [i for i in connections if i not in instruments]
-						surplus_instruments = [i for i in instruments if i not in connections]
-						t = currentTime()
-						if t - self.viz_last_warning_message_time > 3:
-							self.log('Warning, instruments missing from visualizer order: {}. Unrecognised instruments: {}'.format(missing_instruments, surplus_instruments))
-							self.viz_last_warning_message_time = t
-					else:
-						missing_instruments = []
-						surplus_instruments = []
+					instruments = self.internal_settings['calculated_instrument_order']
+					# see http://timmb.com/ensemblewiki/index.php?title=Protocols#Stabilizer_.E2.86.92_Visualizer
 					args = [len(instruments)]
 					# right for loop is nested inside left for loop
 					args += [connections[instruments[i]][instruments[j]] for i in range(len(instruments)) for j in range(len(instruments))]
 					assert len(args) == 1+len(instruments)*len(instruments)
-					# Save some values above for the gui
-					self.internal_settings['calculated_instrument_order'] = instruments
-					self.internal_settings['missing_instruments'] = missing_instruments
-					self.internal_settings['surplus_instruments'] = surplus_instruments
 				else:
 					args = value
 				message = Message(osc_address, *args)
 				self.send(message, viz_address)
+
+	def _update_instrument_order(self):
+		'''Updates calculated_instrument_order, missing_instruments and surplus_instruments
+		based on canonical_instrument_order and the connected instruments.
+		'''
+		instrument_order = self.settings['instrument_order']
+		detected_instruments = self.visualizer_state['connections'].keys()
+
+		calculated_instruments = [i for i in instrument_order if i in detected_instruments]
+		surplus_instruments = [i for i in detected_instruments if i not in instrument_order]
+		missing_instruments = [i for i in instrument_order if i not in detected_instruments]
+
+		self.internal_settings['calculated_instrument_order'] = calculated_instruments
+		self.internal_settings['missing_instruments'] = missing_instruments
+		self.internal_settings['surplus_instruments'] = surplus_instruments
+
+		if surplus_instruments:
+			t = currentTime()
+			if t - self.viz_last_warning_message_time > 10:
+				self.log('Warning, the following instruments are missing from the visualization order: {}'.format(surplus_instruments));
+				self.viz_last_warning_message_time = t
 
 
 

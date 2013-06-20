@@ -95,13 +95,18 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.visualizerCanonicalOrder.setModel(self.visualizerCanonicalOrder)
         self.visualizerCalculatedOrder = QStringListModel(self)
         self.ui.visualizerCalculatedOrder.setModel(self.visualizerCalculatedOrder)
-        self.visualizerUnorderedInstruments = QStringListModel(self)
-        self.ui.visualizerUnorderedInstruments.setModel(self.visualizerUnorderedInstruments)
-        for listView in (self.ui.visualizerUnorderedInstruments, self.ui.visualizerCalculatedOrder, self.ui.visualizerCanonicalOrder):
+        self.visualizerMissingInstruments = QStringListModel(self)
+        self.ui.visualizerMissingInstruments.setModel(self.visualizerMissingInstruments)
+        self.visualizerSurplusInstruments = QStringListModel(self)
+        self.ui.visualizerSurplusInstruments.setModel(self.visualizerSurplusInstruments)
+        for listView in (self.ui.visualizerCanonicalOrder, self.ui.visualizerCalculatedOrder,
+                self.ui.visualizerMissingInstruments, self.ui.visualizerSurplusInstruments):
             listView.installEventFilter(IgnoreScrollWheelEventFilter())
-        for model in (self.visualizerCanonicalOrder, self.visualizerUnorderedInstruments, self.visualizerCalculatedOrder):
+        # enable drag drop reordering
+        self.visualizerCanonicalOrder.flags = lambda x: x.isValid() and Qt.ItemIsDragEnabled | Qt.ItemIsSelectable | Qt.ItemIsEnabled | Qt.ItemIsEditable or Qt.ItemIsDropEnabled
+        for model in (self.visualizerCalculatedOrder, self.visualizerMissingInstruments, self.visualizerSurplusInstruments):
             # make read only
-            model.flags = lambda x: x.isValid() and Qt.ItemIsDragEnabled | Qt.ItemIsSelectable | Qt.ItemIsEnabled or Qt.ItemIsDropEnabled
+            model.flags = lambda x: Qt.ItemIsEnabled
         def canonical_widget_callback():
             # for some reason the data is not immedaitely accurate
             # this delays by 3 loop cycles
@@ -214,13 +219,15 @@ class MainWindow(QtGui.QMainWindow):
     def update_visualizer_page(self):
         if not self.ui.visualizerPage.isVisible():
             return
-        self.ui.visualizerAddress.setText(self.stabilizer.internal_settings['visualizer_address'])
+        viz_address = self.stabilizer.internal_settings['visualizer_address']
+        self.ui.visualizerAddress.setText(viz_address and '{}:{}'.format(*viz_address) or '')
         self.visualizerCalculatedOrder.setStringList(self.stabilizer.internal_settings['calculated_instrument_order'])
-        self.visualizerUnorderedInstruments.setStringList(self.stabilizer.internal_settings['surplus_instruments'])
+        self.visualizerSurplusInstruments.setStringList(self.stabilizer.internal_settings['surplus_instruments'])
+        self.visualizerMissingInstruments.setStringList(self.stabilizer.internal_settings['missing_instruments'])
         # set up double clicking action on unordered instruments
         def unordered_inst_dbl_click(model_index):
-            inst_name = self.visualizerUnorderedInstruments.stringList()[model_index.row()]
-        self.ui.visualizerUnorderedInstruments.doubleClicked.connect(unordered_inst_dbl_click)
+            inst_name = self.visualizerSurplusInstruments.stringList()[model_index.row()]
+        self.ui.visualizerSurplusInstruments.doubleClicked.connect(unordered_inst_dbl_click)
 
     def update_local_ip(self):
         self.ui.ipAddress.setText(get_local_ip())    
