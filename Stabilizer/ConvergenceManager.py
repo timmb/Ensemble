@@ -5,6 +5,9 @@ from utilities import *
 from PySide.QtCore import *
 import re
 
+def pr(s):
+	print s
+
 # convergence_rate is amount of convergence per second
 # convergence_amount is 0..1 to use either the manual value or converged value
 
@@ -15,6 +18,7 @@ class Parameter(QObject):
 	'''
 
 	sig_is_converged_valid_changed = Signal(bool)
+	sig_is_post_update_statement_valid_changed = Signal(bool)
 
 	def __init__(self, parameter_name, parameter_settings, param_world_state, 
 		parameters, log_function):
@@ -38,8 +42,11 @@ class Parameter(QObject):
 		# dt for time since the last update in seconds
 		# It's not safe - be careful.
 		self._settings.setdefault('convergence_transform', 'convergence')
+		# This allows us to do pretty much whatever we want via the gui
+		# it is a python statement that is run at the end of the update function
+		self._settings.setdefault('post_update_statement', '')
 
-		self._log = log_function
+		self._log = lambda x: log_function(x, module=self.name)
 		self.value = []
 		self._param_state = param_world_state
 		# manually set target value
@@ -57,6 +64,7 @@ class Parameter(QObject):
 		]
 
 		self.is_convergence_transform_valid = True
+		self.is_post_update_statement_valid = True
 
 	def _disable_convergence_transform(self):
 		'''
@@ -112,9 +120,27 @@ class Parameter(QObject):
 
 
 	def update(self, dt):
-		'''Updates self.value.
+		'''Updates self.value. Implemented by derived classes
 		'''
 		pass
+
+	def _update_complete(self):
+		'''Derived classes should call this after they have completed self.update()
+		'''
+		# Run the post update statement as set in the gui
+		c = self._converged_value
+		if (type(c) is list and len(c)==1):
+			c = c[0]
+		try:
+			exec (self._settings['post_update_statement'], globals(), dict(self.params.items()+[('convergence', c), ('self', self)]))
+			if not self.is_post_update_statement_valid:
+				self.is_post_update_statement_valid = True
+				self.sig_is_post_update_statement_valid_changed.emit(True)
+		except Exception as e:
+			if self.is_post_update_statement_valid:
+				self.is_post_update_statement_valid = False
+				self.sig_is_post_update_statement_valid_changed.emit(False)
+				self._log('Error in post_update_statement: '+e.message)
 
 
 class FloatParameter(Parameter):
@@ -167,6 +193,7 @@ class FloatParameter(Parameter):
 		#  at conv_amt == 0, use self.manual_value[0]
 		#  at conv_amt == 1, use self.get_transformed_convergence()[0]
 		self.value[0] = conv_amt * self.get_transformed_convergence()[0] + (1.-conv_amt)*self.manual_value[0]
+		self._update_complete()
 
 
 class NoteParameter(Parameter):
@@ -273,6 +300,7 @@ class NoteParameter(Parameter):
 
 		# not used except displayed in gui for consistency
 		self._converged_value = [self._converged_octave*12 + from_fifths[int(self._converged_tone+0.5)]]
+		self._update_complete()
 
 
 class TempoParameter(Parameter):
@@ -305,6 +333,8 @@ class TempoParameter(Parameter):
 			'_converged_offset',
 			'_target_offset',
 		]
+
+		self._disable_convergence_transform()
 
 	def validate_value(self, value):
 		return type(value)==list and map(type, value)==[float]
@@ -382,6 +412,7 @@ class TempoParameter(Parameter):
 			# Also convert converged octave/offset back to note (in same way as target octave/offset above)
 			# and save it (not used except displayed in gui for consistency)
 			self._converged_value = [2 ** (round(self._converged_octave) + self._converged_offset)]
+		self._update_complete()
 
 
 class HarmonyParameter(Parameter):
@@ -403,41 +434,39 @@ class HarmonyParameter(Parameter):
 		return type(value)==list and all((type(x)==int and 0<=x and x<12 for x in value))
 
 	def update(self, dt):
-		try:
-			conv_amt = clamp(self._settings['convergence_amount'])
+		conv_amt = clamp(self._settings['convergence_amount'])
 
-			# Get the current value of this parameter from all instruments into a straight list
-			harmonies = []
-			if self._param_state:
-				for inst in self._param_state:
-					harmonies.append(self._param_state[inst])
-			# find converged harmony
-			self._converged_value = []
-			if harmonies:
-				# Give it a length that is the mean of the lengths of the individual harmonies
-				l = int(mean(map(len, harmonies)))
-				# Take one note from each harmony in turn until we have the right length
-				i = 0
-				while harmonies and len(self._converged_value) < l:
-					if harmonies[i]:
-						self._converged_value.append(harmonies[i][0])
-						harmonies[i] = harmonies[i][1:]
-						i = (i+1)%len(harmonies)
-					else:
-						harmonies.remove(harmonies[i])
+		# Get the current value of this parameter from all instruments into a straight list
+		harmonies = []
+		if self._param_state:
+			for inst in self._param_state:
+				harmonies.append(self._param_state[inst])
+		# find converged harmony
+		self._converged_value = []
+		if harmonies:
+			# Give it a length that is the mean of the lengths of the individual harmonies
+			l = int(mean(map(len, harmonies)))
+			# Take one note from each harmony in turn until we have the right length
+			i = 0
+			while harmonies and len(self._converged_value) < l:
+				if harmonies[i]:
+					self._converged_value.append(harmonies[i][0])
+					harmonies[i] = harmonies[i][1:]
+					i = (i+1)%len(harmonies)
+				else:
+					harmonies.remove(harmonies[i])
 
-			# now combine converged harmony with manual value - for now just simple splice
-			if conv_amt==1 and self._converged_value:
-				self.value = self._converged_value
-			elif conv_amt==0 and self.manual_value:
-				self.value = self.manual_value
-			else:
-				self.value = unique(splice(self.manual_value, self._converged_value))
+		# now combine converged harmony with manual value - for now just simple splice
+		if conv_amt==1 and self._converged_value:
+			self.value = self._converged_value
+		elif conv_amt==0 and self.manual_value:
+			self.value = self.manual_value
+		else:
+			self.value = unique(splice(self.manual_value, self._converged_value))
 
-			if not self.value:
-				self.value = self._settings['default_value']
-		except Exception as e:
-			import pdb; pdb.set_trace()
+		if not self.value:
+			self.value = self._settings['default_value']
+		self._update_complete()
 
 
 class NarrativeParameter(Parameter):
@@ -475,6 +504,7 @@ class NarrativeParameter(Parameter):
 		if abs(change_amount) > max_change:
 			change_amount = sign(change_amount) * max_change
 		self.value[0] += change_amount
+		self._update_complete()
 
 
 

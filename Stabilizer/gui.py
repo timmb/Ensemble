@@ -414,6 +414,7 @@ class ParameterWidget(QGroupBox):
             self.add_indexed_element(parameter._settings, p, False)
 
         parameter.sig_is_converged_valid_changed.connect(self.is_convergence_transform_valid_has_changed)
+        parameter.sig_is_post_update_statement_valid_changed.connect(self.is_post_update_statement_valid_has_changed)
 
 
     def add_heading(self, title):
@@ -500,6 +501,8 @@ class ParameterWidget(QGroupBox):
 
         # some values are wrapped in lists but we still want normal widgets for them
         wrapped_type = False
+        # some widgets need more space so get a whole line
+        require_whole_row = False
 
         if type(d[name]) is list and len(d[name])==1:
             wrapped_type = type(d[name][0])
@@ -521,6 +524,30 @@ class ParameterWidget(QGroupBox):
                 widget_update_function = lambda x: x and widget.setValue(x[0])
             else:
                 widget_update_function = widget.setValue
+        elif name in ('convergence_transform', 'post_update_statement'):
+            # qtextedit doesn't have an 'editing finished' signal so we need to reimplement the focus out
+            # event. We also override the tab key to trigger this signal
+            class FocusSignallingPlainTextEdit(QPlainTextEdit):
+                editingFinished = Signal()
+
+                def focusOutEvent(self, event):
+                    self.editingFinished.emit()
+                    QPlainTextEdit.focusOutEvent(self, event)
+
+                def keyPressEvent(self, event):
+                    if event.key()==Qt.Key_Tab:
+                        self.editingFinished.emit()
+                        event.accept()
+                    else:
+                        QPlainTextEdit.keyPressEvent(self, event)
+
+            widget = FocusSignallingPlainTextEdit(self)
+            default_update_function = lambda: assign_index(d, name, widget.toPlainText(), self._log_function)
+            widget.editingFinished.connect(
+                update_function and (lambda: update_function(widget.toPlainText()))
+                                or default_update_function)
+            widget_update_function = lambda x: widget.setPlainText(x)
+            require_whole_row = True
         else:
             widget = QLineEdit(self)
             default_update_function = lambda: try_assign_repr_index(d, name, widget.text(), self._log_function)
@@ -544,7 +571,11 @@ class ParameterWidget(QGroupBox):
         # widget.focusOutEvent = lambda event: widget.setFocusPolicy(Qt.StrongFocus)
         widget.setFocusPolicy(Qt.StrongFocus)
         widget.installEventFilter(self.ignoreScrollWheelEventFilter)
-        self._layout.addRow(widget_label or name, widget)
+        if require_whole_row:
+            self._layout.addRow(QLabel(widget_label or name))
+            self._layout.addRow(widget)
+        else:
+            self._layout.addRow(widget_label or name, widget)
         self._index_model.append({
             'dictionary' : d, 
             'var_name' : name, 
@@ -561,13 +592,22 @@ class ParameterWidget(QGroupBox):
         line.setFrameShadow(QFrame.Sunken)
         return line
 
-    def is_convergence_transform_valid_has_changed(self, new_value):
+    def _widget_validity_has_changed(self, var_name, new_validity):
+        '''Makes a corresponding widget go red if new_validity is False, or black if it is True.
+        Only currently set up for values in self._index_model.
+        '''
         for m in self._index_model:
-            if m['var_name']=='convergence_transform':
+            if m['var_name']==var_name:
                 widget = m['widget']
                 palette = widget.palette()
-                palette.setColor(widget.foregroundRole(), new_value and Qt.black or '#ef304a')
+                palette.setColor(widget.foregroundRole(), new_validity and Qt.black or '#ef304a')
                 widget.setPalette(palette)
+
+    def is_convergence_transform_valid_has_changed(self, new_value):
+        return self._widget_validity_has_changed('convergence_transform', new_value)
+
+    def is_post_update_statement_valid_has_changed(self, new_value):
+        return self._widget_validity_has_changed('post_update_statement', new_value)
 
     def update(self):
         for element in self._member_model:
@@ -585,5 +625,3 @@ class ParameterWidget(QGroupBox):
                     element['widget_update_function'](element['dictionary'][var_name])
                 # print(self._name+' Updating {} from {} to {} in GUI'.format(var_name, element['last_value'], element['dictionary'][var_name]))
                 element['last_value'] = copy.deepcopy(element['dictionary'][var_name])
-
-
