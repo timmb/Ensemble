@@ -222,6 +222,8 @@ class MainWindow(QtGui.QMainWindow):
             self.ui.visualizerEnableDebugModeCheckbox.setEnabled(bool(self.stabilizer.internal_settings['visualizer_address']))
             if not self.ui.visualizerEnableDebugModeCheckbox.isEnabled():
                 self.ui.visualizerEnableDebugModeCheckbox.setChecked(False)
+        if self.ui.visualizerEnableDebugModeCheckbox.isChecked() != self.stabilizer.visualizer_state['debug']:
+            self.ui.visualizerEnableDebugModeCheckbox.setChecked(self.stabilizer.visualizer_state['debug'])
 
 
     def update_visualizer_page(self):

@@ -6,7 +6,8 @@ class InputProcessor(object):
 	'''
 
 	def __init__(self, world_state, instruments, 
-		internal_settings, log_function=(lambda message, module: None)):
+		internal_settings, visualizer_state,
+		log_function=(lambda message, module: None)):
 		'''world_state is a dictionary (probably empty)
 		instruments is a dictionary (probably empty):
 			{ instrument_name -> { parameter_name -> parameter_value } }
@@ -18,6 +19,7 @@ class InputProcessor(object):
 		self.world_state = world_state
 		self.instruments = instruments
 		self.internal_settings = internal_settings
+		self.visualizer_state = visualizer_state
 		self.log = log_function
 		
 		self.state_pattern = re.compile(
@@ -37,6 +39,9 @@ class InputProcessor(object):
 		# visualizer
 		self.viz_listen_port_pattern = re.compile(r'''
 			/ (?P<type> viz/listen_port)
+			''', re.VERBOSE)
+		self.viz_enable_debug_mode_pattern = re.compile(r'''
+			/ (?P<type> viz/debug)
 			''', re.VERBOSE)
 		
 		type_tags_regex = {
@@ -68,6 +73,7 @@ class InputProcessor(object):
 			or self.log_pattern.match(message.address)
 			or self.listen_port_pattern.match(message.address)
 			or self.viz_listen_port_pattern.match(message.address)
+			or self.viz_enable_debug_mode_pattern.match(message.address)
 			)
 		if not match:
 			self.log("Invalid OSC message received from {}: {}".format(origin_address, message))
@@ -88,6 +94,11 @@ class InputProcessor(object):
 					self.log('Error: Visualizer sent invalid listen_port of {}'.format(port))
 			else:
 				self.log('Error: Visualizer sent listen_port without any arguments')
+			return
+		if message_type=='viz/debug':
+			values = message.getValues()
+			if values:
+				self.visualizer_state['debug'] = bool(values[0])
 			return
 
 

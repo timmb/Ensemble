@@ -159,6 +159,7 @@ class Stabilizer(QApplication):
             self.world_state, 
             self.instruments,
             self.internal_settings,
+            self.visualizer_state,
             lambda message,module='InputProcessor': self.log(message, module))
 
         self.connection_detector = ConnectionDetector(self.connections, 
