@@ -31,6 +31,14 @@ static bool operator>>(Json::Value const& child, int& value)
 	return true;
 }
 
+static bool operator>>(Json::Value const& child, bool& value)
+{
+	if (!child.isConvertibleTo(Json::booleanValue))
+		return false;
+	value = child.asBool();
+	return true;
+}
+
 static bool operator>>(Json::Value const& child, ci::Vec3f& value)
 {
 	if (child["x"].isConvertibleTo(Json::realValue)

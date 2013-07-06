@@ -37,6 +37,7 @@ public:
 	virtual ~Kinect();
 	
 	void setup();
+	void registerParams(Settings& settings);
 	void update(float dt, float elapsedTime, JointParameters const& jointParameters);
 	void draw();
 	
@@ -69,6 +70,9 @@ private:
 	
 	ci::gl::Texture mDepthTex;
 	ci::gl::Texture mColorTex;
+	
+	/// Disable drawing of videos to save cpu
+	bool mDrawVideos;
 	
 //	void print(xn::EnumerationErrors& errors);
 	

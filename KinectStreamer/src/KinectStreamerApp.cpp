@@ -40,6 +40,7 @@ void KinectStreamerApp::setup()
 	setupFont();
 	mOscBroadcaster.registerParams(mSettings);
 	mJointParameters.registerParams(mSettings);
+	mKinect.registerParams(mSettings);
 	mSettings.load(getAssetPath("kinectStreamerSettings.json").string());
 	mSettings.setup();
 	mKinect.setup();

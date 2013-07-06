@@ -29,6 +29,8 @@ using namespace V;
 Kinect* Kinect::sInstance = NULL;
 
 Kinect::Kinect()
+: mDrawVideos(false)
+, mIsUserDataNew(false)
 {
 	sInstance = this;
 }
@@ -38,6 +40,12 @@ Kinect::~Kinect()
 {
 	if (sInstance==this)
 		sInstance = NULL;
+}
+
+
+void Kinect::registerParams(Settings& settings)
+{
+	settings.addParam(new Parameter<bool>(&mDrawVideos, "Draw videos", "display"));
 }
 
 
@@ -99,12 +107,12 @@ void Kinect::update(float dt, float elapsedTime, JointParameters const& jointPar
 	else
 	{
 		hud().display("Opened Kinect", "Kinect");
-		if ( mDevice->_isImageOn && mDevice->getImageGenerator()->IsValid() && mDevice->isImageDataNew() )
+		if ( mDrawVideos && mDevice->_isImageOn && mDevice->getImageGenerator()->IsValid() && mDevice->isImageDataNew() )
 		{
 			uint8_t *pixels = mDevice->getColorMap();
 			memcpy(mColor.getData(), pixels, mColor.getRowBytes()*mColor.getHeight());
 		}
-		if ( mDevice->_isDepthOn && mDevice->getDepthGenerator()->IsValid() && mDevice->isDepthDataNew() )
+		if ( mDrawVideos && mDevice->_isDepthOn && mDevice->getDepthGenerator()->IsValid() && mDevice->isDepthDataNew() )
 		{
 			uint16_t *pixels = mDevice->getDepthMap();
 			memcpy(mDepth.getData(), pixels, mDepth.getRowBytes()*mDepth.getHeight());
@@ -213,8 +221,11 @@ void Kinect::draw()
 		gl::setMatricesWindow(app::getWindowSize());
 		gl::enableAdditiveBlending();
 		gl::color(1,1,1, .3);
-		gl::draw(mColor);
-		gl::draw(Surface(mDepth));
+		if (mDrawVideos)
+		{
+			gl::draw(mColor);
+			gl::draw(Surface(mDepth));
+		}
 		OpenNIUserList users = mOpenNI->getUserList();
 		for (OpenNIUserRef &user: users)
 		{
