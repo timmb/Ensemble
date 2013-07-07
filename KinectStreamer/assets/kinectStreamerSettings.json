@@ -2,9 +2,13 @@
 {
 	"Expression decay" : 0.6680000424385071,
 	"Velocity smoothing" : 7,
+	"display" : 
+	{
+		"Draw videos" : false
+	},
 	"limits" : 
 	{
-		"Depth cutoff distance" : 2256.0,
+		"Depth cutoff distance" : 2907.0,
 		"Left cutoff point" : 141.0,
 		"Right cutoff point" : 521.0
 	},

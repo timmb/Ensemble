@@ -165,16 +165,6 @@ class Stabilizer(QApplication):
         self.connection_detector = ConnectionDetector(self.connections, 
             self.instruments)
 
-        self.output_processor = OutputProcessor(
-            self.converged_state,
-            self.instruments,
-            self.visualizer_state,
-            self.settings,
-            self.internal_settings,
-            self.send_osc,
-            lambda message,module='OutputProcessor': self.log(message, module)
-            )
-        
         self.convergence_manager = ConvergenceManager(
             self.settings, 
             lambda message,module='ConvergenceManager': self.log(message, module),
@@ -185,6 +175,17 @@ class Stabilizer(QApplication):
             self,
             )
 
+        self.output_processor = OutputProcessor(
+            self.converged_state,
+            self.instruments,
+            self.visualizer_state,
+            self.settings,
+            self.internal_settings,
+            self.convergence_manager,
+            self.send_osc,
+            lambda message,module='OutputProcessor': self.log(message, module)
+            )
+        
         self.settings.reload()
 
 

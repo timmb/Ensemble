@@ -538,7 +538,8 @@ class ConvergenceManager(QObject):
 		param_settings = self.settings.setdefault('parameters',{})
 		param_types = {
 			'activity': FloatParameter,
-			'tempo': TempoParameter,
+			# 'tempo': TempoParameter,
+			'tempo' : FloatParameter,
 			'loudness': FloatParameter,
 			'root': NoteParameter,
 			'harmony': HarmonyParameter,

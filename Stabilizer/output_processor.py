@@ -3,13 +3,15 @@
 from PySide.QtCore import *
 from txosc.osc import *
 from time import time as currentTime
+from math import fmod
 
 class OutputProcessor(QThread):
 	'''OutputProcessor reads information from the converged state and
 	sends it to the clients.'''
 
 	def __init__(self, converged_state, instrument_states, visualizer_state, 
-		settings, internal_settings, osc_send_function, log_function):
+		settings, internal_settings, convergence_manager, osc_send_function,
+		log_function):
 		'''`converged_state` is a State object (for now, dictionary) 
 		containing information to be broadcast to the clients in the form:
 		parameter_name -> { instrument_name -> value }
@@ -36,6 +38,7 @@ class OutputProcessor(QThread):
 		self.instrument_states = instrument_states
 		self.settings = settings
 		self.internal_settings = internal_settings
+		self.convergence_manager = convergence_manager
 		self.visualizer_state = visualizer_state
 		self.send = osc_send_function
 		self.log = log_function
@@ -55,6 +58,17 @@ class OutputProcessor(QThread):
 		self.viz_instrument_order_update_timer = QTimer(self)
 		self.viz_instrument_order_update_timer.timeout.connect(self._update_instrument_order)
 		self.viz_instrument_order_update_timer.setInterval(413)
+
+		self.elapsed_timer = QElapsedTimer()
+		self.elapsed_timer.start()
+
+
+		self.beat_update_timer = QTimer(self)
+		self.beat_update_timer.setInterval(1)
+		self.beat_update_timer.timeout.connect(self._update_beat_message)
+		self.beat_update_timer.start()
+		self.beat_difference_millis = 1.
+		self.prev_time_mod = 0
 
 
 
@@ -92,6 +106,9 @@ class OutputProcessor(QThread):
 					args.append(createArgument(v))
 				message = Message(osc_address, *args)
 				self.send(message, destination)
+		tempo = self.convergence_manager.params['tempo'].value[0]
+		# print 'tempo', tempo
+		self.beat_difference_millis = 1000. / (tempo / 60.)
 
 	def _update_viz(self):
 		'''Callback for visualiser ('viz') timer, sends updated values to the viz.
@@ -140,6 +157,24 @@ class OutputProcessor(QThread):
 				self.viz_last_warning_message_time = t
 
 
+	def _update_beat_message(self):
+		'''Checks to see if a beat message needs to be sent and
+		sends it if it does'''
+		t_millis = self.elapsed_timer.elapsed()
+		time_mod = fmod(t_millis, self.beat_difference_millis)
+		# print 'beat_update', t_millis, time_mod, self.beat_difference_millis
+		if time_mod < self.prev_time_mod:
+			self.send_beat()
+		self.prev_time_mod = time_mod
+
+	def send_beat(self):
+		'''Send beat message
+		'''
+		# print 'beat message'
+		for instrument in self.instrument_states:
+			address = instrument['address']
+			if address:
+				self.send(Message('/beat'), address)
 
 
 
