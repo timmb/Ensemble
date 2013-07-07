@@ -22,6 +22,7 @@
             "default_value": 0.0, 
             "min": 50.0, 
             "max": 99.99, 
+            "convergence_transform": "convergence", 
             "post_update_statement": "", 
             "convergence_rate": 0.01, 
             "convergence_amount": 0.0
@@ -101,7 +102,7 @@
             "convergence_amount": 0.0, 
             "convergence_rate": 0.02, 
             "default_value": 0, 
-            "post_update_statement": "if narrative.value[0] < 0.5:\n  self.value = [24]\nelse:\n  self.value = [21]\n"
+            "post_update_statement": "if narrative.value[0] < 0.5:\n  self.value = [28]\nelse:\n  self.value = [25]\n"
         }
     }, 
     "instrument_order": [

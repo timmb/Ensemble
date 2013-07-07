@@ -108,7 +108,7 @@ class OutputProcessor(QThread):
 				self.send(message, destination)
 		tempo = self.convergence_manager.params['tempo'].value[0]
 		# print 'tempo', tempo
-		self.beat_difference_millis = 1000. / (tempo / 60.)
+		self.beat_difference_millis = 1000. / (max(1,tempo) / 60.)
 
 	def _update_viz(self):
 		'''Callback for visualiser ('viz') timer, sends updated values to the viz.
@@ -172,7 +172,7 @@ class OutputProcessor(QThread):
 		'''
 		# print 'beat message'
 		for instrument in self.instrument_states:
-			address = instrument['address']
+			address = self.instrument_states[instrument]['address']
 			if address:
 				self.send(Message('/beat'), address)
 

@@ -647,24 +647,24 @@ class ConvergenceManager(QObject):
 		# apply this converged_values to all instruments
 		for inst in self.connections.keys():
 			for param in self.params:
-				# If it's the tempo param, it requires special treatment
-				# as different instruments may get different converged value
-				if param == "tempo":
-					self.converged_state.setdefault("tempo", {})
-					# If instrument doesn't already have a tempo value then give it the
-					# full converged tempo made of both averaged octave and averaged offset.
-					if inst not in self.world_state[param]:
-						self.converged_state["tempo"][inst] = self.params[param].value
-					# Else if instrument already has a tempo then just slide it (up or down,
-					# whichever is the shortest modular distance) to the the averaged offset
-					else:
-						existing_tempo = self.world_state[param][inst][0]
-						linear_existing_tempo = math.log(existing_tempo, 2)
-						existing_offset = linear_existing_tempo - int(linear_existing_tempo)
-						self.converged_state["tempo"][inst] = [existing_tempo * 2**modular_distance(existing_offset, self.params[param]._target_offset, 1.0)]
-				# For all other params, all instruments get the same converged value
-				else:
-					self.converged_state.setdefault(param,{})[inst] = self.params[param].value
+				# # If it's the tempo param, it requires special treatment
+				# # as different instruments may get different converged value
+				# if param == "tempo":
+				# 	self.converged_state.setdefault("tempo", {})
+				# 	# If instrument doesn't already have a tempo value then give it the
+				# 	# full converged tempo made of both averaged octave and averaged offset.
+				# 	if inst not in self.world_state[param]:
+				# 		self.converged_state["tempo"][inst] = self.params[param].value
+				# 	# Else if instrument already has a tempo then just slide it (up or down,
+				# 	# whichever is the shortest modular distance) to the the averaged offset
+				# 	else:
+				# 		existing_tempo = self.world_state[param][inst][0]
+				# 		linear_existing_tempo = math.log(existing_tempo, 2)
+				# 		existing_offset = linear_existing_tempo - int(linear_existing_tempo)
+				# 		self.converged_state["tempo"][inst] = [existing_tempo * 2**modular_distance(existing_offset, self.params[param]._target_offset, 1.0)]
+				# # For all other params, all instruments get the same converged value
+				# else:
+				self.converged_state.setdefault(param,{})[inst] = self.params[param].value
 
 	def update_visualizer_state(self):
 		'''Copy over whichever parameters are needed by the

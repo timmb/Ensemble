@@ -264,7 +264,10 @@ class Stabilizer(QApplication):
             return
         if self.enable_log_outgoing_messages:
             self.log('-> {}: {}'.format(message, destination))
-        self.osc_sender.send(message, destination)
+        try:
+            self.osc_sender.send(message, destination)
+        except socket.error as e:
+            pass
 
 
     def log(self, s, module="Stabilizer"):       
