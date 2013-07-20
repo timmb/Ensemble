@@ -442,6 +442,7 @@ class ParameterWidget(QGroupBox):
         if t is float or wrapped_type is float:
             widget = QDoubleSpinBox(self)
             widget.setSingleStep(0.01)
+            widget.setMaximum(1000.)
             widget.valueChanged.connect(update_function
                 or (lambda x: assign_member(obj, name, x, self._log_function))
                 )
@@ -510,6 +511,7 @@ class ParameterWidget(QGroupBox):
         if type(d[name]) is float or wrapped_type is float:
             widget = QDoubleSpinBox(self)
             widget.setSingleStep(0.01)
+            widget.setMaximum(1000.)
             widget.valueChanged.connect(update_function 
                 or (lambda x: assign_index(d, name, x, self._log_function))) # default arg
             if wrapped_type:
