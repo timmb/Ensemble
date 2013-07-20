@@ -203,7 +203,7 @@ class MainWindow(QtGui.QMainWindow):
             if text_edit.isVisible():
                 update_text(text_edit, get_state_table(dict_data))
 
-        update_dict_view(self.ui.worldStateText, self.stabilizer.world_state)
+        # update_dict_view(self.ui.worldStateText, self.stabilizer.world_state)
         update_dict_view(self.ui.convergedStateText, self.stabilizer.converged_state)
         update_dict_view(self.ui.instrumentsText, self.stabilizer.instruments)
         update_state_table(self.ui.worldStateText, self.stabilizer.world_state)
@@ -326,10 +326,18 @@ def get_state_table(state):
     data = [header_row]
     if len(data)==1:
         data.append(['']*len(data[0]))
+    def extract_float(value):
+        if type(value) is list and value and type(value[0]) is float:
+            value = value[0]
+        if type(value) is float:
+            return "{:.2f}".format(value)
+        else:
+            return repr(value)
+
     for param in params:
-        row = [param]+[(state.get(param,{}).get(inst,[[]])) for inst in insts]
+        row = [param]+[extract_float(state.get(param,{}).get(inst,[])) for inst in insts]
         data.append(row)
-    table = Texttable()
+    table = Texttable(max_width=80)
     table.set_cols_align(['r']*(len(header_row)))
     table.add_rows(data)
     return table.draw()
