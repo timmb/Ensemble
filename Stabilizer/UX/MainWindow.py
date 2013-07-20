@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'MainWindow.ui'
 #
-# Created: Thu Jun 20 15:14:51 2013
+# Created: Sat Jul 20 12:47:08 2013
 #      by: pyside-uic 0.2.14 running on PySide 1.1.2
 #
 # WARNING! All changes made in this file will be lost!
@@ -373,7 +373,7 @@ class Ui_MainWindow(object):
         self.ipAddressLabel.setBuddy(self.ipAddress)
 
         self.retranslateUi(MainWindow)
-        self.pages.setCurrentIndex(5)
+        self.pages.setCurrentIndex(0)
         QtCore.QObject.connect(self.pageSelector, QtCore.SIGNAL("currentRowChanged(int)"), self.pages.setCurrentIndex)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 

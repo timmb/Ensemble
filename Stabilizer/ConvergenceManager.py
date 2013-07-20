@@ -196,6 +196,59 @@ class FloatParameter(Parameter):
 		self._update_complete()
 
 
+class IntParameter(Parameter):
+	def __init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function):
+		Parameter.__init__(self, parameter_name, parameter_settings, param_world_state, parameters, log_function)
+
+		# Get initial ('default') value from settings, set a default if we don't have one
+		self._settings.setdefault('default_value', 0)
+
+		#
+		self._settings.setdefault('min', 0)
+		self._settings.setdefault('max', 10)
+
+		# Set operative values to the initial one
+		self.value = [self._settings['default_value']]
+		self.manual_value = [self._settings['default_value']]
+		self._converged_value = [self._settings['default_value']]
+
+		# Readonly values
+		self.readonly_values += [
+
+		]
+
+	def validate_value(self, value):
+		return type(value)==list and map(type, value)==[int]
+
+	def update(self, dt):
+		Parameter.update(self, dt)
+
+		conv_amt = self._settings['convergence_amount']
+		conv_rate = min(1,self._settings['convergence_rate'] * dt)
+
+		# print 'self._param_state',self._param_state
+
+		if self._param_state:
+			# update using convergence
+			# Get mean value over all instruments
+			mean_input = 0.
+			for inst in self._param_state:
+				mean_input += self._param_state[inst][0]
+			mean_input /= len(self._param_state)
+			# Smoothly move self._converged_value[0] towards mean
+			# In multiplicative steps, moving conv_rate of the way in each step
+			if self._converged_value:
+				self._converged_value[0] += conv_rate * (mean_input - self._converged_value[0])
+			else:
+				self._converged_value = [mean_input]
+
+		# Set self.value[0] to linear blend between manual and converged -
+		#  at conv_amt == 0, use self.manual_value[0]
+		#  at conv_amt == 1, use self.get_transformed_convergence()[0]
+		self.value[0] = int(round(conv_amt * self.get_transformed_convergence()[0] + (1.-conv_amt)*self.manual_value[0]))
+		self._update_complete()
+
+
 class NoteParameter(Parameter):
 	'''Parameter that converges over the cycle of fifths'''
 
@@ -550,6 +603,7 @@ class ConvergenceManager(QObject):
 			'brightness': FloatParameter,
 			'roughness': FloatParameter,
 			'narrative': NarrativeParameter,
+			'narrative_slot': IntParameter,
 		}
 		self.params = {}
 		# Keys: (str) Parameter name
