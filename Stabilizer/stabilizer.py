@@ -154,6 +154,7 @@ class Stabilizer(QApplication):
             'debug' : False,
         }
 
+        self.settings.reload()
 
         self.input_processor = InputProcessor(
             self.world_state, 
@@ -186,7 +187,6 @@ class Stabilizer(QApplication):
             lambda message,module='OutputProcessor': self.log(message, module)
             )
         
-        self.settings.reload()
 
 
     def shutdown(self):

@@ -1,13 +1,13 @@
 {
     "parameters": {
-        "activity": {
+        "note_frequency": {
             "default_value": 0.0, 
             "min": 0.0, 
             "max": 1.0, 
             "convergence_transform": "[convergence]", 
             "post_update_statement": "", 
             "convergence_rate": 0.01, 
-            "convergence_amount": 0.0
+            "convergence_amount": 1.0
         }, 
         "brightness": {
             "default_value": 0.0, 
@@ -27,14 +27,14 @@
             "convergence_rate": 0.01, 
             "convergence_amount": 0.0
         }, 
-        "detune": {
+        "activity": {
             "default_value": 0.0, 
             "min": 0.0, 
             "max": 1.0, 
             "convergence_transform": "[convergence]", 
             "post_update_statement": "", 
             "convergence_rate": 0.01, 
-            "convergence_amount": 1.0
+            "convergence_amount": 0.0
         }, 
         "tempo": {
             "default_value": 90.0, 
@@ -45,16 +45,16 @@
             "convergence_rate": 0.01, 
             "convergence_amount": 0.0
         }, 
-        "narrative_slot": {
-            "default_value": 0, 
-            "min": 0, 
-            "max": 10, 
-            "convergence_transform": "convergence", 
-            "post_update_statement": "# Produce values from 0 to 4 based on narrative\n\nif narrative.value[0] < 0.1:\n  self.value[0] = 0\nelif narrative.value[0] < 0.25:\n  self.value[0] = 1\nelif narrative.value[0] < 0.5:\n  self.value[0] = 2\nelif narrative.value[0] < 0.75:\n  self.value[0] = 3\nelse:\n  self.value[0] = 4\n", 
+        "roughness": {
+            "default_value": 0.0, 
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "post_update_statement": "", 
             "convergence_rate": 0.01, 
-            "convergence_amount": 0.0
+            "convergence_amount": 1.0
         }, 
-        "note_density": {
+        "detune": {
             "default_value": 0.0, 
             "min": 0.0, 
             "max": 1.0, 
@@ -82,6 +82,15 @@
             ], 
             "post_update_statement": "if narrative.value[0] < 0.25:\n  self.value = [0, 5, 3]\nelif narrative.value[0] < 0.5:\n  self.value = [0, 5, 3, 10]\nelif narrative.value[0] < 0.75:\n  self.value = [0, 5, 3, 10, 8]\nelse:\n  self.value = [0, 5, 3, 10, 7, 2]"
         }, 
+        "note_density": {
+            "default_value": 0.0, 
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "post_update_statement": "", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
+        }, 
         "narrative": {
             "default_value": 0.0, 
             "post_update_statement": "", 
@@ -98,23 +107,14 @@
             "convergence_rate": 0.01, 
             "convergence_amount": 1.0
         }, 
-        "note_frequency": {
-            "default_value": 0.0, 
-            "min": 0.0, 
-            "max": 1.0, 
-            "convergence_transform": "[convergence]", 
-            "post_update_statement": "", 
+        "narrative_slot": {
+            "default_value": 0, 
+            "min": 0, 
+            "max": 10, 
+            "convergence_transform": "convergence", 
+            "post_update_statement": "# Produce values from 0 to 4 based on narrative\n\nif narrative.value[0] < 0.1:\n  self.value[0] = 0\nelif narrative.value[0] < 0.25:\n  self.value[0] = 1\nelif narrative.value[0] < 0.5:\n  self.value[0] = 2\nelif narrative.value[0] < 0.75:\n  self.value[0] = 3\nelse:\n  self.value[0] = 4\n", 
             "convergence_rate": 0.01, 
-            "convergence_amount": 1.0
-        }, 
-        "roughness": {
-            "default_value": 0.0, 
-            "min": 0.0, 
-            "max": 1.0, 
-            "convergence_transform": "[convergence]", 
-            "post_update_statement": "", 
-            "convergence_rate": 0.01, 
-            "convergence_amount": 1.0
+            "convergence_amount": 0.0
         }, 
         "root": {
             "convergence_amount": 0.0, 
