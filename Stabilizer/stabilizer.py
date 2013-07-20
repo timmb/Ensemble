@@ -266,7 +266,7 @@ class Stabilizer(QApplication):
             self.log('-> {}: {}'.format(message, destination))
         try:
             self.osc_sender.send(message, destination)
-        except socket.error as e:
+        except Exception as e:
             pass
 
 

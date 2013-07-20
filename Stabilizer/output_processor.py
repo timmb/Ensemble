@@ -70,7 +70,7 @@ class OutputProcessor(QThread):
 		self.beat_difference_millis = 1.
 		self.prev_time_mod = 0
 
-
+		self.beat_num = 0
 
 	def run(self):
 		'''Start the thread sending messages.
@@ -171,6 +171,8 @@ class OutputProcessor(QThread):
 		'''Send beat message
 		'''
 		# print 'beat message'
+		# print 'beat', self.beat_num
+		self.beat_num += 1
 		for instrument in self.instrument_states:
 			address = self.instrument_states[instrument]['address']
 			if address:
