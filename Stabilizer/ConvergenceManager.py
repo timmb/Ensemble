@@ -604,6 +604,7 @@ class ConvergenceManager(QObject):
 			'roughness': FloatParameter,
 			'narrative': NarrativeParameter,
 			'narrative_slot': IntParameter,
+			'narrative_rhythm_volume': FloatParameter,
 		}
 		self.params = {}
 		# Keys: (str) Parameter name

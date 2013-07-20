@@ -18,6 +18,15 @@
             "convergence_rate": 0.01, 
             "convergence_amount": 0.51
         }, 
+        "narrative_rhythm_volume": {
+            "default_value": 0.0, 
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "convergence", 
+            "post_update_statement": "if narrative.value[0] < 0.1:\n  self.value[0] = 0.\nelse:\n  self.value[0] = min(1., narrative.value[0] * 6.)\n", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 0.0
+        }, 
         "detune": {
             "default_value": 0.0, 
             "min": 0.0, 
