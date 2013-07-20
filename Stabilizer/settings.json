@@ -1,5 +1,14 @@
 {
     "parameters": {
+        "note_frequency": {
+            "default_value": 0.0, 
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "post_update_statement": "", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
+        }, 
         "brightness": {
             "default_value": 0.0, 
             "min": 0.0, 
@@ -90,15 +99,6 @@
             "change_speed": 0.1
         }, 
         "loudness": {
-            "default_value": 0.0, 
-            "min": 0.0, 
-            "max": 1.0, 
-            "convergence_transform": "[convergence]", 
-            "post_update_statement": "", 
-            "convergence_rate": 0.01, 
-            "convergence_amount": 1.0
-        }, 
-        "note_frequency": {
             "default_value": 0.0, 
             "min": 0.0, 
             "max": 1.0, 
