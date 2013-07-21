@@ -32,7 +32,7 @@
             "min": 50.0, 
             "max": 200.0, 
             "convergence_transform": "convergence", 
-            "post_update_statement": "if narrative.value[0] < 0.75:\n  self.value[0] = 50+93.333*narrative.value[0]\nelse:\n  self.value[0] = 120 - 120*(narrative.value[0] - 0.75)", 
+            "post_update_statement": "", 
             "convergence_rate": 0.01, 
             "convergence_amount": 0.0
         }, 

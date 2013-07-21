@@ -684,12 +684,17 @@ class ConvergenceManager(QObject):
 		'''Update narrative parameter based on instrument connections'''
 		# Get the mean connection level across every pair of instruments
 		# (not including self-connections)
+		def sq(x):
+			return x*x
 		instruments = self.connections.keys()
 		narrative = 0.
 		count = 0.
 		for inst1 in instruments:
 			for inst2 in (x for x in instruments if x!=inst1):
-				narrative += self.connections[inst1][inst2]
+				if self.connections[inst1][inst2] > 0.4:
+					narrative += 1.
+				else:
+					narrative += self.connections[inst1][inst2]
 				count += 1.
 		if count:
 			narrative /= count

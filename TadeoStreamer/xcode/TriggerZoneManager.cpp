@@ -12,6 +12,7 @@
 #include <boost/algorithm/string.hpp>
 #include <set>
 #include "OscBroadcaster.h"
+#include "cinder/Utilities.h"
 
 using namespace std;
 using namespace ci;
@@ -49,8 +50,14 @@ void TriggerZoneManager::setup()
 	//			mTriggers.back()->setup();
 	//		}
 	//	}
-	string names[] = { "left_trigger", "middle_trigger", "right_trigger" };
-	for (int i=0; i<3; ++i)
+	const int num = 24;
+	string names[num];
+	for (int i=0; i<num; i++)
+	{
+		names[i] = "trigger_"+ci::toString(i);
+	}
+//	string names[] = { "left_trigger", "middle_trigger", "right_trigger" };
+	for (int i=0; i<num; ++i)
 	{
 		mTriggers.push_back(std::shared_ptr<TriggerZone>(new CylinderTriggerZone(mSettings, mKinect, names[i])));
 		mTriggers.back()->setup();
