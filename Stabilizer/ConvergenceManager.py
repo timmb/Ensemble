@@ -131,8 +131,14 @@ class Parameter(QObject):
 		c = self._converged_value
 		if (type(c) is list and len(c)==1):
 			c = c[0]
+		# calculate number of active instruments
+		num_active = 0
+		for value in self.params['activity']._param_state.itervalues():
+			if type(value) is list and len(value)==1:
+				if value[0] > 0.05:
+					num_active += 1
 		try:
-			exec (self._settings['post_update_statement'], globals(), dict(self.params.items()+[('convergence', c), ('self', self)]))
+			exec (self._settings['post_update_statement'], globals(), dict(self.params.items()+[('convergence', c), ('self', self), ('num_active', num_active)]))
 			if not self.is_post_update_statement_valid:
 				self.is_post_update_statement_valid = True
 				self.sig_is_post_update_statement_valid_changed.emit(True)
@@ -605,6 +611,7 @@ class ConvergenceManager(QObject):
 			'narrative': NarrativeParameter,
 			'narrative_slot': IntParameter,
 			'narrative_rhythm_volume': FloatParameter,
+			'narrative_harmony_volume': NarrativeParameter,
 		}
 		self.params = {}
 		# Keys: (str) Parameter name
@@ -684,21 +691,27 @@ class ConvergenceManager(QObject):
 		'''Update narrative parameter based on instrument connections'''
 		# Get the mean connection level across every pair of instruments
 		# (not including self-connections)
+		#  UPDATE : Now just take highest three connection values
 		def sq(x):
 			return x*x
 		instruments = self.connections.keys()
 		narrative = 0.
 		count = 0.
-		for inst1 in instruments:
-			for inst2 in (x for x in instruments if x!=inst1):
-				if self.connections[inst1][inst2] > 0.4:
-					narrative += 1.
-				else:
-					narrative += self.connections[inst1][inst2]
-				count += 1.
-		if count:
-			narrative /= count
-		# Save it in the NarrativeParameter in self.params['narrative']
+		connection_values = [0., 0., 0.] + [
+		self.connections[inst1][inst2] for inst1 in instruments  
+			for inst2 in instruments if inst1!=inst2]
+		connection_values.sort()
+		narrative = sum(connection_values[:-3])/3.
+		# for inst1 in instruments:
+		# 	for inst2 in (x for x in instruments if x!=inst1):
+		# 		if self.connections[inst1][inst2] > 0.4:
+		# 			narrative += 1.
+		# 		else:
+		# 			narrative += self.connections[inst1][inst2]
+		# 		count += 1.
+		# if count:
+		# 	narrative /= count
+		# # Save it in the NarrativeParameter in self.params['narrative']
 		self.params['narrative'].value_from_connections = [narrative]
 
 	def update_converged_state(self):
