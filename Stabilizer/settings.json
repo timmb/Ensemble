@@ -1,14 +1,5 @@
 {
     "parameters": {
-        "note_frequency": {
-            "default_value": 0.0, 
-            "min": 0.0, 
-            "max": 1.0, 
-            "convergence_transform": "[convergence]", 
-            "post_update_statement": "", 
-            "convergence_rate": 0.01, 
-            "convergence_amount": 1.0
-        }, 
         "brightness": {
             "default_value": 0.0, 
             "min": 0.0, 
@@ -41,7 +32,7 @@
             "min": 50.0, 
             "max": 200.0, 
             "convergence_transform": "convergence", 
-            "post_update_statement": "", 
+            "post_update_statement": "if narrative.value[0] < 0.75:\n  self.value[0] = 50+93.333*narrative.value[0]\nelse:\n  self.value[0] = 120 - 120*(narrative.value[0] - 0.75)", 
             "convergence_rate": 0.01, 
             "convergence_amount": 0.0
         }, 
@@ -107,6 +98,15 @@
             "convergence_rate": 0.01, 
             "convergence_amount": 1.0
         }, 
+        "note_frequency": {
+            "default_value": 0.0, 
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "post_update_statement": "", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
+        }, 
         "narrative_slot": {
             "default_value": 0, 
             "min": 0, 
@@ -120,16 +120,16 @@
             "convergence_amount": 0.0, 
             "convergence_rate": 0.02, 
             "default_value": 0, 
-            "post_update_statement": "if narrative.value[0] < 0.25:\n  self.value = [28]\nelif narrative.value[0] < 0.5:\n  self.value = [25]\nelif narrative.value[0] < 0.75:\n  self.value = [30]\nelse:\n  self.value = [28]"
+            "post_update_statement": "if narrative.value[0] < 0.25:\n  self.value = [28]\nelif narrative.value[0] < 0.5:\n  self.value = [25]\nelif narrative.value[0] < 0.75:\n  self.value = [30]\nelse:\n  self.value = [28]\n"
         }
     }, 
     "instrument_order": [
         "Tim", 
         "dan_shadow", 
-        "sus", 
+        "rockmore", 
         "dom", 
         "kacper", 
-        "panos", 
+        "ptigas", 
         "joker", 
         "tadeo"
     ]

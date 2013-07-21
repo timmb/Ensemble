@@ -165,7 +165,10 @@ class OutputProcessor(QThread):
 		# print 'beat_update', t_millis, time_mod, self.beat_difference_millis
 		if time_mod < self.prev_time_mod:
 			self.send_beat()
-		self.prev_time_mod = time_mod
+			self.prev_time_mod = 0
+			self.elapsed_timer.restart()
+		else:
+			self.prev_time_mod = time_mod
 
 	def send_beat(self):
 		'''Send beat message
