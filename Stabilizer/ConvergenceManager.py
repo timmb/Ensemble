@@ -547,6 +547,7 @@ class NarrativeParameter(Parameter):
 		self.value = self.manual_value[:]
 		self.readonly_values.remove('_converged_value')
 		self.readonly_values.append('_target_value')
+		self.readonly_values.append('value_from_connections')
 		self._disable_convergence_transform()
 
 
@@ -701,7 +702,10 @@ class ConvergenceManager(QObject):
 		self.connections[inst1][inst2] for inst1 in instruments  
 			for inst2 in instruments if inst1!=inst2]
 		connection_values.sort()
-		narrative = sum(connection_values[:-3])/3.
+		#narrative = sum(connection_values[-3:])/3.
+		top_three = [min(1., x) for x in connection_values[-3:]]
+		# print 'top_three', top_three, sum(top_three)
+		narrative = sum(top_three)/3.
 		# for inst1 in instruments:
 		# 	for inst2 in (x for x in instruments if x!=inst1):
 		# 		if self.connections[inst1][inst2] > 0.4:
