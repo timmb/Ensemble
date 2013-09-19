@@ -3,65 +3,485 @@
 	"device id" : 0,
 	"device name" : "Kinect",
 	"ip" : "127.0.0.1",
-	"left_trigger" : 
+	"port" : 37000,
+	"trigger_0" : 
 	{
 		"axis" : 
 		{
-			"x" : 0.3516043424606323,
-			"y" : 0.3835052847862244,
-			"z" : 0.8539892435073853
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
 		},
-		"border thickness" : 10.0,
-		"length" : 1000.0,
-		"midpoint" : 
-		{
-			"x" : 500.0,
-			"y" : 200.0,
-			"z" : 1000.0
-		},
-		"number of points needed to trigger" : 33,
-		"opacity" : 0.50,
-		"radius" : 200.0
-	},
-	"middle_trigger" : 
-	{
-		"axis" : 
-		{
-			"x" : -0.06163784861564636,
-			"y" : 0.4740282595157623,
-			"z" : 0.8783495426177979
-		},
-		"border thickness" : 10.0,
-		"length" : 1000.0,
+		"border thickness" : 0.0,
+		"length" : 0.0,
 		"midpoint" : 
 		{
 			"x" : 0.0,
-			"y" : 600.0,
-			"z" : 1000.0
+			"y" : 0.0,
+			"z" : 0.0
 		},
-		"number of points needed to trigger" : 33,
-		"opacity" : 0.50,
-		"radius" : 200.0
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
 	},
-	"port" : 37000,
-	"right_trigger" : 
+	"trigger_1" : 
 	{
 		"axis" : 
 		{
-			"x" : -0.2232156544923782,
-			"y" : 0.3974480628967285,
-			"z" : 0.8900604844093323
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
 		},
-		"border thickness" : 15.0,
-		"length" : 1000.0,
+		"border thickness" : 0.0,
+		"length" : 0.0,
 		"midpoint" : 
 		{
-			"x" : -500.0,
-			"y" : 200.0,
-			"z" : 1000.0
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
 		},
-		"number of points needed to trigger" : 33,
-		"opacity" : 0.50,
-		"radius" : 200.0
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_10" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_11" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_12" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_13" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_14" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_15" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_16" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_17" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_18" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_19" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_2" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_20" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_21" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_22" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_23" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_3" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_4" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_5" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_6" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_7" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_8" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
+	},
+	"trigger_9" : 
+	{
+		"axis" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"border thickness" : 0.0,
+		"length" : 0.0,
+		"midpoint" : 
+		{
+			"x" : 0.0,
+			"y" : 0.0,
+			"z" : 0.0
+		},
+		"number of points needed to trigger" : 0,
+		"opacity" : 0.0,
+		"radius" : 0.0
 	}
 }

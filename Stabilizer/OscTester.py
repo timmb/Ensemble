@@ -21,7 +21,7 @@ def create_instruments(min=0., max=1., num_active=8):
 	'''
 	Create instruments for the Ensemble project with min and max activity values
 	'''
-	instruments = ['tim','daniel','sus','dom','kacper','panos','tadeo','wallace']
+	instruments = ['tim','dan_shadow','rockmore','dom','kacper','ptigas','tadeo','joker']
 	values = []
 	# nb order is not preserved
 	active_instruments = sample(instruments, num_active)

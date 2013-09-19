@@ -119,11 +119,15 @@ class OutputProcessor(QThread):
 				osc_address = '/viz/' + param
 				if param=='connections':
 					connections = value
-					instruments = self.internal_settings['calculated_instrument_order']
+					instruments = self.settings['instrument_order']
 					# see http://timmb.com/ensemblewiki/index.php?title=Protocols#Stabilizer_.E2.86.92_Visualizer
 					args = [len(instruments)]
-					# right for loop is nested inside left for loop
-					args += [connections[instruments[i]][instruments[j]] for i in range(len(instruments)) for j in range(len(instruments))]
+					for i in range(len(instruments)):
+						for j in range(len(instruments)):
+							if instruments[i] in connections and instruments[j] in connections[instruments[i]]:
+								args.append(connections[instruments[i]][instruments[j]])
+							else:
+								args.append(0.)
 					assert len(args) == 1+len(instruments)*len(instruments)
 				elif param=='debug':
 					args = [int(value)]
