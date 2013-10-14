@@ -43,19 +43,22 @@ class OutputProcessor(QThread):
 		self.send = osc_send_function
 		self.log = log_function
 
-		self.update_timer = QTimer(self)
+		self.update_timer = QTimer()
+		self.update_timer.moveToThread(self)
 		self.update_timer.timeout.connect(self._update)
 		self.update_timer.setInterval(500)
 
 		# Visualizer runs at a faster timer
-		self.viz_update_timer = QTimer(self)
+		self.viz_update_timer = QTimer()
+		self.viz_update_timer.moveToThread(self)
 		self.viz_update_timer.timeout.connect(self._update_viz)
 		self.viz_update_timer.setInterval(200)
 		# visualizer sender may print warning message - this is to prevent it spamming too much
 		self.viz_last_warning_message_time = 0
 
 		# Calculate instrument order for the visualizer
-		self.viz_instrument_order_update_timer = QTimer(self)
+		self.viz_instrument_order_update_timer = QTimer()
+		self.viz_instrument_order_update_timer.moveToThread(self)
 		self.viz_instrument_order_update_timer.timeout.connect(self._update_instrument_order)
 		self.viz_instrument_order_update_timer.setInterval(413)
 
