@@ -81,14 +81,16 @@ class MainWindow(QtGui.QMainWindow):
         self.ui.enableInputCheckbox.toggled.connect(self.start_or_stop_listening)
         self.ui.enableOutputCheckbox.setChecked(self.stabilizer.is_sending)
         self.ui.enableOutputCheckbox.toggled.connect(self.start_or_stop_sending)
-        checkbox_variable_pairings = [
-            (self.ui.calculateConvergenceCheckbox, self.stabilizer.convergence_manager.enable_calculate_convergence),
-            (self.ui.logIncomingMessagesCheckbox, self.stabilizer.enable_log_incoming_messages),
-            (self.ui.logOutgoingMessagesCheckbox, self.stabilizer.enable_log_outgoing_messages)
+        checkbox_variable_triplets = [
+            (self.ui.calculateConvergenceCheckbox, self.stabilizer.convergence_manager, "enable_calculate_convergence"),
+            (self.ui.logIncomingMessagesCheckbox, self.stabilizer, "enable_log_incoming_messages"),
+            (self.ui.logOutgoingMessagesCheckbox, self.stabilizer, "enable_log_outgoing_messages")
             ]
-        for checkbox, var in checkbox_variable_pairings:
-            checkbox.setChecked(var)
-            checkbox.toggled.connect(lambda x: assign(var,x))
+        import functools
+        for checkbox, obj, attrName in checkbox_variable_triplets:
+            checkbox.setChecked(getattr(obj, attrName))
+            checkbox.toggled.connect(functools.partial(lambda obj, attrName, isChecked: assign_member(obj, attrName, isChecked), obj, attrName))
+
         def debug_mode_checkbox_callback(value):
             self.stabilizer.visualizer_state['debug'] = value
         self.ui.visualizerEnableDebugModeCheckbox.toggled.connect(debug_mode_checkbox_callback)
