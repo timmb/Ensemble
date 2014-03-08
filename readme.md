@@ -25,7 +25,7 @@ It is set up for the following folder structure
    . / readme.md (this file)
 
 
-Tim Murray-Browne
+Tim Murray-Browne  
 Feb-Apr 2013, Mar 2014
 
 http://timmb.com
