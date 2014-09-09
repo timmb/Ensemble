@@ -16,7 +16,7 @@ class KinectStreamerApp : public AppNative {
 	KinectStreamerApp();
 	~KinectStreamerApp();
 	void prepareSettings(Settings* settings);
-	void resize(ResizeEvent event);
+	void resize();
 	void setup();
 	void mouseDown( MouseEvent event );
 	void mouseDrag(MouseEvent event);
@@ -69,10 +69,10 @@ void KinectStreamerApp::prepareSettings(Settings* settings)
 	settings->setWindowSize(900, 600);
 }
 
-void KinectStreamerApp::resize(ResizeEvent event)
+void KinectStreamerApp::resize()
 {
 	CameraPersp cam = mCamera.getCamera();
-	cam.setPerspective(cam.getFov(), event.getAspectRatio(), cam.getNearClip(), cam.getFarClip());
+	cam.setPerspective(cam.getFov(), getWindowAspectRatio(), cam.getNearClip(), cam.getFarClip());
 	mCamera.setCurrentCam(cam);
 }
 
