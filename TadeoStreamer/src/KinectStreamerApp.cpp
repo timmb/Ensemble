@@ -42,6 +42,8 @@ private:
 	int mDeviceId;
 	std::string mDeviceName;
 
+    bool mEnableDrawPointCloud;
+    bool mEnableDrawTriggers;
 };
 
 KinectStreamerApp::KinectStreamerApp()
@@ -52,11 +54,15 @@ KinectStreamerApp::KinectStreamerApp()
 , mIp("127.0.0.1")
 , mKinect(mSettings)
 , mTriggers(mSettings, mKinect, mOscBroadcaster)
+, mEnableDrawPointCloud(true)
+, mEnableDrawTriggers(true)
 {
 	mSettings.addParam(new Parameter<string>(&mIp, "ip", ""));
 	mSettings.addParam(new Parameter<int>(&mPort, "port", ""));
 	mSettings.addParam(new Parameter<int>(&mDeviceId, "device id", ""));
 	mSettings.addParam(new Parameter<string>(&mDeviceName, "device name", ""));
+    mSettings.addParam(new Parameter<bool>(&mEnableDrawPointCloud, "Draw point cloud", ""));
+    mSettings.addParam(new Parameter<bool>(&mEnableDrawTriggers, "Draw triggers", ""));
 }
 
 KinectStreamerApp::~KinectStreamerApp()
@@ -147,18 +153,27 @@ void KinectStreamerApp::draw()
 {
 	// clear out the window with black
 	gl::clear( Color( 0, 0, 0 ) );
-	glEnable(GL_DEPTH_TEST);
-	gl::pushMatrices();
-	{
-		gl::setMatricesWindow(app::getWindowSize());
-		gl::setMatrices(mCamera.getCamera());
-		gl::color(1,1,1, 1);
-		mKinect.scene();
-		gl::color(1,1,1, 1);
-		mTriggers.scene();
-	}
-	gl::popMatrices();
-	glDisable(GL_DEPTH_TEST);
+    if (mEnableDrawTriggers || mEnableDrawPointCloud)
+    {
+        glEnable(GL_DEPTH_TEST);
+        gl::pushMatrices();
+        {
+            gl::setMatricesWindow(app::getWindowSize());
+            gl::setMatrices(mCamera.getCamera());
+            if (mEnableDrawPointCloud)
+            {
+                gl::color(1,1,1, 1);
+                mKinect.scene();
+            }
+            if (mEnableDrawTriggers)
+            {
+                gl::color(1,1,1, 1);
+                mTriggers.scene();
+            }
+        }
+        gl::popMatrices();
+        glDisable(GL_DEPTH_TEST);
+    }
 	hud().draw();
 	mSettings.draw();
 }

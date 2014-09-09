@@ -1,5 +1,7 @@
 
 {
+	"Draw point cloud" : false,
+	"Draw triggers" : false,
 	"device id" : 0,
 	"device name" : "Kinect",
 	"ip" : "127.0.0.1",
@@ -8,41 +10,41 @@
 	{
 		"axis" : 
 		{
-			"x" : 0.0,
-			"y" : 0.0,
-			"z" : 0.0
+			"x" : -0.09792076796293259,
+			"y" : -0.3933402597904205,
+			"z" : 0.9141631722450256
 		},
-		"border thickness" : 0.0,
-		"length" : 0.0,
+		"border thickness" : 100.0,
+		"length" : 1000.0,
 		"midpoint" : 
 		{
-			"x" : 0.0,
-			"y" : 0.0,
-			"z" : 0.0
+			"x" : -126.0884246826172,
+			"y" : -224.2755737304688,
+			"z" : 1712.836181640625
 		},
-		"number of points needed to trigger" : 0,
-		"opacity" : 0.0,
-		"radius" : 0.0
+		"number of points needed to trigger" : 100,
+		"opacity" : 100.0,
+		"radius" : 100.0
 	},
 	"trigger_1" : 
 	{
 		"axis" : 
 		{
-			"x" : 0.0,
-			"y" : 0.0,
-			"z" : 0.0
+			"x" : 0.01577327400445938,
+			"y" : -0.2292189896106720,
+			"z" : 0.9732455611228943
 		},
-		"border thickness" : 0.0,
-		"length" : 0.0,
+		"border thickness" : 100.0,
+		"length" : 1000.0,
 		"midpoint" : 
 		{
-			"x" : 0.0,
-			"y" : 0.0,
-			"z" : 0.0
+			"x" : 42.56699371337891,
+			"y" : -9.757487297058105,
+			"z" : 1731.50
 		},
-		"number of points needed to trigger" : 0,
-		"opacity" : 0.0,
-		"radius" : 0.0
+		"number of points needed to trigger" : 100,
+		"opacity" : 100.0,
+		"radius" : 100.0
 	},
 	"trigger_10" : 
 	{
@@ -248,21 +250,21 @@
 	{
 		"axis" : 
 		{
-			"x" : 0.0,
-			"y" : 0.0,
-			"z" : 0.0
+			"x" : -207.0806732177734,
+			"y" : -551.1093750,
+			"z" : 1628.923095703125
 		},
-		"border thickness" : 0.0,
-		"length" : 0.0,
+		"border thickness" : 100.0,
+		"length" : 1000.0,
 		"midpoint" : 
 		{
-			"x" : 0.0,
-			"y" : 0.0,
-			"z" : 0.0
+			"x" : -445.3829345703125,
+			"y" : 1.388352513313293,
+			"z" : 1673.815185546875
 		},
-		"number of points needed to trigger" : 0,
-		"opacity" : 0.0,
-		"radius" : 0.0
+		"number of points needed to trigger" : 100,
+		"opacity" : 100.0,
+		"radius" : 100.0
 	},
 	"trigger_20" : 
 	{
