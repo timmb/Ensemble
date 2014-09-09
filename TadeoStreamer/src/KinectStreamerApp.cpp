@@ -83,7 +83,7 @@ void KinectStreamerApp::setup()
 	mKinect.setup(mDeviceId);
 	mTriggers.setup();
 	mOscBroadcaster.setup(&mKinect);
-//	mOscBroadcaster.setDestination("127.0.0.1", 37000);
+	mOscBroadcaster.setDestination("127.0.0.1", 37000);
 	mSettings.setup();
 	resetCamera();
 }
