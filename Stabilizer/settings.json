@@ -1,14 +1,5 @@
 {
     "parameters": {
-        "narrative_slot": {
-            "default_value": 0, 
-            "min": 0, 
-            "max": 10, 
-            "convergence_transform": "convergence", 
-            "post_update_statement": "# Produce values from 0 to 4 based on narrative\n\nif narrative.value[0] < 0.25:\n  self.value[0] = 0\nelif narrative.value[0] < 0.44:\n  self.value[0] = 1\nelif narrative.value[0] < 0.63:\n  self.value[0] = 2\nelif narrative.value[0] < 0.8:\n  self.value[0] = 3\nelse:\n  self.value[0] = 4\n", 
-            "convergence_rate": 0.01, 
-            "convergence_amount": 0.0
-        }, 
         "narrative_harmony_volume": {
             "default_value": 0.0, 
             "min": 0.0, 
@@ -54,14 +45,14 @@
             "convergence_rate": 0.01, 
             "convergence_amount": 0.0
         }, 
-        "roughness": {
-            "default_value": 0.0, 
-            "min": 0.0, 
-            "max": 1.0, 
-            "convergence_transform": "[convergence]", 
-            "post_update_statement": "", 
+        "narrative_slot": {
+            "default_value": 0, 
+            "min": 0, 
+            "max": 10, 
+            "convergence_transform": "convergence", 
+            "post_update_statement": "# Produce values from 0 to 4 based on narrative\n\nif narrative.value[0] < 0.25:\n  self.value[0] = 0\nelif narrative.value[0] < 0.44:\n  self.value[0] = 1\nelif narrative.value[0] < 0.63:\n  self.value[0] = 2\nelif narrative.value[0] < 0.8:\n  self.value[0] = 3\nelse:\n  self.value[0] = 4\n", 
             "convergence_rate": 0.01, 
-            "convergence_amount": 1.0
+            "convergence_amount": 0.0
         }, 
         "detune": {
             "default_value": 0.0, 
@@ -125,21 +116,30 @@
             "convergence_rate": 0.01, 
             "convergence_amount": 1.0
         }, 
+        "roughness": {
+            "default_value": 0.0, 
+            "min": 0.0, 
+            "max": 1.0, 
+            "convergence_transform": "[convergence]", 
+            "post_update_statement": "", 
+            "convergence_rate": 0.01, 
+            "convergence_amount": 1.0
+        }, 
         "root": {
-            "convergence_amount": 0.0, 
-            "convergence_rate": 0.02, 
+            "convergence_amount": 0.94, 
+            "convergence_rate": 1.0, 
             "default_value": 0, 
-            "post_update_statement": "if narrative.value[0] < 0.25:\n  self.value = [32]\nelif narrative.value[0] < 0.5:\n  self.value = [29]\nelif narrative.value[0] < 0.75:\n  self.value = [34]\nelse:\n  self.value = [32]\n"
+            "post_update_statement": ""
         }
     }, 
     "instrument_order": [
-        "tim", 
-        "daniel", 
-        "ptigas", 
-        "dom", 
-        "kacper", 
-        "rockmore", 
         "joker", 
-        "tadeo"
+        "kacper", 
+        "dom", 
+        "dan_shadow", 
+        "ptigas", 
+        "tadeo", 
+        "rockmore", 
+        "Tim"
     ]
 }
