@@ -20,23 +20,23 @@
 		22489AB21709FE3D00032617 /* Kinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AA81709FE3D00032617 /* Kinect.cpp */; };
 		22489AB31709FE3D00032617 /* OscBroadcaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22489AAA1709FE3D00032617 /* OscBroadcaster.cpp */; };
 		2297853B1721379800F771BA /* TriggerZone.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 229785391721379800F771BA /* TriggerZone.cpp */; };
-		22978541172137AD00F771BA /* TriggerZoneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2297853F172137AC00F771BA /* TriggerZoneManager.cpp */; };
 		22B8D1A0170A0CA200881D75 /* KinectStreamerApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */; };
+		3431B87C19C5B840009282DB /* TriggerZoneManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B87A19C5B840009282DB /* TriggerZoneManager.cpp */; };
+		3431B8A019C5BB70009282DB /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B87E19C5BB70009282DB /* IpEndpointName.cpp */; };
+		3431B8A119C5BB70009282DB /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B88319C5BB70009282DB /* NetworkingUtils.cpp */; };
+		3431B8A219C5BB70009282DB /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B88419C5BB70009282DB /* UdpSocket.cpp */; };
+		3431B8A519C5BB70009282DB /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B88E19C5BB70009282DB /* OscOutboundPacketStream.cpp */; };
+		3431B8A619C5BB70009282DB /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B89119C5BB70009282DB /* OscPrintReceivedElements.cpp */; };
+		3431B8A719C5BB70009282DB /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B89319C5BB70009282DB /* OscReceivedElements.cpp */; };
+		3431B8A819C5BB70009282DB /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B89519C5BB70009282DB /* OscTypes.cpp */; };
+		3431B8A919C5BB70009282DB /* OscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B89819C5BB70009282DB /* OscBundle.cpp */; };
+		3431B8AA19C5BB70009282DB /* OscListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B89A19C5BB70009282DB /* OscListener.cpp */; };
+		3431B8AB19C5BB70009282DB /* OscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B89C19C5BB70009282DB /* OscMessage.cpp */; };
+		3431B8AC19C5BB70009282DB /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3431B89E19C5BB70009282DB /* OscSender.cpp */; };
 		347DEBE219BF4156003E2AD5 /* libnimCodecs.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 347DEBDE19BF4156003E2AD5 /* libnimCodecs.dylib */; };
 		347DEBE319BF4156003E2AD5 /* libnimMockNodes.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 347DEBDF19BF4156003E2AD5 /* libnimMockNodes.dylib */; };
 		347DEBE419BF4156003E2AD5 /* libnimRecorder.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 347DEBE019BF4156003E2AD5 /* libnimRecorder.dylib */; };
 		347DEBE519BF4156003E2AD5 /* libOpenNI.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 347DEBE119BF4156003E2AD5 /* libOpenNI.dylib */; };
-		347DEBEF19BF4192003E2AD5 /* OscBundle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBE719BF4192003E2AD5 /* OscBundle.cpp */; };
-		347DEBF019BF4192003E2AD5 /* OscListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBE919BF4192003E2AD5 /* OscListener.cpp */; };
-		347DEBF119BF4192003E2AD5 /* OscMessage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBEB19BF4192003E2AD5 /* OscMessage.cpp */; };
-		347DEBF219BF4192003E2AD5 /* OscSender.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBED19BF4192003E2AD5 /* OscSender.cpp */; };
-		347DEBFF19BF41A6003E2AD5 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBF619BF41A6003E2AD5 /* OscOutboundPacketStream.cpp */; };
-		347DEC0019BF41A6003E2AD5 /* OscPrintReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBF919BF41A6003E2AD5 /* OscPrintReceivedElements.cpp */; };
-		347DEC0119BF41A6003E2AD5 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBFB19BF41A6003E2AD5 /* OscReceivedElements.cpp */; };
-		347DEC0219BF41A6003E2AD5 /* OscTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEBFD19BF41A6003E2AD5 /* OscTypes.cpp */; };
-		347DEC0C19BF41B0003E2AD5 /* IpEndpointName.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEC0319BF41B0003E2AD5 /* IpEndpointName.cpp */; };
-		347DEC0D19BF41B0003E2AD5 /* NetworkingUtils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEC0819BF41B0003E2AD5 /* NetworkingUtils.cpp */; };
-		347DEC0E19BF41B0003E2AD5 /* UdpSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEC0919BF41B0003E2AD5 /* UdpSocket.cpp */; };
 		347DEC7419BF41E0003E2AD5 /* VFakeKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEC6219BF41E0003E2AD5 /* VFakeKinect.cpp */; };
 		347DEC7519BF41E0003E2AD5 /* VKinect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEC6419BF41E0003E2AD5 /* VKinect.cpp */; };
 		347DEC7619BF41E0003E2AD5 /* VOpenNIDevice.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 347DEC6819BF41E0003E2AD5 /* VOpenNIDevice.cpp */; };
@@ -49,30 +49,6 @@
 		53E3CDFC0E86099300238D2B /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53E3CDFB0E86099300238D2B /* Carbon.framework */; };
 		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		2291BFB7171EE8FA008DD8E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2291BFB1171EE8F9008DD8E2 /* cinder.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = D2AAC07E0554694100DB518D;
-			remoteInfo = cinder;
-		};
-		2291BFB9171EE8FA008DD8E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2291BFB1171EE8F9008DD8E2 /* cinder.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 007050BE1114F93F003FCAE4;
-			remoteInfo = cinder_iphone;
-		};
-		2291BFBB171EE8FA008DD8E2 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2291BFB1171EE8F9008DD8E2 /* cinder.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 00CFD9E11135C3520091E310;
-			remoteInfo = cinder_iphone_sim;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		0091D8F80E81B9330029341E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
@@ -94,48 +70,47 @@
 		22489AA91709FE3D00032617 /* Kinect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Kinect.h; path = ../src/Kinect.h; sourceTree = "<group>"; };
 		22489AAA1709FE3D00032617 /* OscBroadcaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscBroadcaster.cpp; path = ../src/OscBroadcaster.cpp; sourceTree = "<group>"; };
 		22489AAB1709FE3D00032617 /* OscBroadcaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscBroadcaster.h; path = ../src/OscBroadcaster.h; sourceTree = "<group>"; };
-		2291BFB1171EE8F9008DD8E2 /* cinder.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cinder.xcodeproj; path = ../../../cinder_0.8.4_mac/xcode/cinder.xcodeproj; sourceTree = "<group>"; };
 		229785391721379800F771BA /* TriggerZone.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggerZone.cpp; path = ../src/TriggerZone.cpp; sourceTree = "<group>"; };
 		2297853A1721379800F771BA /* TriggerZone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TriggerZone.h; path = ../src/TriggerZone.h; sourceTree = "<group>"; };
-		2297853F172137AC00F771BA /* TriggerZoneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TriggerZoneManager.cpp; sourceTree = "<group>"; };
-		22978540172137AC00F771BA /* TriggerZoneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriggerZoneManager.h; sourceTree = "<group>"; };
 		22B8D19F170A0CA200881D75 /* KinectStreamerApp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KinectStreamerApp.cpp; path = ../src/KinectStreamerApp.cpp; sourceTree = "<group>"; };
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* TadeoStreamer_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TadeoStreamer_Prefix.pch; sourceTree = "<group>"; };
+		3431B87A19C5B840009282DB /* TriggerZoneManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TriggerZoneManager.cpp; path = ../src/TriggerZoneManager.cpp; sourceTree = "<group>"; };
+		3431B87B19C5B840009282DB /* TriggerZoneManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TriggerZoneManager.h; path = ../src/TriggerZoneManager.h; sourceTree = "<group>"; };
+		3431B87E19C5BB70009282DB /* IpEndpointName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IpEndpointName.cpp; sourceTree = "<group>"; };
+		3431B87F19C5BB70009282DB /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IpEndpointName.h; sourceTree = "<group>"; };
+		3431B88019C5BB70009282DB /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkingUtils.h; sourceTree = "<group>"; };
+		3431B88119C5BB70009282DB /* PacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketListener.h; sourceTree = "<group>"; };
+		3431B88319C5BB70009282DB /* NetworkingUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkingUtils.cpp; sourceTree = "<group>"; };
+		3431B88419C5BB70009282DB /* UdpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UdpSocket.cpp; sourceTree = "<group>"; };
+		3431B88519C5BB70009282DB /* TimerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimerListener.h; sourceTree = "<group>"; };
+		3431B88619C5BB70009282DB /* UdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UdpSocket.h; sourceTree = "<group>"; };
+		3431B88B19C5BB70009282DB /* MessageMappingOscPacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageMappingOscPacketListener.h; sourceTree = "<group>"; };
+		3431B88C19C5BB70009282DB /* OscException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscException.h; sourceTree = "<group>"; };
+		3431B88D19C5BB70009282DB /* OscHostEndianness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscHostEndianness.h; sourceTree = "<group>"; };
+		3431B88E19C5BB70009282DB /* OscOutboundPacketStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscOutboundPacketStream.cpp; sourceTree = "<group>"; };
+		3431B88F19C5BB70009282DB /* OscOutboundPacketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscOutboundPacketStream.h; sourceTree = "<group>"; };
+		3431B89019C5BB70009282DB /* OscPacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscPacketListener.h; sourceTree = "<group>"; };
+		3431B89119C5BB70009282DB /* OscPrintReceivedElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscPrintReceivedElements.cpp; sourceTree = "<group>"; };
+		3431B89219C5BB70009282DB /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscPrintReceivedElements.h; sourceTree = "<group>"; };
+		3431B89319C5BB70009282DB /* OscReceivedElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscReceivedElements.cpp; sourceTree = "<group>"; };
+		3431B89419C5BB70009282DB /* OscReceivedElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscReceivedElements.h; sourceTree = "<group>"; };
+		3431B89519C5BB70009282DB /* OscTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OscTypes.cpp; sourceTree = "<group>"; };
+		3431B89619C5BB70009282DB /* OscTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OscTypes.h; sourceTree = "<group>"; };
+		3431B89719C5BB70009282DB /* OscArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscArg.h; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscArg.h"; sourceTree = "<group>"; };
+		3431B89819C5BB70009282DB /* OscBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscBundle.cpp; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscBundle.cpp"; sourceTree = "<group>"; };
+		3431B89919C5BB70009282DB /* OscBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscBundle.h; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscBundle.h"; sourceTree = "<group>"; };
+		3431B89A19C5BB70009282DB /* OscListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscListener.cpp; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscListener.cpp"; sourceTree = "<group>"; };
+		3431B89B19C5BB70009282DB /* OscListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscListener.h; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscListener.h"; sourceTree = "<group>"; };
+		3431B89C19C5BB70009282DB /* OscMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscMessage.cpp; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscMessage.cpp"; sourceTree = "<group>"; };
+		3431B89D19C5BB70009282DB /* OscMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscMessage.h; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscMessage.h"; sourceTree = "<group>"; };
+		3431B89E19C5BB70009282DB /* OscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscSender.cpp; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscSender.cpp"; sourceTree = "<group>"; };
+		3431B89F19C5BB70009282DB /* OscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscSender.h; path = "../../../Cinder-Ensemble/blocks/OSC/src/OscSender.h"; sourceTree = "<group>"; };
 		347DEBDE19BF4156003E2AD5 /* libnimCodecs.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimCodecs.dylib; path = ../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx/libnimCodecs.dylib; sourceTree = "<group>"; };
 		347DEBDF19BF4156003E2AD5 /* libnimMockNodes.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimMockNodes.dylib; path = ../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx/libnimMockNodes.dylib; sourceTree = "<group>"; };
 		347DEBE019BF4156003E2AD5 /* libnimRecorder.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libnimRecorder.dylib; path = ../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx/libnimRecorder.dylib; sourceTree = "<group>"; };
 		347DEBE119BF4156003E2AD5 /* libOpenNI.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libOpenNI.dylib; path = ../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx/libOpenNI.dylib; sourceTree = "<group>"; };
-		347DEBE619BF4192003E2AD5 /* OscArg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscArg.h; path = ../../../Cinder/blocks/OSC/src/OscArg.h; sourceTree = "<group>"; };
-		347DEBE719BF4192003E2AD5 /* OscBundle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscBundle.cpp; path = ../../../Cinder/blocks/OSC/src/OscBundle.cpp; sourceTree = "<group>"; };
-		347DEBE819BF4192003E2AD5 /* OscBundle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscBundle.h; path = ../../../Cinder/blocks/OSC/src/OscBundle.h; sourceTree = "<group>"; };
-		347DEBE919BF4192003E2AD5 /* OscListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscListener.cpp; path = ../../../Cinder/blocks/OSC/src/OscListener.cpp; sourceTree = "<group>"; };
-		347DEBEA19BF4192003E2AD5 /* OscListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscListener.h; path = ../../../Cinder/blocks/OSC/src/OscListener.h; sourceTree = "<group>"; };
-		347DEBEB19BF4192003E2AD5 /* OscMessage.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscMessage.cpp; path = ../../../Cinder/blocks/OSC/src/OscMessage.cpp; sourceTree = "<group>"; };
-		347DEBEC19BF4192003E2AD5 /* OscMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscMessage.h; path = ../../../Cinder/blocks/OSC/src/OscMessage.h; sourceTree = "<group>"; };
-		347DEBED19BF4192003E2AD5 /* OscSender.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscSender.cpp; path = ../../../Cinder/blocks/OSC/src/OscSender.cpp; sourceTree = "<group>"; };
-		347DEBEE19BF4192003E2AD5 /* OscSender.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscSender.h; path = ../../../Cinder/blocks/OSC/src/OscSender.h; sourceTree = "<group>"; };
-		347DEBF319BF41A6003E2AD5 /* MessageMappingOscPacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MessageMappingOscPacketListener.h; path = ../../../Cinder/blocks/OSC/src/osc/MessageMappingOscPacketListener.h; sourceTree = "<group>"; };
-		347DEBF419BF41A6003E2AD5 /* OscException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscException.h; path = ../../../Cinder/blocks/OSC/src/osc/OscException.h; sourceTree = "<group>"; };
-		347DEBF519BF41A6003E2AD5 /* OscHostEndianness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscHostEndianness.h; path = ../../../Cinder/blocks/OSC/src/osc/OscHostEndianness.h; sourceTree = "<group>"; };
-		347DEBF619BF41A6003E2AD5 /* OscOutboundPacketStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscOutboundPacketStream.cpp; path = ../../../Cinder/blocks/OSC/src/osc/OscOutboundPacketStream.cpp; sourceTree = "<group>"; };
-		347DEBF719BF41A6003E2AD5 /* OscOutboundPacketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscOutboundPacketStream.h; path = ../../../Cinder/blocks/OSC/src/osc/OscOutboundPacketStream.h; sourceTree = "<group>"; };
-		347DEBF819BF41A6003E2AD5 /* OscPacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscPacketListener.h; path = ../../../Cinder/blocks/OSC/src/osc/OscPacketListener.h; sourceTree = "<group>"; };
-		347DEBF919BF41A6003E2AD5 /* OscPrintReceivedElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscPrintReceivedElements.cpp; path = ../../../Cinder/blocks/OSC/src/osc/OscPrintReceivedElements.cpp; sourceTree = "<group>"; };
-		347DEBFA19BF41A6003E2AD5 /* OscPrintReceivedElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscPrintReceivedElements.h; path = ../../../Cinder/blocks/OSC/src/osc/OscPrintReceivedElements.h; sourceTree = "<group>"; };
-		347DEBFB19BF41A6003E2AD5 /* OscReceivedElements.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscReceivedElements.cpp; path = ../../../Cinder/blocks/OSC/src/osc/OscReceivedElements.cpp; sourceTree = "<group>"; };
-		347DEBFC19BF41A6003E2AD5 /* OscReceivedElements.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscReceivedElements.h; path = ../../../Cinder/blocks/OSC/src/osc/OscReceivedElements.h; sourceTree = "<group>"; };
-		347DEBFD19BF41A6003E2AD5 /* OscTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OscTypes.cpp; path = ../../../Cinder/blocks/OSC/src/osc/OscTypes.cpp; sourceTree = "<group>"; };
-		347DEBFE19BF41A6003E2AD5 /* OscTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OscTypes.h; path = ../../../Cinder/blocks/OSC/src/osc/OscTypes.h; sourceTree = "<group>"; };
-		347DEC0319BF41B0003E2AD5 /* IpEndpointName.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = IpEndpointName.cpp; path = ../../../Cinder/blocks/OSC/src/ip/IpEndpointName.cpp; sourceTree = "<group>"; };
-		347DEC0419BF41B0003E2AD5 /* IpEndpointName.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IpEndpointName.h; path = ../../../Cinder/blocks/OSC/src/ip/IpEndpointName.h; sourceTree = "<group>"; };
-		347DEC0519BF41B0003E2AD5 /* NetworkingUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NetworkingUtils.h; path = ../../../Cinder/blocks/OSC/src/ip/NetworkingUtils.h; sourceTree = "<group>"; };
-		347DEC0619BF41B0003E2AD5 /* PacketListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PacketListener.h; path = ../../../Cinder/blocks/OSC/src/ip/PacketListener.h; sourceTree = "<group>"; };
-		347DEC0819BF41B0003E2AD5 /* NetworkingUtils.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkingUtils.cpp; sourceTree = "<group>"; };
-		347DEC0919BF41B0003E2AD5 /* UdpSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UdpSocket.cpp; sourceTree = "<group>"; };
-		347DEC0A19BF41B0003E2AD5 /* TimerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TimerListener.h; path = ../../../Cinder/blocks/OSC/src/ip/TimerListener.h; sourceTree = "<group>"; };
-		347DEC0B19BF41B0003E2AD5 /* UdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UdpSocket.h; path = ../../../Cinder/blocks/OSC/src/ip/UdpSocket.h; sourceTree = "<group>"; };
 		347DEC1119BF41D8003E2AD5 /* XnPlatformAndroid-Arm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "XnPlatformAndroid-Arm.h"; sourceTree = "<group>"; };
 		347DEC1319BF41D8003E2AD5 /* XnOSARC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XnOSARC.h; sourceTree = "<group>"; };
 		347DEC1419BF41D8003E2AD5 /* XnPlatformARC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XnPlatformARC.h; sourceTree = "<group>"; };
@@ -277,8 +252,8 @@
 				22489AAB1709FE3D00032617 /* OscBroadcaster.h */,
 				229785391721379800F771BA /* TriggerZone.cpp */,
 				2297853A1721379800F771BA /* TriggerZone.h */,
-				2297853F172137AC00F771BA /* TriggerZoneManager.cpp */,
-				22978540172137AC00F771BA /* TriggerZoneManager.h */,
+				3431B87A19C5B840009282DB /* TriggerZoneManager.cpp */,
+				3431B87B19C5B840009282DB /* TriggerZoneManager.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -321,7 +296,6 @@
 		22489AB51709FE4E00032617 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				2291BFB1171EE8F9008DD8E2 /* cinder.xcodeproj */,
 				22489D02170A00A700032617 /* osc */,
 				22489BC41709FFD800032617 /* BlockOpenNI */,
 			);
@@ -340,47 +314,20 @@
 		22489D02170A00A700032617 /* osc */ = {
 			isa = PBXGroup;
 			children = (
-				347DEC0319BF41B0003E2AD5 /* IpEndpointName.cpp */,
-				347DEC0419BF41B0003E2AD5 /* IpEndpointName.h */,
-				347DEC0519BF41B0003E2AD5 /* NetworkingUtils.h */,
-				347DEC0619BF41B0003E2AD5 /* PacketListener.h */,
-				347DEC0719BF41B0003E2AD5 /* posix */,
-				347DEC0A19BF41B0003E2AD5 /* TimerListener.h */,
-				347DEC0B19BF41B0003E2AD5 /* UdpSocket.h */,
-				347DEBF319BF41A6003E2AD5 /* MessageMappingOscPacketListener.h */,
-				347DEBF419BF41A6003E2AD5 /* OscException.h */,
-				347DEBF519BF41A6003E2AD5 /* OscHostEndianness.h */,
-				347DEBF619BF41A6003E2AD5 /* OscOutboundPacketStream.cpp */,
-				347DEBF719BF41A6003E2AD5 /* OscOutboundPacketStream.h */,
-				347DEBF819BF41A6003E2AD5 /* OscPacketListener.h */,
-				347DEBF919BF41A6003E2AD5 /* OscPrintReceivedElements.cpp */,
-				347DEBFA19BF41A6003E2AD5 /* OscPrintReceivedElements.h */,
-				347DEBFB19BF41A6003E2AD5 /* OscReceivedElements.cpp */,
-				347DEBFC19BF41A6003E2AD5 /* OscReceivedElements.h */,
-				347DEBFD19BF41A6003E2AD5 /* OscTypes.cpp */,
-				347DEBFE19BF41A6003E2AD5 /* OscTypes.h */,
-				347DEBE619BF4192003E2AD5 /* OscArg.h */,
-				347DEBE719BF4192003E2AD5 /* OscBundle.cpp */,
-				347DEBE819BF4192003E2AD5 /* OscBundle.h */,
-				347DEBE919BF4192003E2AD5 /* OscListener.cpp */,
-				347DEBEA19BF4192003E2AD5 /* OscListener.h */,
-				347DEBEB19BF4192003E2AD5 /* OscMessage.cpp */,
-				347DEBEC19BF4192003E2AD5 /* OscMessage.h */,
-				347DEBED19BF4192003E2AD5 /* OscSender.cpp */,
-				347DEBEE19BF4192003E2AD5 /* OscSender.h */,
+				3431B87D19C5BB70009282DB /* ip */,
+				3431B88A19C5BB70009282DB /* osc */,
+				3431B89719C5BB70009282DB /* OscArg.h */,
+				3431B89819C5BB70009282DB /* OscBundle.cpp */,
+				3431B89919C5BB70009282DB /* OscBundle.h */,
+				3431B89A19C5BB70009282DB /* OscListener.cpp */,
+				3431B89B19C5BB70009282DB /* OscListener.h */,
+				3431B89C19C5BB70009282DB /* OscMessage.cpp */,
+				3431B89D19C5BB70009282DB /* OscMessage.h */,
+				3431B89E19C5BB70009282DB /* OscSender.cpp */,
+				3431B89F19C5BB70009282DB /* OscSender.h */,
 			);
 			name = osc;
 			path = ../../../cinder_0.8.4_mac/blocks/osc;
-			sourceTree = "<group>";
-		};
-		2291BFB2171EE8F9008DD8E2 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				2291BFB8171EE8FA008DD8E2 /* libcinder_d.a */,
-				2291BFBA171EE8FA008DD8E2 /* libcinder-iphone_d.a */,
-				2291BFBC171EE8FA008DD8E2 /* libcinder-iphone-sim_d.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		29B97314FDCFA39411CA2CEA /* KinectStreamer2 */ = {
@@ -426,14 +373,48 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		347DEC0719BF41B0003E2AD5 /* posix */ = {
+		3431B87D19C5BB70009282DB /* ip */ = {
 			isa = PBXGroup;
 			children = (
-				347DEC0819BF41B0003E2AD5 /* NetworkingUtils.cpp */,
-				347DEC0919BF41B0003E2AD5 /* UdpSocket.cpp */,
+				3431B87E19C5BB70009282DB /* IpEndpointName.cpp */,
+				3431B87F19C5BB70009282DB /* IpEndpointName.h */,
+				3431B88019C5BB70009282DB /* NetworkingUtils.h */,
+				3431B88119C5BB70009282DB /* PacketListener.h */,
+				3431B88219C5BB70009282DB /* posix */,
+				3431B88519C5BB70009282DB /* TimerListener.h */,
+				3431B88619C5BB70009282DB /* UdpSocket.h */,
 			);
-			name = posix;
-			path = ../../../Cinder/blocks/OSC/src/ip/posix;
+			name = ip;
+			path = "../../../Cinder-Ensemble/blocks/OSC/src/ip";
+			sourceTree = "<group>";
+		};
+		3431B88219C5BB70009282DB /* posix */ = {
+			isa = PBXGroup;
+			children = (
+				3431B88319C5BB70009282DB /* NetworkingUtils.cpp */,
+				3431B88419C5BB70009282DB /* UdpSocket.cpp */,
+			);
+			path = posix;
+			sourceTree = "<group>";
+		};
+		3431B88A19C5BB70009282DB /* osc */ = {
+			isa = PBXGroup;
+			children = (
+				3431B88B19C5BB70009282DB /* MessageMappingOscPacketListener.h */,
+				3431B88C19C5BB70009282DB /* OscException.h */,
+				3431B88D19C5BB70009282DB /* OscHostEndianness.h */,
+				3431B88E19C5BB70009282DB /* OscOutboundPacketStream.cpp */,
+				3431B88F19C5BB70009282DB /* OscOutboundPacketStream.h */,
+				3431B89019C5BB70009282DB /* OscPacketListener.h */,
+				3431B89119C5BB70009282DB /* OscPrintReceivedElements.cpp */,
+				3431B89219C5BB70009282DB /* OscPrintReceivedElements.h */,
+				3431B89319C5BB70009282DB /* OscReceivedElements.cpp */,
+				3431B89419C5BB70009282DB /* OscReceivedElements.h */,
+				3431B89519C5BB70009282DB /* OscTypes.cpp */,
+				3431B89619C5BB70009282DB /* OscTypes.h */,
+			);
+			name = osc;
+			path = "../../../Cinder-Ensemble/blocks/OSC/src/osc";
 			sourceTree = "<group>";
 		};
 		347DEC0F19BF41D8003E2AD5 /* Include */ = {
@@ -631,42 +612,12 @@
 			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* KinectStreamer2 */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = 2291BFB2171EE8F9008DD8E2 /* Products */;
-					ProjectRef = 2291BFB1171EE8F9008DD8E2 /* cinder.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				8D1107260486CEB800E47090 /* TadeoStreamer */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		2291BFB8171EE8FA008DD8E2 /* libcinder_d.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libcinder_d.a;
-			remoteRef = 2291BFB7171EE8FA008DD8E2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		2291BFBA171EE8FA008DD8E2 /* libcinder-iphone_d.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libcinder-iphone_d.a";
-			remoteRef = 2291BFB9171EE8FA008DD8E2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		2291BFBC171EE8FA008DD8E2 /* libcinder-iphone-sim_d.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = "libcinder-iphone-sim_d.a";
-			remoteRef = 2291BFBB171EE8FA008DD8E2 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		8D1107290486CEB800E47090 /* Resources */ = {
@@ -686,30 +637,30 @@
 			files = (
 				22489AAF1709FE3D00032617 /* Common.cpp in Sources */,
 				347DEC7619BF41E0003E2AD5 /* VOpenNIDevice.cpp in Sources */,
-				347DEC0219BF41A6003E2AD5 /* OscTypes.cpp in Sources */,
+				3431B8A519C5BB70009282DB /* OscOutboundPacketStream.cpp in Sources */,
 				22489AB01709FE3D00032617 /* Hud.cpp in Sources */,
+				3431B8A619C5BB70009282DB /* OscPrintReceivedElements.cpp in Sources */,
 				22489AB11709FE3D00032617 /* Settings.cpp in Sources */,
-				347DEBF019BF4192003E2AD5 /* OscListener.cpp in Sources */,
+				3431B8A919C5BB70009282DB /* OscBundle.cpp in Sources */,
 				347DEC7919BF41E0003E2AD5 /* VOpenNIRecorder.cpp in Sources */,
 				347DEC7719BF41E0003E2AD5 /* VOpenNIDeviceManager.cpp in Sources */,
+				3431B8A119C5BB70009282DB /* NetworkingUtils.cpp in Sources */,
+				3431B8A719C5BB70009282DB /* OscReceivedElements.cpp in Sources */,
+				3431B87C19C5B840009282DB /* TriggerZoneManager.cpp in Sources */,
 				22489AB21709FE3D00032617 /* Kinect.cpp in Sources */,
+				3431B8AA19C5BB70009282DB /* OscListener.cpp in Sources */,
 				347DEC7519BF41E0003E2AD5 /* VKinect.cpp in Sources */,
-				347DEBFF19BF41A6003E2AD5 /* OscOutboundPacketStream.cpp in Sources */,
-				347DEC0C19BF41B0003E2AD5 /* IpEndpointName.cpp in Sources */,
-				347DEC0E19BF41B0003E2AD5 /* UdpSocket.cpp in Sources */,
+				3431B8A819C5BB70009282DB /* OscTypes.cpp in Sources */,
 				22489AB31709FE3D00032617 /* OscBroadcaster.cpp in Sources */,
-				347DEC0D19BF41B0003E2AD5 /* NetworkingUtils.cpp in Sources */,
-				347DEC0019BF41A6003E2AD5 /* OscPrintReceivedElements.cpp in Sources */,
-				347DEC0119BF41A6003E2AD5 /* OscReceivedElements.cpp in Sources */,
-				347DEBEF19BF4192003E2AD5 /* OscBundle.cpp in Sources */,
+				3431B8AB19C5BB70009282DB /* OscMessage.cpp in Sources */,
 				347DEC7A19BF41E0003E2AD5 /* VOpenNIUser.cpp in Sources */,
-				347DEBF219BF4192003E2AD5 /* OscSender.cpp in Sources */,
 				347DEC7419BF41E0003E2AD5 /* VFakeKinect.cpp in Sources */,
 				22B8D1A0170A0CA200881D75 /* KinectStreamerApp.cpp in Sources */,
 				347DEC7819BF41E0003E2AD5 /* VOpenNINetwork.cpp in Sources */,
+				3431B8AC19C5BB70009282DB /* OscSender.cpp in Sources */,
+				3431B8A019C5BB70009282DB /* IpEndpointName.cpp in Sources */,
+				3431B8A219C5BB70009282DB /* UdpSocket.cpp in Sources */,
 				2297853B1721379800F771BA /* TriggerZone.cpp in Sources */,
-				347DEBF119BF4192003E2AD5 /* OscMessage.cpp in Sources */,
-				22978541172137AD00F771BA /* TriggerZoneManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -720,7 +671,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CINDER_PATH = ../../../Cinder;
+				CINDER_PATH = "../../../Cinder-Ensemble";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				COPY_PHASE_STRIP = NO;
@@ -733,14 +684,14 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"\"$(CINDER_PATH)/boost\"",
-					../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/include/Include,
-					../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/src,
+					"$(CINDER_PATH)/blocks/BlockOpenNI/include/Include",
+					"$(CINDER_PATH)/blocks/BlockOpenNI/src",
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/include/Include/blocks/BlockOpenNI/lib/macosx\" \"../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/msw\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/iphone\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/macosx\" /Users/timmb/Documents/dev/HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx",
+					"$(CINDER_PATH)/blocks/BlockOpenNI/include/Include/blocks/BlockOpenNI/lib/macosx\" \"../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/msw\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/iphone\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/macosx\" /Users/timmb/Documents/dev/HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder_d.a\"";
@@ -755,7 +706,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
-				CINDER_PATH = ../../../Cinder;
+				CINDER_PATH = "../../../Cinder-Ensemble";
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				DEAD_CODE_STRIPPING = YES;
@@ -770,14 +721,14 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"\"$(CINDER_PATH)/boost\"",
-					../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/include/Include,
-					../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/src,
+					"$(CINDER_PATH)/blocks/BlockOpenNI/include/Include",
+					"$(CINDER_PATH)/blocks/BlockOpenNI/src",
 				);
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/include/Include/blocks/BlockOpenNI/lib/macosx\" \"../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/msw\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/iphone\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/macosx\" /Users/timmb/Documents/dev/HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx",
+					"$(CINDER_PATH)/blocks/BlockOpenNI/include/Include/blocks/BlockOpenNI/lib/macosx\" \"../../../HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/msw\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/iphone\" \"$(SRCROOT)/../../../cinder_0.8.4_mac/blocks/osc/lib/macosx\" /Users/timmb/Documents/dev/HarmonicMotion/lib/CinderBlocks/BlockOpenNI/lib/macosx",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
 				OTHER_LDFLAGS = "\"$(CINDER_PATH)/lib/libcinder.a\"";
