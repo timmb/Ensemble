@@ -69,14 +69,23 @@ void Hud::draw()
 	gl::color(1,1,1,.8);
 	string message = boost::algorithm::join(mMessages, "\n");
 	message += '\n';
-	for (auto& originMessage: mPermanentMessages)
+
+	//for (auto& originMessage: mPermanentMessages)
+	for (std::map<std::string, std::string>::const_iterator permanentMessageItr = mPermanentMessages.begin(); permanentMessageItr != mPermanentMessages.end(); ++permanentMessageItr)
 	{
+        std::pair<std::string, std::string> originMessage = *permanentMessageItr;
+
 		message += originMessage.first+": "+originMessage.second+"\n";
 	}
-	for (auto& timestampedMessage: mMessagesToDisplayForAWhile)
+
+	//for (auto& timestampedMessage: mMessagesToDisplayForAWhile)
+	for (std::deque<TimestampedMessage>::const_iterator messageToDisplayForAWhileItr = mMessagesToDisplayForAWhile.begin(); messageToDisplayForAWhileItr != mMessagesToDisplayForAWhile.end(); ++messageToDisplayForAWhileItr)
 	{
+        const TimestampedMessage & timestampedMessage = *messageToDisplayForAWhileItr;
+
 		message += "> "+timestampedMessage.origin+": "+timestampedMessage.message+"\n";
 	}
+
 	mFont->drawString(message, Vec2f(20, 20));
 	gl::disableAlphaBlending();
 	mMessages.clear();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -74,7 +74,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;..\..\..\include;..\..\..\boost</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\prog\c\cinder_0.8.5_vc2010\boost;C:\prog\c\cinder_0.8.5_vc2010\include;..\include;C:\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\win32;C:\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip;C:\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src;C:\ensembledrop\Cinder-orig-with-handflute\blocks\BlockOpenNI\include\Include;C:\ensembledrop\Cinder-orig-with-handflute\blocks\BlockOpenNI\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader>
@@ -86,11 +86,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\..\..\include;..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\prog\c\cinder_0.8.5_vc2010\boost;C:\prog\c\cinder_0.8.5_vc2010\include;..\include;C:\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\win32;C:\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip;C:\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src;C:\prog\c\BlockOpenNI\include\Include;C:\prog\c\BlockOpenNI\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\..\..\lib;..\..\..\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\prog\c\cinder_0.8.5_vc2010\lib\msw;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -104,14 +104,72 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\KinectStreamer2App.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIDevice.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIDeviceManager.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNINetwork.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIRecorder.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIUser.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\IpEndpointName.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\win32\NetworkingUtils.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\win32\UdpSocket.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscBundle.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscListener.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscMessage.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscSender.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscOutboundPacketStream.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscPrintReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscReceivedElements.cpp" />
+    <ClCompile Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscTypes.cpp" />
+    <ClCompile Include="..\src\Common.cpp" />
+    <ClCompile Include="..\src\Hud.cpp" />
+    <ClCompile Include="..\src\Kinect.cpp" />
+    <ClCompile Include="..\src\KinectStreamerApp.cpp" />
+    <ClCompile Include="..\src\OscBroadcaster.cpp" />
+    <ClCompile Include="..\src\Settings.cpp" />
+    <ClCompile Include="..\src\TriggerZone.cpp" />
+    <ClCompile Include="..\src\TriggerZoneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\SkeletonPoseDetector.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIBone.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNICommon.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIDevice.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIDeviceManager.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIHeaders.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNINetwork.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIRecorder.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNISurface.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\BlockOpenNI\src\VOpenNIUser.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\IpEndpointName.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\NetworkingUtils.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\PacketListener.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\TimerListener.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\ip\UdpSocket.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscArg.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscBundle.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscListener.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscMessage.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\OscSender.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\MessageMappingOscPacketListener.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscException.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscHostEndianness.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscOutboundPacketStream.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscPacketListener.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscPrintReceivedElements.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscReceivedElements.h" />
+    <ClInclude Include="..\..\..\..\..\..\..\..\prog\c\cinder_0.8.5_vc2010\blocks\OSC\src\osc\OscTypes.h" />
     <ClInclude Include="..\include\Resources.h" />
+    <ClInclude Include="..\src\Common.h" />
+    <ClInclude Include="..\src\Hud.h" />
+    <ClInclude Include="..\src\Kinect.h" />
+    <ClInclude Include="..\src\OscBroadcaster.h" />
+    <ClInclude Include="..\src\Settings.h" />
+    <ClInclude Include="..\src\TriggerZone.h" />
+    <ClInclude Include="..\src\TriggerZoneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resources.rc" />
-  </ItemGroup>  
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
