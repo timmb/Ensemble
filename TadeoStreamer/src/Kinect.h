@@ -23,7 +23,7 @@
 
 #include "VOpenNIHeaders.h"
 
-#include <boost/thread.hpp>
+//#include <boost/thread.hpp>
 
 #include "Settings.h"
 
